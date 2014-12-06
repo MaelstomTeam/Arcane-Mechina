@@ -14,4 +14,8 @@ public class CommonProxy implements IProxy {
 	public void registerEvents() {
 	}
 
+	@Override
+	public void registerTileEntity() {
+	}
+
 }
