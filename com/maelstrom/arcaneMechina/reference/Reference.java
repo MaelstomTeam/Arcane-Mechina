@@ -11,6 +11,8 @@ public class Reference {
 	public static final String PROXY_CLIENT = "com.maelstrom.arcaneMechina.proxy.ClientProxy";
 	public static final String PROXY_SERVER = "com.maelstrom.arcaneMechina.proxy.ServerProxy";
 	public static final String MODTAB_NAME = "arcaneMechina.tab";
+	public static final boolean MOD_METADATA = true;
+	
 	
 	public static ResourceLocation getResource(String id){
 		return new ResourceLocation(MOD_ID + ":" + id);
