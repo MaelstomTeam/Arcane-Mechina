@@ -1,9 +1,12 @@
 package com.maelstrom.arcaneMechina;
 
+import net.minecraft.item.ItemStack;
+
 import com.maelstrom.arcaneMechina.init.InitItem;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.proxy.IProxy;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -23,7 +26,9 @@ public class ArcaneMechina {
 	
 	@Mod.EventHandler
     public void postInit(FMLInitializationEvent event){
-		
+		if(Loader.isModLoaded("after:NotEnoughItems")){
+			codechicken.nei.api.API.hideItem(new ItemStack(InitItem.wandOfDebug));
+		}
 	}
 	
 	@Mod.EventHandler
