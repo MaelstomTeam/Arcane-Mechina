@@ -1,5 +1,10 @@
 package com.maelstrom.arcaneMechina.reference;
 
+import com.maelstrom.arcaneMechina.creative.CreativeTabArcaneMechina;
+import com.maelstrom.arcaneMechina.init.InitItem;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class Reference {
@@ -13,6 +18,7 @@ public class Reference {
 	public static final String MODTAB_NAME = "arcaneMechina.tab";
 	public static final boolean MOD_METADATA = true;
 	
+	public static final CreativeTabs MOD_TAB = new CreativeTabArcaneMechina(MOD_ID, new ItemStack(InitItem.wandOfDebug));
 	
 	public static ResourceLocation getResource(String id){
 		return new ResourceLocation(MOD_ID + ":" + id);

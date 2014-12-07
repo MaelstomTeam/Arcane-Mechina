@@ -1,5 +1,6 @@
 package com.maelstrom.arcaneMechina;
 
+import com.maelstrom.arcaneMechina.init.InitItem;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.proxy.IProxy;
 
@@ -17,7 +18,7 @@ public class ArcaneMechina {
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
-		
+		InitItem.init();
 	}
 	
 	@Mod.EventHandler
