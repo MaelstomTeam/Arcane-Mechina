@@ -3,12 +3,12 @@ package com.maelstrom.arcaneMechina.handler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
 import org.lwjgl.opengl.GL11;
 
+import com.maelstrom.arcaneMechina.IBaubleRenderer;
 import com.maelstrom.arcaneMechina.reference.Reference;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -30,7 +30,10 @@ public class ContributorRenderHandler {
 				if(ply.getDisplayName().equals(name)){
 					
 					GL11.glPushMatrix();
-	
+					
+					//adds the sneaking rotation (THANK YOU BOTANIA!!)
+					IBaubleRenderer.Helper.rotateWhileSneaking(ply);
+					
 					//bind texture
 					Minecraft.getMinecraft().renderEngine.bindTexture(array);
 					
