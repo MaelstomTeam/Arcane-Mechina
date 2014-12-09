@@ -1,4 +1,4 @@
-package com.maelstrom.arcaneMechina;
+package com.maelstrom.arcaneMechina.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -19,8 +19,8 @@ public interface IBaubleRenderer {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void onPlayerBaubleRenderer(EntityPlayer player, RenderPlayerEvent.Specials.Post event);
-	public RenderLocation getRenderLocation();
+	public abstract void onPlayerBaubleRenderer(EntityPlayer player, RenderPlayerEvent.Specials.Post event);
+	public abstract RenderLocation getRenderLocation();
 	
 	public static class Helper {
 		//@SelfReminder onnly have this used with head and body renderers

@@ -1,3 +1,9 @@
 item.arcanemechina.WandODebug.name=Wand Of Debug
 item.arcanemechina.WandODebug.lore=raika tengwa e' i' parma
+item.arcanemechina.ScrewDriver.name=Subsonic Screwdriver
+item.arcanemechina.ScrewDriver.line1.lore=A gift from a madman
+item.arcanemechina.ScrewDriver.line2.lore=  in a box
+item.arcanemechina.pegasusWingAmulet.name=Pegasus Wing Amulet
+item.arcanemechina.pegasusWingAmulet.line1.lore=It's not 16.5 wing
+item.arcanemechina.pegasusWingAmulet.line2.lore=power but it'll do~
 itemGroup.arcanemechina.name=Arcane Mechina

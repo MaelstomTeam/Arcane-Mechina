@@ -8,7 +8,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import com.maelstrom.arcaneMechina.IBaubleRenderer;
+import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
 import com.maelstrom.arcaneMechina.reference.Reference;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -42,15 +42,15 @@ public class ContributorRenderHandler {
 						GL11.glTranslated(0, 0, 0.05);
 	
 					GL11.glTranslated(0, .35, 0.15);
-					GL11.glRotated(arrayRotationZ, 0, 0, 1);
-					
-					Tessellator tessellator = Tessellator.instance;
 					
 					//Change color per player
 					if( ply.getDisplayName().equals("hybolic"))
-						GL11.glColor3f(1, 0, 0);
+						GL11.glColor3f(1f, 0, 0f);
 					else if( ply.getDisplayName().equals("Sporeknight"))
 						GL11.glColor3f(0, 0, 1);
+					GL11.glRotated(ply.ticksExisted + event.partialRenderTick, 0, 0, 1);
+					
+					Tessellator tessellator = Tessellator.instance;
 					
 					//draw the plane
 					tessellator.startDrawingQuads();

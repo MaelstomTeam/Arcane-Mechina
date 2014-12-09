@@ -3,6 +3,7 @@ package com.maelstrom.arcaneMechina;
 import net.minecraft.item.ItemStack;
 
 import com.maelstrom.arcaneMechina.init.InitItem;
+import com.maelstrom.arcaneMechina.init.InitRecipe;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.proxy.IProxy;
 
@@ -26,6 +27,7 @@ public class ArcaneMechina {
 	
 	@Mod.EventHandler
     public void postInit(FMLInitializationEvent event){
+		InitRecipe.init();
 		if(Loader.isModLoaded("after:NotEnoughItems")){
 			codechicken.nei.api.API.hideItem(new ItemStack(InitItem.wandOfDebug));
 		}
