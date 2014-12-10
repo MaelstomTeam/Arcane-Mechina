@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
@@ -28,21 +29,15 @@ private IIcon icon;
     	if(ply.capabilities.isCreativeMode && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)))
     		l.add("§dPointless in Creative Mode");
     }
-
-	@Override
-	public void registerIcons(IIconRegister iicon) {
-		icon = iicon.registerIcon(Reference.MOD_ID+":"+getIconString());
-	}
-	
-	
-    public IIcon getIconIndex(ItemStack is)
+    
+    public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat)
     {
-        return icon;
+        return super.onItemUse(is, ply, w, x, y, z, face, xFloat, yFloat, zFloat);
     }
     
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+    public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer ply)
     {
-        return icon;
+        return is;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.maelstrom.arcaneMechina.client.iitem;
+package com.maelstrom.arcaneMechina.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 

@@ -24,11 +24,11 @@ public class BaubleRenderHandler {
 		for(int i = 0; i < baubleInv.getSizeInventory(); i++){
 			ItemStack is = baubleInv.getStackInSlot(i);
 			if(is != null && is.getItem() instanceof IBaubleRenderer){
+				GL11.glTranslated(0, 0, 0.1);
 				IBaubleRenderer.Helper.rotateWhileSneaking(ply);
 				
 				GL11.glPushMatrix();
 				GL11.glColor4f(1F, 1F, 1F, 1F);
-				GL11.glTranslated(0, 0, 0.1);
 				
 				if(((IBaubleRenderer) is.getItem()).getRenderLocation().equals(IBaubleRenderer.RenderLocation.BODY)){
 					((IBaubleRenderer) is.getItem()).onPlayerBaubleRenderer(ply, event);

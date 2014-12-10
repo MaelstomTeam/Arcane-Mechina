@@ -1,7 +1,9 @@
 package com.maelstrom.arcaneMechina;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 
+import com.maelstrom.arcaneMechina.handler.FlightHelper;
 import com.maelstrom.arcaneMechina.init.InitItem;
 import com.maelstrom.arcaneMechina.init.InitRecipe;
 import com.maelstrom.arcaneMechina.reference.Reference;
@@ -37,5 +39,7 @@ public class ArcaneMechina {
     public void postInit(FMLPostInitializationEvent event){
 		proxy.registerEvents();
 		proxy.registerRenderers();
+//		item gives flight but sorta broken!
+//		MinecraftForge.EVENT_BUS.register(new FlightHelper());
 	}
 }

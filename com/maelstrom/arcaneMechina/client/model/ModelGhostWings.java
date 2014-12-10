@@ -1,8 +1,11 @@
 package com.maelstrom.arcaneMechina.client.model;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
@@ -10,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
 import com.maelstrom.arcaneMechina.reference.Reference;
 
 /**
@@ -144,30 +148,53 @@ public class ModelGhostWings extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3,
-			float f4, float f5) {
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		if (entity instanceof EntityPlayer) {
 			GL11.glPushMatrix();
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glColor4f(1F, 1F, 1F, 0.5F);
 			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+			
 			EntityPlayer ply = (EntityPlayer) entity;
-			if (ply.capabilities.isFlying)
-				if (ply.capabilities.isCreativeMode)
+			if(ply == Minecraft.getMinecraft().thePlayer)
+				if(Minecraft.getMinecraft().currentScreen instanceof InventoryEffectRenderer)
 					renderPiece(WingIn, f5);
 				else
-					renderPiece(WingOut, f5);
-			else if (ply.fallDistance > 4f)
-				if (ply.capabilities.isCreativeMode)
-					renderPiece(WingIn, f5);
-				else
-					renderPiece(WingOut, f5);
+					if (ply.capabilities.isFlying){
+						if (ply.capabilities.isCreativeMode)
+							renderPiece(WingIn, f5);
+						else
+							renderPiece(WingOut, f5);
+					}
+					else if (ply.fallDistance > 2f && ply.isSneaking()){
+						if (ply.capabilities.isCreativeMode)
+							renderPiece(WingIn, f5);
+						else
+							renderPiece(WingOut, f5);
+					}
+					else
+						renderPiece(WingIn, f5);
 			else
-				renderPiece(WingIn, f5);
-			WingOut.rotateAngleY = -1f + MathHelper.cos((entity.ticksExisted + f2) * .3F) * (float) Math.PI * 0.08F;
-			Bone2.rotateAngleY = -0.25132743f + MathHelper.cos((entity.ticksExisted + f2) * .3F) * (float) Math.PI * 0.2F;
-			Bone3.rotateAngleY = -0.25132743f + MathHelper.cos((entity.ticksExisted + f2) * .3F) * (float) Math.PI * 0.2F;
+				if (ply.capabilities.isFlying){
+					if (ply.capabilities.isCreativeMode)
+						renderPiece(WingIn, f5);
+					else
+						renderPiece(WingOut, f5);
+				}
+				else if (ply.fallDistance > 2f && ply.isSneaking()){
+					if (ply.capabilities.isCreativeMode)
+						renderPiece(WingIn, f5);
+					else
+						renderPiece(WingOut, f5);
+				}
+				else
+					renderPiece(WingIn, f5);
+			if(!ply.onGround){
+				WingOut.rotateAngleY = -1f + MathHelper.cos((entity.ticksExisted + f2) * .3F) * (float) Math.PI * 0.08F;
+				Bone2.rotateAngleY = -0.25132743f + MathHelper.cos((entity.ticksExisted + f2) * .3F) * (float) Math.PI * 0.2F;
+				Bone3.rotateAngleY = -0.25132743f + MathHelper.cos((entity.ticksExisted + f2) * .3F) * (float) Math.PI * 0.2F;
+			}
 			GL11.glPopMatrix();
 		}
 	}

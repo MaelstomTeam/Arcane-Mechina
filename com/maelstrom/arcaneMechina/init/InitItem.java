@@ -4,14 +4,14 @@ import net.minecraft.item.Item;
 
 import com.maelstrom.arcaneMechina.Item.ItemPegasusWingAmulet;
 import com.maelstrom.arcaneMechina.Item.ItemScrewdriver;
-import com.maelstrom.arcaneMechina.Item.WandOfDebug;
+import com.maelstrom.arcaneMechina.Item.ItemDebug;
 import com.maelstrom.arcaneMechina.reference.Reference;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class InitItem {
 
-	public static Item wandOfDebug = new WandOfDebug("WandODebug");
+	public static Item wandOfDebug = new ItemDebug("WandODebug");
 	public static Item pegasusWingAmulet = new ItemPegasusWingAmulet("pegasusWingAmulet");
 	public static Item ScrewDriver = new ItemScrewdriver("ScrewDriver");
 	

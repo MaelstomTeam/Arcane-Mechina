@@ -1,5 +1,7 @@
 package com.maelstrom.arcaneMechina.proxy;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import com.maelstrom.snowcone.proxy.IProxy;
 
 public class CommonProxy implements IProxy {

@@ -3,14 +3,13 @@ package com.maelstrom.arcaneMechina.Item;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent.Specials.Post;
 
 import org.lwjgl.input.Keyboard;
@@ -18,10 +17,11 @@ import org.lwjgl.opengl.GL11;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import baubles.common.container.InventoryBaubles;
+import baubles.common.lib.PlayerHandler;
 
 import com.maelstrom.arcaneMechina.client.model.ModelGhostWings;
 import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
-import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer.RenderLocation;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
 
@@ -42,41 +42,50 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
     }
 
 	@Override
-	public void registerIcons(IIconRegister iicon) {
-		icon = iicon.registerIcon(Reference.MOD_ID+":"+getIconString());
-	}
-	
-	
-    public IIcon getIconIndex(ItemStack is)
-    {
-        return icon;
-    }
-    
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
-    {
-        return icon;
-    }
-
-	@Override
 	public BaubleType getBaubleType(ItemStack itemstack) {
 		return BaubleType.AMULET;
 	}
-
+	
+    public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat)
+    {
+        return false;
+    }
+    
+    public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer ply)
+    {
+    	InventoryBaubles bauble = PlayerHandler.getPlayerBaubles(ply);
+    	for (int i = 0; i < bauble.getSizeInventory(); i++){
+    		if(bauble.isItemValidForSlot(i, is)){
+    			ItemStack baubleIS = bauble.getStackInSlot(i);
+    			if((baubleIS == null || ((IBauble) baubleIS.getItem()).canUnequip(baubleIS, ply)) && !w.isRemote){
+					bauble.setInventorySlotContents(i, is.copy());
+					if(!ply.capabilities.isCreativeMode)
+						ply.inventory.setInventorySlotContents(ply.inventory.currentItem, null);
+				}
+    			onEquipped(is, ply);
+    			if(baubleIS != null){
+    				((IBauble) baubleIS.getItem()).onUnequipped(baubleIS, ply);
+    				return baubleIS.copy();
+    			}
+    			break;
+    		}
+    	}
+        return is;
+    }
+    
 	@Override
 	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
 		if(player instanceof EntityPlayer){
 			EntityPlayer ply = (EntityPlayer) player;
-			if(!ply.capabilities.isCreativeMode && !ply.capabilities.allowFlying)
+			if(!ply.capabilities.isCreativeMode && !ply.capabilities.allowFlying && PlayerHandler.getPlayerBaubles(ply).getStackInSlot(0) == itemstack)
 				ply.capabilities.allowFlying = true;
-			if(!ply.capabilities.isCreativeMode)
-		        if (!ply.onGround && ply.fallDistance > 10f) {
-		        	if(!ply.isSneaking()){
-		        		ply.motionY += .09999999999D;
+			else if(!ply.capabilities.isCreativeMode)
+		        if (!ply.onGround && ply.fallDistance > 1f) {
+		        	if(ply.isSneaking()){
+		        		ply.fallDistance = 1f; 
+		        		ply.motionY += .09999999D;
 		        		if(ply.motionY > -0.1D)
 		        			ply.motionY = -0.1D;
-		        	}
-		        	else{
-		        		ply.motionY *= 1.1D;
 		        	}
 		        }
 		}
@@ -88,8 +97,7 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 			player.worldObj.playSoundAtEntity(player, "arcanemechina:equipBauble", 0.1F, 1.3F);
 		if(player instanceof EntityPlayer){
 			EntityPlayer ply = (EntityPlayer) player;
-			if(!ply.capabilities.isCreativeMode)
-				ply.capabilities.allowFlying = true;
+			ply.capabilities.allowFlying = true;
 		}
 	}
 
