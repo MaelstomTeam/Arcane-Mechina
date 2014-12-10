@@ -82,7 +82,6 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 			else if(!ply.capabilities.isCreativeMode)
 		        if (!ply.onGround && ply.fallDistance > 1f) {
 		        	if(ply.isSneaking()){
-		        		ply.fallDistance = 1f; 
 		        		ply.motionY += .09999999D;
 		        		if(ply.motionY > -0.1D)
 		        			ply.motionY = -0.1D;
@@ -126,8 +125,12 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 	public void onPlayerBaubleRenderer(EntityPlayer player, Post event) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("Minecraft:textures/blocks/stone.png"));
 //		System.out.println("Test");
-		GL11.glScaled(0.1, 0.1, 0.1);
-		try{ModelGhostWings.wingsTemp.render(player, 0, 0, event.partialRenderTick, 0, 0, 1);}
+//		GL11.glScaled(0.1, 0.1, 0.1);
+		if(!player.isSneaking() && player.capabilities.isFlying){
+			GL11.glTranslated(0, 0, -.1);
+			GL11.glRotated(35, 1, 0, 0);
+		}
+		try{ModelGhostWings.wingsTemp.render(player, 0, 0, event.partialRenderTick, 0, 0, .1f);}
 		catch(Error e){System.out.println("Error");}
 	}
 
