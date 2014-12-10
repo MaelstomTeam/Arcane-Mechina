@@ -68,16 +68,17 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 			EntityPlayer ply = (EntityPlayer) player;
 			if(!ply.capabilities.isCreativeMode && !ply.capabilities.allowFlying)
 				ply.capabilities.allowFlying = true;
-	        if (!ply.onGround && ply.fallDistance > 10f) {
-	        	if(!ply.isSneaking()){
-	        		ply.motionY += .09999999999D;
-	        		if(ply.motionY > -0.1D)
-	        			ply.motionY = -0.1D;
-	        	}
-	        	else{
-	        		ply.motionY *= 1.1D;
-	        	}
-	        }
+			if(!ply.capabilities.isCreativeMode)
+		        if (!ply.onGround && ply.fallDistance > 10f) {
+		        	if(!ply.isSneaking()){
+		        		ply.motionY += .09999999999D;
+		        		if(ply.motionY > -0.1D)
+		        			ply.motionY = -0.1D;
+		        	}
+		        	else{
+		        		ply.motionY *= 1.1D;
+		        	}
+		        }
 		}
 	}
 
