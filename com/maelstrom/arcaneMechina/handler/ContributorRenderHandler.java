@@ -47,7 +47,9 @@ public class ContributorRenderHandler {
 					if( ply.getDisplayName().equals("hybolic"))
 						GL11.glColor3f(1f, 0, 0f);
 					else if( ply.getDisplayName().equals("Sporeknight"))
-						GL11.glColor3f(0, 0, 1);
+						GL11.glColor3b((byte)0, (byte)59, (byte)111);
+					
+					
 					GL11.glRotated(ply.ticksExisted + event.partialRenderTick, 0, 0, 1);
 					
 					Tessellator tessellator = Tessellator.instance;
@@ -68,6 +70,11 @@ public class ContributorRenderHandler {
 					if(arrayRotationZ > 359)
 						arrayRotationZ = 0;
 			}
+	}
+	
+	private float getRGBValue(int value){
+		float perInt = 1 / 255;
+		return value * perInt;
 	}
 
 }

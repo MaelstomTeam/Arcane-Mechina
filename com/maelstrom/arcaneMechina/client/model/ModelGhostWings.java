@@ -118,25 +118,21 @@ public class ModelGhostWings extends ModelBase {
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		if (entity instanceof EntityPlayer) {
-			GL11.glPushMatrix();
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glColor4f(1F, 1F, 1F, 0.5F);
-			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 			
 			EntityPlayer ply = (EntityPlayer) entity;
+			
+			GL11.glPushMatrix();
+			
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+			
+			GL11.glColor4f(1F, 1F, 1F, 0.5F);
+			
 			renderPiece(wingOut, f5);
-//			function broken so commented out
-//			if(ply == Minecraft.getMinecraft().thePlayer){
-//				if(Minecraft.getMinecraft().currentScreen != null){
-//					WingOut.isHidden = true;
-//					WingIn.isHidden = false;
-//				}
-//			}else{
-//				WingOut.isHidden = false;
-//				WingIn.isHidden = true;
-//			}
-			if(!ply.onGround){
+			
+			if(ply.capabilities.isFlying || (ply.isSneaking() && ply.fallDistance > 1.5f)){
 				skin6.isHidden = true;
 				skin1.isHidden = false;
 				skin2.isHidden = false;
