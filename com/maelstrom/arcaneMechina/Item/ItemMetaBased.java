@@ -1,4 +1,4 @@
-package com.maelstrom.arcaneMechina.Item;
+package com.maelstrom.arcaneMechina.item;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 

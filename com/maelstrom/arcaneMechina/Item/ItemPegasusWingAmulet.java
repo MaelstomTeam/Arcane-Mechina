@@ -1,4 +1,4 @@
-package com.maelstrom.arcaneMechina.Item;
+package com.maelstrom.arcaneMechina.item;
 
 import java.util.List;
 

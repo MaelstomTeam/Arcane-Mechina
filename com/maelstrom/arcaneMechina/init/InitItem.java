@@ -2,9 +2,9 @@ package com.maelstrom.arcaneMechina.init;
 
 import net.minecraft.item.Item;
 
-import com.maelstrom.arcaneMechina.Item.ItemPegasusWingAmulet;
-import com.maelstrom.arcaneMechina.Item.ItemScrewdriver;
-import com.maelstrom.arcaneMechina.Item.ItemDebug;
+import com.maelstrom.arcaneMechina.item.ItemDebug;
+import com.maelstrom.arcaneMechina.item.ItemPegasusWingAmulet;
+import com.maelstrom.arcaneMechina.item.ItemScrewdriver;
 import com.maelstrom.arcaneMechina.reference.Reference;
 
 import cpw.mods.fml.common.registry.GameRegistry;
