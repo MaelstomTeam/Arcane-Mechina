@@ -6,4 +6,16 @@ item.arcanemechina.ScrewDriver.line2.lore=  in a box
 item.arcanemechina.pegasusWingAmulet.name=Pegasus Wing Amulet
 item.arcanemechina.pegasusWingAmulet.line1.lore=It's not 16.5 wing
 item.arcanemechina.pegasusWingAmulet.line2.lore=power but it'll do~
+item.arcanemechina.rosarioAmulet.name=Rosario Amulet
+item.arcanemechina.rosarioAmulet.line1.lore="Thank you for your contribution!!"
+item.arcanemechina.rosarioAmulet.line2.lore=~ Maelstrom Mod Team
+
+
+
 itemGroup.arcanemechina.name=Arcane Mechina
+
+arcanemechina.login.notice=thank you %$1s for using the alpha of Arcane Mechina
+
+
+
+nei.load=Load -

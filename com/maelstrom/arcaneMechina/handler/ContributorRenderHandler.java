@@ -27,7 +27,6 @@ public class ContributorRenderHandler {
 	
 	@SubscribeEvent
 	public void onPlayerRender(RenderPlayerEvent.Specials.Post event){
-		
 		EntityPlayer ply = event.entityPlayer;
 			
 			//for loop for modders string list

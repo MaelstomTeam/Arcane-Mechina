@@ -2,53 +2,30 @@ package com.maelstrom.arcaneMechina.item;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent.Specials.Post;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
 
-import com.maelstrom.arcaneMechina.client.model.ModelGhostWings;
 import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
 
-public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IBaubleRenderer {
-	
-	private IIcon icon;
-	
-	public ItemPegasusWingAmulet(String name) {
+public class ItemRosarioAmulet extends ExtendableItem implements IBauble, IBaubleRenderer {
+
+	public ItemRosarioAmulet(String name) {
 		super(name, Reference.MOD_ID);
-		this.maxStackSize = 1;
 	}
 	
     public void addInformation(ItemStack is, EntityPlayer ply, List l, boolean bool) {
     	l.add("§2"+StatCollector.translateToLocal(getUnlocalizedName() + ".line1.lore"));
     	l.add("§2"+StatCollector.translateToLocal(getUnlocalizedName() + ".line2.lore"));
-    	if(ply.capabilities.isCreativeMode && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)))
-    		l.add("§dPointless in Creative Mode");
-    }
-
-	@Override
-	public BaubleType getBaubleType(ItemStack itemstack) {
-		return BaubleType.AMULET;
-	}
-	
-    public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat)
-    {
-        return false;
     }
     
     public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer ply)
@@ -72,44 +49,39 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
     	}
         return is;
     }
-    
+
+	@Override
+	public void onPlayerBaubleRenderer(EntityPlayer player, Post event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public RenderLocation getRenderLocation() {
+		return RenderLocation.BODY;
+	}
+
+	@Override
+	public BaubleType getBaubleType(ItemStack itemstack) {
+		return BaubleType.AMULET;
+	}
+
 	@Override
 	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-		if(player instanceof EntityPlayer){
-			EntityPlayer ply = (EntityPlayer) player;
-//			if(!ply.capabilities.isCreativeMode && !ply.capabilities.allowFlying && PlayerHandler.getPlayerBaubles(ply).getStackInSlot(0) == itemstack)
-//				ply.capabilities.allowFlying = true;
-			/*else*/ if(!ply.capabilities.isCreativeMode)
-		        if (!ply.onGround && ply.fallDistance > 1f) {
-		        	if(ply.isSneaking()){
-		        		ply.motionY += .09999999D;
-		        		if(ply.motionY > -0.1D)
-		        			ply.motionY = -0.1D;
-		        	}
-		        }
-		}
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
 		if(!player.worldObj.isRemote)
 			player.worldObj.playSoundAtEntity(player, "arcanemechina:equipBauble", 1F, 1.3F);
-		if(player instanceof EntityPlayer){
-			EntityPlayer ply = (EntityPlayer) player;
-			ply.capabilities.allowFlying = true;
-		}
 	}
 
 	@Override
 	public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
-		if(player instanceof EntityPlayer){
-			EntityPlayer ply = (EntityPlayer) player;
-			if(!ply.capabilities.isCreativeMode)
-				ply.capabilities.allowFlying = false;
-		}
 		if(!player.worldObj.isRemote)
 			player.worldObj.playSoundAtEntity(player, "arcanemechina:unequipBauble", 1F, 1.3F);
-		player.fallDistance = 0f;
 	}
 
 	@Override
@@ -120,23 +92,5 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 	@Override
 	public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
 		return true;
-	}
-
-	@Override
-	public void onPlayerBaubleRenderer(EntityPlayer player, Post event) {
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("Minecraft:textures/blocks/stone.png"));
-//		System.out.println("Test");
-//		GL11.glScaled(0.1, 0.1, 0.1);
-		if(!player.isSneaking() && player.capabilities.isFlying){
-			GL11.glTranslated(0, 0, -.1);
-			GL11.glRotated(35, 1, 0, 0);
-		}
-		try{ModelGhostWings.wingsTemp.render(player, 0, 0, event.partialRenderTick, 0, 0, .1f);}
-		catch(Error e){System.out.println("Error");}
-	}
-
-	@Override
-	public RenderLocation getRenderLocation() {
-		return RenderLocation.BODY;
 	}
 }

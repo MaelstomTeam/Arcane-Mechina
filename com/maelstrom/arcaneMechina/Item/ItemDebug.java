@@ -2,28 +2,16 @@ package com.maelstrom.arcaneMechina.item;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderPlayerEvent.Specials.Post;
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
 
-import com.maelstrom.arcaneMechina.client.model.ModelGhostWings;
-import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
+import com.maelstrom.arcaneMechina.handler.ArcaneMechinaNbt;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemDebug extends ExtendableItem {
 	
@@ -38,13 +26,32 @@ public class ItemDebug extends ExtendableItem {
     	l.add("§2"+StatCollector.translateToLocal(getUnlocalizedName() + ".lore"));
     }
     
-    public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat)
-    {
+    public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat){
+    	if(!w.isRemote && w.getTileEntity(x, y, z) != null){
+			ply.addChatComponentMessage(new ChatComponentText("TileEntity: "+w.getTileEntity(x, y, z).toString().split("@")[0]));
+    			return true;
+    	}
         return false;
     }
     
     public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer ply)
     {
-        return is;
+		ArcaneMechinaNbt temp = new ArcaneMechinaNbt(ply);
+    	if(ply.isSneaking() && ply.rotationPitch == -90f){
+			if(w.isRemote){
+		    	ply.addChatComponentMessage(new ChatComponentText("§2Begining NBT Debug: "));
+		    	ply.addChatComponentMessage(new ChatComponentText("     §5Server: "));
+			}
+			else
+		    	ply.addChatComponentMessage(new ChatComponentText("     §3Client: "));
+			ply.addChatComponentMessage(new ChatComponentText("          hasLogged: "+temp.hasLoggedPreviously()));
+    	}
+    	else if(ply.isSneaking() && ply.rotationPitch == 90f){
+    		temp.setBoolean("hasLogged", false);
+    	}
+    	else if(!ply.isSneaking() && ply.rotationPitch == 90f){
+    		temp.setBoolean("hasLogged", true);
+    	}
+    	return is;
     }
 }
