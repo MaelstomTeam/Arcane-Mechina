@@ -77,10 +77,10 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
 		if(player instanceof EntityPlayer){
 			EntityPlayer ply = (EntityPlayer) player;
-			if(!ply.capabilities.isCreativeMode && !ply.capabilities.allowFlying && PlayerHandler.getPlayerBaubles(ply).getStackInSlot(0) == itemstack)
-				ply.capabilities.allowFlying = true;
-			else if(!ply.capabilities.isCreativeMode)
-		        if (!ply.onGround && ply.fallDistance > 1f) {
+//			if(!ply.capabilities.isCreativeMode && !ply.capabilities.allowFlying && PlayerHandler.getPlayerBaubles(ply).getStackInSlot(0) == itemstack)
+//				ply.capabilities.allowFlying = true;
+			/*else*/ if(!ply.capabilities.isCreativeMode)
+		        if (!ply.onGround && ply.fallDistance < 1f) {
 		        	if(ply.isSneaking()){
 		        		ply.motionY += .09999999D;
 		        		if(ply.motionY > -0.1D)

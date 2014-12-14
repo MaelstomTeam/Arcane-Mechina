@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.maelstrom.arcaneMechina.handler.FlightHelper;
+import com.maelstrom.arcaneMechina.init.InitBlock;
 import com.maelstrom.arcaneMechina.init.InitItem;
 import com.maelstrom.arcaneMechina.init.InitRecipe;
 import com.maelstrom.arcaneMechina.reference.Reference;
@@ -25,6 +26,7 @@ public class ArcaneMechina {
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
 		InitItem.init();
+		InitBlock.init();
 	}
 	
 	@Mod.EventHandler

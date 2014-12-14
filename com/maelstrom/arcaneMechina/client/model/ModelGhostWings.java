@@ -145,6 +145,19 @@ public class ModelGhostWings extends ModelBase {
 				this.setRotateAngle(bone4, -0.7853981633974483F, 0.0F, 0.0F);
 				this.setRotateAngle(bone5, -1.5707963267948966F, 0.0F, 0.0F);
 				this.setRotateAngle(bone6, -2.367539130330308F, 0.0F, 0.0F);
+			}else if(ply.isSneaking() && ply.onGround){
+				skin6.isHidden = true;
+				skin1.isHidden = false;
+				skin2.isHidden = false;
+				skin3.isHidden = false;
+				skin4.isHidden = false;
+				skin5.isHidden = false;
+				this.setRotateAngle(bone2, 0.3f, -0.25132743f + MathHelper.cos((entity.ticksExisted + f2) * .05F) * (float) Math.PI * 0.1F, 0.0F);
+				this.setRotateAngle(bone3, 0.6f, -0.25132743f + MathHelper.cos((entity.ticksExisted + f2) * .05F) * (float) Math.PI * 0.1F, 0.0F);
+				this.setRotateAngle(wingOut, 0.3f, -1f + MathHelper.cos((entity.ticksExisted + f2) * .05F) * (float) Math.PI * 0.04F, 0.0F);
+				this.setRotateAngle(bone4, -0.7853981633974483F, 0.0F, 0.0F);
+				this.setRotateAngle(bone5, -1.5707963267948966F, 0.0F, 0.0F);
+				this.setRotateAngle(bone6, -2.367539130330308F, 0.0F, 0.0F);
 			}else{
 				skin6.isHidden = false;
 				skin1.isHidden = true;
