@@ -6,6 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
@@ -18,7 +20,10 @@ public class ContributorRenderHandler {
 	public ResourceLocation array = Reference.getTextureResource("special/ArrayPlayer.png");
 	public int arrayRotationZ = 0;
 	
-	public String[] modders = { "hybolic", "Sporeknight" };
+	public static String[] modders = { "hybolic", "Sporeknight" };
+	public boolean disableSelf = false;
+	private boolean lastState = false;
+	
 	
 	@SubscribeEvent
 	public void onPlayerRender(RenderPlayerEvent.Specials.Post event){
@@ -28,7 +33,6 @@ public class ContributorRenderHandler {
 			//for loop for modders string list
 			for(String name : modders)
 				if(ply.getDisplayName().equals(name)){
-					
 					GL11.glPushMatrix();
 					
 					//adds the sneaking rotation (THANK YOU BOTANIA!!)
@@ -62,7 +66,6 @@ public class ContributorRenderHandler {
 					tessellator.addVertexWithUV(.3, -.3, 0, 1, 0);
 					tessellator.setTranslation(0, 0, 0);
 					tessellator.draw();
-					
 					GL11.glPopMatrix();
 					
 					//rotational things
