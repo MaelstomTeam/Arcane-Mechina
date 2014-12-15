@@ -3,12 +3,11 @@ package com.maelstrom.arcaneMechina;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.maelstrom.arcaneMechina.handler.BaubleRenderHandler;
-import com.maelstrom.arcaneMechina.handler.FlightHelper;
 import com.maelstrom.arcaneMechina.handler.PlayerJoinWorldEvent;
 import com.maelstrom.arcaneMechina.init.InitBlock;
 import com.maelstrom.arcaneMechina.init.InitItem;
 import com.maelstrom.arcaneMechina.init.InitRecipe;
+import com.maelstrom.arcaneMechina.item.ItemPegasusWingAmulet;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.proxy.IProxy;
 
@@ -44,8 +43,8 @@ public class ArcaneMechina {
 		proxy.registerEvents();
 		proxy.registerRenderers();
 		MinecraftForge.EVENT_BUS.register(new PlayerJoinWorldEvent());
-
-//		item gives flight but sorta broken!
-//		MinecraftForge.EVENT_BUS.register(new FlightHelper());
+		
+		//jump boost for pegasus wings 1.5 blocks
+		MinecraftForge.EVENT_BUS.register(InitItem.pegasusWingAmulet);
 	}
 }

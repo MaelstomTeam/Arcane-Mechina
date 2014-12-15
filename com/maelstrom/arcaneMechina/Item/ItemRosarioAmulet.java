@@ -17,7 +17,7 @@ import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
 
-public class ItemRosarioAmulet extends ExtendableItem implements IBauble, IBaubleRenderer {
+public class ItemRosarioAmulet extends ItemBaubleEx implements IBaubleRenderer {
 
 	public ItemRosarioAmulet(String name) {
 		super(name, Reference.MOD_ID);
@@ -28,31 +28,9 @@ public class ItemRosarioAmulet extends ExtendableItem implements IBauble, IBaubl
     	l.add("§2"+StatCollector.translateToLocal(getUnlocalizedName() + ".line2.lore"));
     }
     
-    public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer ply)
-    {
-    	InventoryBaubles bauble = PlayerHandler.getPlayerBaubles(ply);
-    	for (int i = 0; i < bauble.getSizeInventory(); i++){
-    		if(bauble.isItemValidForSlot(i, is)){
-    			ItemStack baubleIS = bauble.getStackInSlot(i);
-    			if((baubleIS == null || ((IBauble) baubleIS.getItem()).canUnequip(baubleIS, ply)) && !w.isRemote){
-					bauble.setInventorySlotContents(i, is.copy());
-					if(!ply.capabilities.isCreativeMode)
-						ply.inventory.setInventorySlotContents(ply.inventory.currentItem, null);
-				}
-    			onEquipped(is, ply);
-    			if(baubleIS != null){
-    				((IBauble) baubleIS.getItem()).onUnequipped(baubleIS, ply);
-    				return baubleIS.copy();
-    			}
-    			break;
-    		}
-    	}
-        return is;
-    }
 
 	@Override
-	public void onPlayerBaubleRenderer(EntityPlayer player, Post event) {
-	}
+	public void onPlayerBaubleRenderer(EntityPlayer player, Post event) {}
 
 	@Override
 	public RenderLocation getRenderLocation() {
@@ -65,22 +43,7 @@ public class ItemRosarioAmulet extends ExtendableItem implements IBauble, IBaubl
 	}
 
 	@Override
-	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-		if(!player.worldObj.isRemote)
-			player.worldObj.playSoundAtEntity(player, "arcanemechina:equipBauble", 1F, 1.3F);
-	}
-
-	@Override
-	public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
-		if(!player.worldObj.isRemote)
-			player.worldObj.playSoundAtEntity(player, "arcanemechina:unequipBauble", 1F, 1.3F);
-	}
+	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {}
 
 	@Override
 	public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {

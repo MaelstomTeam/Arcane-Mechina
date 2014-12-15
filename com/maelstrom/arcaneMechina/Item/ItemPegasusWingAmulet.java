@@ -11,21 +11,21 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent.Specials.Post;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
 
 import com.maelstrom.arcaneMechina.client.model.ModelGhostWings;
 import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
 import com.maelstrom.arcaneMechina.reference.Reference;
-import com.maelstrom.snowcone.extendables.ExtendableItem;
 
-public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IBaubleRenderer {
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+public class ItemPegasusWingAmulet extends ItemBaubleEx implements IBaubleRenderer {
 	
 	private IIcon icon;
 	
@@ -51,34 +51,13 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
         return false;
     }
     
-    public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer ply)
-    {
-    	InventoryBaubles bauble = PlayerHandler.getPlayerBaubles(ply);
-    	for (int i = 0; i < bauble.getSizeInventory(); i++){
-    		if(bauble.isItemValidForSlot(i, is)){
-    			ItemStack baubleIS = bauble.getStackInSlot(i);
-    			if((baubleIS == null || ((IBauble) baubleIS.getItem()).canUnequip(baubleIS, ply)) && !w.isRemote){
-					bauble.setInventorySlotContents(i, is.copy());
-					if(!ply.capabilities.isCreativeMode)
-						ply.inventory.setInventorySlotContents(ply.inventory.currentItem, null);
-				}
-    			onEquipped(is, ply);
-    			if(baubleIS != null){
-    				((IBauble) baubleIS.getItem()).onUnequipped(baubleIS, ply);
-    				return baubleIS.copy();
-    			}
-    			break;
-    		}
-    	}
-        return is;
-    }
     
 	@Override
 	public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
 		if(player instanceof EntityPlayer){
 			EntityPlayer ply = (EntityPlayer) player;
 			if(!ply.capabilities.isCreativeMode)
-		        if (!ply.onGround && ply.fallDistance > 1f) {
+		        if (ply.fallDistance > 1f) {
 		        	if(ply.isSneaking()){
 		        		ply.motionY += .09999999D;
 		        		if(ply.motionY > -0.1D)
@@ -90,16 +69,17 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 
 	@Override
 	public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-		if(!player.worldObj.isRemote)
-			player.worldObj.playSoundAtEntity(player, "arcanemechina:equipBauble", 1F, 1.3F);
+		super.onEquipped(itemstack, player);
 		if(player instanceof EntityPlayer){
 			EntityPlayer ply = (EntityPlayer) player;
+			ply.jumpMovementFactor *= 2;
 			ply.capabilities.allowFlying = true;
 		}
 	}
 
 	@Override
 	public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+		super.onUnequipped(itemstack, player);
 		if(player instanceof EntityPlayer){
 			EntityPlayer ply = (EntityPlayer) player;
 			if(!ply.capabilities.isCreativeMode){
@@ -107,8 +87,6 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 				ply.capabilities.allowFlying = false;
 			}
 		}
-		if(!player.worldObj.isRemote)
-			player.worldObj.playSoundAtEntity(player, "arcanemechina:unequipBauble", 1F, 1.3F);
 		player.fallDistance = 0f;
 	}
 
@@ -125,8 +103,6 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 	@Override
 	public void onPlayerBaubleRenderer(EntityPlayer player, Post event) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("Minecraft:textures/blocks/stone.png"));
-//		System.out.println("Test");
-//		GL11.glScaled(0.1, 0.1, 0.1);
 		if(!player.isSneaking() && player.capabilities.isFlying){
 			GL11.glTranslated(0, 0, -.1);
 			GL11.glRotated(35, 1, 0, 0);
@@ -138,5 +114,17 @@ public class ItemPegasusWingAmulet extends ExtendableItem implements IBauble, IB
 	@Override
 	public RenderLocation getRenderLocation() {
 		return RenderLocation.BODY;
+	}
+	
+	@SubscribeEvent
+	public void onPlayerJump(LivingJumpEvent event) {
+		if(event.entityLiving instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) event.entityLiving;
+			ItemStack wing = PlayerHandler.getPlayerBaubles(player).getStackInSlot(0);
+
+			if(PlayerHandler.getPlayerBaubles(player).getStackInSlot(0) != null)
+				if(PlayerHandler.getPlayerBaubles(player).getStackInSlot(0).getItem() == this)
+				player.motionY += 0.1;
+		}
 	}
 }
