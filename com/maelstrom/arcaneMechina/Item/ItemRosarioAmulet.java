@@ -52,13 +52,11 @@ public class ItemRosarioAmulet extends ExtendableItem implements IBauble, IBaubl
 
 	@Override
 	public void onPlayerBaubleRenderer(EntityPlayer player, Post event) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public RenderLocation getRenderLocation() {
-		return RenderLocation.BODY;
+		return RenderLocation.FLOOR;
 	}
 
 	@Override

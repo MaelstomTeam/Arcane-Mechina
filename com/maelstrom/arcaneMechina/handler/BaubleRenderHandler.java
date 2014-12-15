@@ -24,18 +24,23 @@ public class BaubleRenderHandler {
 		for(int i = 0; i < baubleInv.getSizeInventory(); i++){
 			ItemStack is = baubleInv.getStackInSlot(i);
 			if(is != null && is.getItem() instanceof IBaubleRenderer){
-				GL11.glTranslated(0, 0, 0.1);
-				IBaubleRenderer.Helper.rotateWhileSneaking(ply);
 				
-				GL11.glPushMatrix();
-				GL11.glColor4f(1F, 1F, 1F, 1F);
-				
-				if(((IBaubleRenderer) is.getItem()).getRenderLocation().equals(IBaubleRenderer.RenderLocation.BODY)){
-					((IBaubleRenderer) is.getItem()).onPlayerBaubleRenderer(ply, event);
-				}else if(((IBaubleRenderer) is.getItem()).getRenderLocation().equals(IBaubleRenderer.RenderLocation.HEAD)){
-					((IBaubleRenderer) is.getItem()).onPlayerBaubleRenderer(ply, event);
-				}else if(((IBaubleRenderer) is.getItem()).getRenderLocation().equals(IBaubleRenderer.RenderLocation.FLOOR)){
-					((IBaubleRenderer) is.getItem()).onPlayerBaubleRenderer(ply, event);
+				if(!ply.isInvisible()){
+					GL11.glTranslated(0, 0, 0.1);
+					IBaubleRenderer.Helper.rotateWhileSneaking(ply);
+					
+					GL11.glPushMatrix();
+					GL11.glColor4f(1F, 1F, 1F, 1F);
+					
+					if(((IBaubleRenderer) is.getItem()).getRenderLocation().equals(IBaubleRenderer.RenderLocation.BODY)){
+						GL11.glRotated(event.renderer.modelBipedMain.bipedBody.rotateAngleY*90, 0, 1, 0);
+						((IBaubleRenderer) is.getItem()).onPlayerBaubleRenderer(ply, event);
+					}else if(((IBaubleRenderer) is.getItem()).getRenderLocation().equals(IBaubleRenderer.RenderLocation.HEAD)){
+						GL11.glRotated(event.renderer.modelBipedMain.bipedHead.rotateAngleY*90, 0, 1, 0);
+						((IBaubleRenderer) is.getItem()).onPlayerBaubleRenderer(ply, event);
+					}else if(((IBaubleRenderer) is.getItem()).getRenderLocation().equals(IBaubleRenderer.RenderLocation.FLOOR)){
+						((IBaubleRenderer) is.getItem()).onPlayerBaubleRenderer(ply, event);
+					}
 				}
 				
 				GL11.glPopMatrix();
