@@ -8,14 +8,24 @@ item.arcanemechina.pegasusWingAmulet.line1.lore=It's not 16.5 wing
 item.arcanemechina.pegasusWingAmulet.line2.lore=power but it'll do~
 item.arcanemechina.rosarioAmulet.name=Rosario Amulet
 item.arcanemechina.rosarioAmulet.line1.lore="Thank you for your contribution!!"
-item.arcanemechina.rosarioAmulet.line2.lore=~ Maelstrom Mod Team
+item.arcanemechina.rosarioAmulet.line2.lore=- Maelstrom Mod Team
+item.arcanemechina.rosarioAmulet.line3.lore=Doesn't come without consequences
+
+
+
+arcanemechina.gemOre.opal.name=Opal Ore
+arcanemechina.gemOre.amber.name=Amber Ore
+arcanemechina.gemOre.zircon.name=Zircon Ore
+arcanemechina.gemOre.tourmaline.name=Tourmaline Ore
+arcanemechina.gemOre.sapphire.name=Sapphire Ore
+arcanemechina.metalOre.silver.name=Silver Ore
+arcanemechina.metalOre.lead.name=Lead Ore
+arcanemechina.metalOre.tin.name=Tin Ore
+arcanemechina.metalOre.copper.name=Copper Ore
+arcanemechina.metalOre.zinc.name=Zinc Ore
 
 
 
 itemGroup.arcanemechina.name=Arcane Mechina
 
-arcanemechina.login.notice=thank you %$1s for using the alpha of Arcane Mechina
-
-
-
-nei.load=Load -
+arcanemechina.login.notice=thank you for using the alpha of Arcane Mechina

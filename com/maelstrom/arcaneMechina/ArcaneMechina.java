@@ -7,8 +7,8 @@ import com.maelstrom.arcaneMechina.handler.PlayerJoinWorldEvent;
 import com.maelstrom.arcaneMechina.init.InitBlock;
 import com.maelstrom.arcaneMechina.init.InitItem;
 import com.maelstrom.arcaneMechina.init.InitRecipe;
-import com.maelstrom.arcaneMechina.item.ItemPegasusWingAmulet;
 import com.maelstrom.arcaneMechina.reference.Reference;
+import com.maelstrom.arcaneMechina.world.WorldGen;
 import com.maelstrom.snowcone.proxy.IProxy;
 
 import cpw.mods.fml.common.Loader;
@@ -17,6 +17,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, useMetadata = Reference.MOD_METADATA)
 public class ArcaneMechina {
@@ -36,6 +37,7 @@ public class ArcaneMechina {
 		if(Loader.isModLoaded("after:NotEnoughItems")){
 			codechicken.nei.api.API.hideItem(new ItemStack(InitItem.wandOfDebug));
 		}
+		GameRegistry.registerWorldGenerator(new WorldGen(), 10);
 	}
 	
 	@Mod.EventHandler

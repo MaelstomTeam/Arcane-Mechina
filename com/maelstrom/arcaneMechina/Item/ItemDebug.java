@@ -3,12 +3,14 @@ package com.maelstrom.arcaneMechina.item;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.maelstrom.arcaneMechina.block.BlockOre;
 import com.maelstrom.arcaneMechina.handler.ArcaneMechinaNbt;
 import com.maelstrom.arcaneMechina.reference.Reference;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
@@ -31,6 +33,17 @@ public class ItemDebug extends ExtendableItem {
 			ply.addChatComponentMessage(new ChatComponentText("TileEntity: "+w.getTileEntity(x, y, z).toString().split("@")[0]));
     			return true;
     	}
+//    	else{
+//    		if(!w.isRemote)
+//    			ply.addChatComponentMessage(new ChatComponentText("working..."));
+//    		for(int i = 0; i < 256; i++)
+//        		for(int x2 = -8; x2 < 8; x2++)
+//            		for(int z2 = -8; z2 < 8; z2++)
+//		    			if(!(w.getBlock(x + x2, i, z + z2) instanceof BlockOre || w.getBlock(x + x2, i, z + z2) == Blocks.bedrock))
+//		    				w.setBlock(x + x2, i, z + z2, Blocks.air);
+//    		if(!w.isRemote)
+//    			ply.addChatComponentMessage(new ChatComponentText("Done!"));
+//    	}
         return false;
     }
     

@@ -25,11 +25,10 @@ public class PlayerJoinWorldEvent {
 	private void playerJoinWorld(EntityJoinWorldEvent event, EntityPlayer ply){
 		if(!event.world.isRemote)
 			ply.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal(Reference.MOD_ID + ".login.notice")));
-//		give helpers, modders and contributers a Rosario Amulet as thanx
-		for(String name : ContributorRenderHandler.modders)
-			if(ply.getDisplayName().equals(name) && !hasLoggedBefore(ply)){
-				ply.inventory.addItemStackToInventory(new ItemStack(InitItem.rosarioAmulet));
-			}
+//		give helpers, modders and community a Rosario Amulet as thanx
+		if(Reference.isContributor(ply.getDisplayName()) && !hasLoggedBefore(ply)){
+			ply.inventory.addItemStackToInventory(new ItemStack(InitItem.rosarioAmulet));
+		}
 	}
 
 	private boolean hasLoggedBefore(EntityPlayer ply) {

@@ -19,59 +19,51 @@ public class ContributorRenderHandler {
 	
 	public ResourceLocation array = Reference.getTextureResource("special/ArrayPlayer.png");
 	
-	public static String[] modders = { "hybolic", "Sporeknight", "thatphatkid" };
-	public boolean disableSelf = false;
-	private boolean lastState = false;
-	
-	
 	@SubscribeEvent
 	public void onPlayerRender(RenderPlayerEvent.Specials.Post event){
 		EntityPlayer ply = event.entityPlayer;
-			
-			//for loop for modders string list
-			for(String name : modders)
-				if(ply.getDisplayName().equals(name)){
+			if(Reference.isContributor(ply.getDisplayName())){
 
-					GL11.glPushMatrix();
-					if(!ply.isInvisible()){
-						//adds the sneaking rotation (THANK YOU BOTANIA!!)
-						IBaubleRenderer.Helper.rotateWhileSneaking(ply);
-						
-						//bind texture
-						Minecraft.getMinecraft().renderEngine.bindTexture(array);
-	
-						GL11.glRotated(event.renderer.modelBipedMain.bipedBody.rotateAngleY*90, 0, 1, 0);
-						
-						//test for armor and translate (vanilla items)
-						if(ply.inventory.armorInventory[2] != null)
-							GL11.glTranslated(0, 0, 0.05);
-	
-						GL11.glTranslated(0, .35, 0.15);
-						
-						//Change color per player
-						if( ply.getDisplayName().equals("hybolic"))
-							GL11.glColor3ub((byte)255, (byte)0, (byte)0);
-						else if( ply.getDisplayName().equals("Sporeknight"))
-							GL11.glColor3ub((byte)0, (byte)59, (byte)111);
-						else if( ply.getDisplayName().equals("thatphatkid"))
-							GL11.glColor3ub((byte)57, (byte)255, (byte)20);
-						
-						
-						GL11.glRotated(ply.ticksExisted + event.partialRenderTick, 0, 0, 1);
-						
-						Tessellator tessellator = Tessellator.instance;
-						
-						//draw the plane
-						tessellator.startDrawingQuads();
-						tessellator.addVertexWithUV(-.3, -.3, 0, 0, 0);
-						tessellator.addVertexWithUV(-.3, .3, 0, 0, 1);
-						tessellator.addVertexWithUV(.3, .3, 0, 1, 1);
-						tessellator.addVertexWithUV(.3, -.3, 0, 1, 0);
-						tessellator.setTranslation(0, 0, 0);
-						tessellator.draw();
-						GL11.glPopMatrix();
-					}
-			}
+				GL11.glPushMatrix();
+				if(!ply.isInvisible()){
+					//adds the sneaking rotation (THANK YOU BOTANIA!!)
+					IBaubleRenderer.Helper.rotateWhileSneaking(ply);
+					
+					//bind texture
+					Minecraft.getMinecraft().renderEngine.bindTexture(array);
+
+					GL11.glRotated(event.renderer.modelBipedMain.bipedBody.rotateAngleY*90, 0, 1, 0);
+					
+					//test for armor and translate (vanilla items)
+					if(ply.inventory.armorInventory[2] != null)
+						GL11.glTranslated(0, 0, 0.05);
+
+					GL11.glTranslated(0, .35, 0.15);
+					
+					//Change color per player
+					if( ply.getDisplayName().equals("hybolic"))
+						GL11.glColor3ub((byte)255, (byte)0, (byte)0);
+					else if( ply.getDisplayName().equals("Sporeknight"))
+						GL11.glColor3ub((byte)0, (byte)59, (byte)111);
+					else if( ply.getDisplayName().equals("thatphatkid"))
+						GL11.glColor3ub((byte)57, (byte)255, (byte)20);
+					
+					
+					GL11.glRotated(ply.ticksExisted + event.partialRenderTick, 0, 0, 1);
+					
+					Tessellator tessellator = Tessellator.instance;
+					
+					//draw the plane
+					tessellator.startDrawingQuads();
+					tessellator.addVertexWithUV(-.3, -.3, 0, 0, 0);
+					tessellator.addVertexWithUV(-.3, .3, 0, 0, 1);
+					tessellator.addVertexWithUV(.3, .3, 0, 1, 1);
+					tessellator.addVertexWithUV(.3, -.3, 0, 1, 0);
+					tessellator.setTranslation(0, 0, 0);
+					tessellator.draw();
+					GL11.glPopMatrix();
+				}
+		}
 	}
 	
 	private float getRGBValue(int value){
