@@ -61,7 +61,7 @@ public class ItemRosarioAmulet extends ItemBaubleEx implements IBaubleRenderer {
 	public void onWornTick(ItemStack is, EntityLivingBase player) {
 		if(player instanceof EntityPlayer){
 			EntityPlayer ply = (EntityPlayer) player;
-			if(!Reference.isContributor(ply.getDisplayName()));
+			if(!Reference.isContributor(ply.getDisplayName()))
 		        if (player.worldObj.isDaytime() && !player.worldObj.isRemote){
 		            float f = player.getBrightness(1.0F);
 		            if (f > 0.5F && player.worldObj.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && player.worldObj.canBlockSeeTheSky(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ))){
