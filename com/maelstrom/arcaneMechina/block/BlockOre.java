@@ -41,7 +41,7 @@ public class BlockOre extends Block {
 	public void registerBlockIcons(IIconRegister reg){
 		icon = new IIcon[nameList.length];
 		for(int i = 0; i < nameList.length; i++)
-			icon[i] = reg.registerIcon(Reference.MOD_ID+":"+"ore_"+nameList[i]);
+			icon[i] = reg.registerIcon(Reference.MOD_ID+":"+capitalize(nameList[i])+"_Ore");
 	}
 	
 	@Override
@@ -49,6 +49,10 @@ public class BlockOre extends Block {
 		if(meta > nameList.length)
 			meta = 0;
 		return icon[meta];
+	}
+	
+	public String capitalize(String s){
+		return s.substring(0, 1).toUpperCase() + s.substring(1);
 	}
 	
 	public void getSubBlocks(Item item, CreativeTabs tab, List list){

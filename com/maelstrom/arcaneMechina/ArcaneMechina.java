@@ -34,7 +34,7 @@ public class ArcaneMechina {
 	@Mod.EventHandler
     public void postInit(FMLInitializationEvent event){
 		InitRecipe.init();
-		if(Loader.isModLoaded("after:NotEnoughItems")){
+		if(Loader.isModLoaded("NotEnoughItems")){
 			codechicken.nei.api.API.hideItem(new ItemStack(InitItem.wandOfDebug));
 		}
 		GameRegistry.registerWorldGenerator(new WorldGen(), 10);
