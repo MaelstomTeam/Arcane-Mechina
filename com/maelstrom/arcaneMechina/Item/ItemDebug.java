@@ -29,9 +29,11 @@ public class ItemDebug extends ExtendableItem {
     }
     
     public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat){
-    	if(!w.isRemote && w.getTileEntity(x, y, z) != null){
+    	if(!w.isRemote)
+    	if(w.getTileEntity(x, y, z) != null && !ply.isSneaking()){
 			ply.addChatComponentMessage(new ChatComponentText("TileEntity: "+w.getTileEntity(x, y, z).toString().split("@")[0]));
-    			return true;
+    	}else{
+    		ply.addChatComponentMessage(new ChatComponentText(w.getBlock(x, y, z).getUnlocalizedName()));
     	}
 //    	else{
 //    		if(!w.isRemote)

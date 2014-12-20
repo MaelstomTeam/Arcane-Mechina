@@ -11,18 +11,29 @@ item.arcanemechina.rosarioAmulet.line1.lore="Thank you for your contribution!!"
 item.arcanemechina.rosarioAmulet.line2.lore=- Maelstrom Mod Team
 item.arcanemechina.rosarioAmulet.line3.lore=Doesn't come without consequences
 
+item.arcanemechina.gem_opal.name=Opal
+item.arcanemechina.gem_amber.name=Amber
+item.arcanemechina.gem_zircon.name=Zircon Crystal
+item.arcanemechina.gem_tourmaline.name=Tourmaline Crystal
+item.arcanemechina.gem_sapphire.name=Sapphire
+item.arcanemechina.ingot_silver.name=Silver Ingot
+item.arcanemechina.ingot_lead.name=Lead Ingot
+item.arcanemechina.ingot_tin.name=Tin Ingot
+item.arcanemechina.ingot_copper.name=Copper Ingot
+item.arcanemechina.ingot_zinc.name=Zinc Ingot
 
 
-arcanemechina.gemOre.opal.name=Opal Ore
-arcanemechina.gemOre.amber.name=Amber Ore
-arcanemechina.gemOre.zircon.name=Zircon Ore
-arcanemechina.gemOre.tourmaline.name=Tourmaline Ore
-arcanemechina.gemOre.sapphire.name=Sapphire Ore
-arcanemechina.metalOre.silver.name=Silver Ore
-arcanemechina.metalOre.lead.name=Lead Ore
-arcanemechina.metalOre.tin.name=Tin Ore
-arcanemechina.metalOre.copper.name=Copper Ore
-arcanemechina.metalOre.zinc.name=Zinc Ore
+
+tile.arcanemechina.gemOre.opal.name=Opal Ore
+tile.arcanemechina.gemOre.amber.name=Amber Ore
+tile.arcanemechina.gemOre.zircon.name=Zircon Ore
+tile.arcanemechina.gemOre.tourmaline.name=Tourmaline Ore
+tile.arcanemechina.gemOre.sapphire.name=Sapphire Ore
+tile.arcanemechina.metalOre.silver.name=Silver Ore
+tile.arcanemechina.metalOre.lead.name=Lead Ore
+tile.arcanemechina.metalOre.tin.name=Tin Ore
+tile.arcanemechina.metalOre.copper.name=Copper Ore
+tile.arcanemechina.metalOre.zinc.name=Zinc Ore
 
 
 

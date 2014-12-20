@@ -22,6 +22,11 @@ public class Reference {
 	
 	public static final CreativeTabs MOD_TAB = new CreativeTabArcaneMechina(MOD_ID, new ItemStack(InitItem.wandOfDebug));
 	
+
+	public static final String[] gemStones = { "opal", "amber", "zircon", "tourmaline", "sapphire" };
+	public static final String[] preciousMetals = {"silver", "lead", "tin", "copper", "zinc"};
+	
+	
 	//Temporary values
 	public static final OreGenBlock[] worldGenOverworld = {
 		new OreGenBlock(3, 1, 0, 128, InitBlock.gemOre, 0),
@@ -44,7 +49,7 @@ public class Reference {
 	public static String[] thuamcraft = {"Azanor"};
 	public static String[] botania = {"Vazkii"};
 	public static String[] TeamCOFH = {"KingLemmingCoFH", "Cynycal", "Zeldo"};
-	public static String[] artists = {"Drullkus"};
+	public static String[] artists = {"Drullkus"};//if i got any infomation from @Sporeknight it would be helpful :P
 	
 	public static boolean isContributor(String s){
 		for(String name : modders)
@@ -74,12 +79,15 @@ public class Reference {
 	public static ResourceLocation getResource(String id){
 		return new ResourceLocation(MOD_ID + ":" + id);
 	}
+	
 	public static ResourceLocation getSoundResource(String id){
 		return getResource("sounds/" + id);
 	}
+	
 	public static ResourceLocation getTextureResource(String id){
 		return getResource("textures/" + id);
 	}
+	
 	public static ResourceLocation getGuiTextureResource(String id){
 		return getResource("textures/gui/" + id);
 	}

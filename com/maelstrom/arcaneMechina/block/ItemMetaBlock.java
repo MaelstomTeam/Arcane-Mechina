@@ -26,7 +26,7 @@ public class ItemMetaBlock extends ItemBlockWithMetadata {
 		int meta = is.getItemDamage();
 		if(meta > nameList.length)
 			meta = 0;
-		return Reference.MOD_ID + "." + group + "." + nameList[meta];
+		return "tile." + Reference.MOD_ID + "." + group + "." + nameList[meta];
 	}
 	
 	

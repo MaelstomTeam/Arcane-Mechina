@@ -15,8 +15,6 @@ import com.maelstrom.arcaneMechina.reference.Reference;
 
 //make class meta base
 public class BlockOre extends Block {
-	public static final String[] gemStones = { "opal", "amber", "zircon", "tourmaline", "sapphire" };
-	public static final String[] preciousMetals = {"silver", "lead", "tin", "copper", "zinc"};
 	public String[] nameList;
 	public String group;
 	private IIcon[] icon;
