@@ -8,6 +8,7 @@ import com.maelstrom.arcaneMechina.init.InitBlock;
 import com.maelstrom.arcaneMechina.init.InitItem;
 import com.maelstrom.arcaneMechina.init.InitRecipe;
 import com.maelstrom.arcaneMechina.reference.Reference;
+import com.maelstrom.arcaneMechina.tileentity.TileEntityFurnace;
 import com.maelstrom.arcaneMechina.world.WorldGen;
 import com.maelstrom.snowcone.proxy.IProxy;
 
@@ -38,6 +39,7 @@ public class ArcaneMechina {
 			codechicken.nei.api.API.hideItem(new ItemStack(InitItem.wandOfDebug));
 		}
 		GameRegistry.registerWorldGenerator(new WorldGen(), 10);
+		GameRegistry.registerTileEntity(TileEntityFurnace.class, Reference.MOD_ID+".TileEntityFurnace");
 	}
 	
 	@Mod.EventHandler

@@ -122,9 +122,8 @@ public class ModelGhostWings extends ModelBase {
 			EntityPlayer ply = (EntityPlayer) entity;
 			
 			GL11.glPushMatrix();
-			
+			GL11.glDepthMask(true); 
 			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 			
@@ -172,6 +171,7 @@ public class ModelGhostWings extends ModelBase {
 				this.setRotateAngle(bone5, -0.3490658503988659F, 0.0F, 0.0F);
 				this.setRotateAngle(bone6, -0.5235987755982988F, 0.0F, 0.0F);
 			}
+			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glPopMatrix();
 		}
 	}
