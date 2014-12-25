@@ -24,7 +24,7 @@ public class ItemMetadataBased extends ExtendableItem {
     public void registerIcons(IIconRegister iicon){
 		icons = new IIcon[itemNames.length];
 		for(int i = 0; i < itemNames.length; i++)
-			icons[i] = iicon.registerIcon(Reference.MOD_ID+":"+getUnlocalizedName()+"_"+itemNames[i]);
+			icons[i] = iicon.registerIcon(Reference.MOD_ID+":"+getUnlocalizedName().substring(19)+"_"+itemNames[i]);
 	}
 	
 	@Override

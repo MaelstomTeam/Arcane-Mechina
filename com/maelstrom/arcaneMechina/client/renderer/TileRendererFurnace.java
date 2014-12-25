@@ -22,13 +22,10 @@ public class TileRendererFurnace extends TileEntitySpecialRenderer {
 		
 		GL11.glTranslated(x, y, z);
 		
-		//fix lighting issue
 		GL11.glDisable(GL11.GL_LIGHTING);
 
-//		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glColor4f(1F, 1F, 1F, 1F);
-		
 		switch(tile.getWorldObj().getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord)){
 			case 0: { renderArray(Tessellator.instance, tile, x, y, z, ticks); break; }
 			case 1: { renderBlock(Tessellator.instance, tile, x, y, z, ticks); break; }
