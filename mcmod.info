@@ -1,0 +1,22 @@
+[
+	{
+		"modid": "snowconeUtil",
+		"description": "Snowcone Util library",
+		"mcversion": "${mcversion}",
+		"logoFile": "assets/snowconeUtil/textures/logo.png",
+		"authors": [
+			"hybolic",
+			"SporNightReloaded"
+		]
+	},
+	{
+		"modid": "arcanemechina",
+		"description": "Arcane Mechina",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"authors": [
+			"hybolic",
+			"SporNightReloaded"
+		]
+	}
+]

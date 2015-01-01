@@ -1,0 +1,77 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+repositories {
+    maven {
+        name = "chickenbones"
+        url = "http://chickenbones.net/maven/"
+    }
+}
+
+apply plugin: 'forge'
+ext.configFile =  file "build.properties"
+
+configFile.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.version}.${config.build_number}"
+group= "com.maelstrom.arcaneMechina" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "arcanemechina"
+
+minecraft {
+    version = config.mc_version + "-" + config.forge_version
+	replace "@VERSION@", "${config.version}.${System.getenv("build_number") ?: 0}"
+    version = "1.7.10-10.13.2.1230"
+    runDir = "eclipse"
+}
+
+dependencies {
+	compile files(
+            "/mods/1.7.10/Baubles-deobf-1.7.10-1.0.1.8.jar",
+			"/eclipse/mods/CodeChickenCore-1.7.10-1.0.2.9-universal (1).jar",
+			"/eclipse/mods/NotEnoughItems-1.7.10-1.0.2.15-universal (1).jar"
+			
+    )
+}
+task("incrementBuildNumber")
+{
+    doFirst {
+        config.build_number = (config.build_number.toString().toInteger()) + 1
+        configFile.withWriter {
+            config.toProperties().store(it, "")
+        }
+    }
+}
+
+processResources
+{
+    dependsOn "incrementBuildNumber"
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+	
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+	
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
