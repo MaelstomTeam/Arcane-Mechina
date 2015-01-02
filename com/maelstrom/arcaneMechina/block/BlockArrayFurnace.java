@@ -12,7 +12,11 @@ import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
@@ -81,5 +85,16 @@ public class BlockArrayFurnace extends Block implements ITileEntityProvider {
 	public TileEntity createNewTileEntity(World w, int meta) {
 		return new TileEntityFurnace();
 	}
-
+	
+    public void breakBlock(World w, int x, int y, int z, Block b, int m){
+    	if(m == 0){
+    		//drop items
+    		w.setBlock(x, y+1, z, Blocks.air);
+    	}
+    	else if(m == 1){
+    		//drop items
+    		w.setBlock(x, y-1, z, Blocks.air);
+    	}
+        super.breakBlock(w, x, y, z, b, m);
+    }
 }

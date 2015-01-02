@@ -3,6 +3,7 @@ package com.maelstrom.arcaneMechina.init;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
+import com.maelstrom.arcaneMechina.item.ItemChalk;
 import com.maelstrom.arcaneMechina.item.ItemDebug;
 import com.maelstrom.arcaneMechina.item.ItemMetadataBased;
 import com.maelstrom.arcaneMechina.item.ItemPegasusWingAmulet;
@@ -20,15 +21,16 @@ public class InitItem {
 	public static Item rosarioAmulet = new ItemRosarioAmulet("rosarioAmulet");
 	public static Item ingot = new ItemMetadataBased("ingot", Reference.preciousMetals);
 	public static Item gem = new ItemMetadataBased("gem", Reference.gemStones);
+	public static Item chalk = new ItemChalk("chalk");
 	
 	public static void init(){
 		registerItem(ScrewDriver);
 		GameRegistry.registerItem(wandOfDebug, wandOfDebug.getUnlocalizedName(), Reference.MOD_ID);
-//		registerItem(wandOfDebug);
 		registerItem(pegasusWingAmulet);
 		registerItem(rosarioAmulet);
 		registerItem(ingot);
 		registerItem(gem);
+		registerItem(chalk);
 	}
 	
 	private static void registerItem(Item item){

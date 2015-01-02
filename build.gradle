@@ -37,7 +37,7 @@ archivesBaseName = "arcanemechina"
 
 minecraft {
     version = config.mc_version + "-" + config.forge_version
-	replace "@VERSION@", "${config.version}.${System.getenv("build_number") ?: 0}"
+	replace "@VERSION@", "${version}"
     version = "1.7.10-10.13.2.1230"
     runDir = "eclipse"
 }

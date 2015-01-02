@@ -16,11 +16,15 @@ item.arcanemechina.gem_amber.name=Amber
 item.arcanemechina.gem_zircon.name=Zircon Crystal
 item.arcanemechina.gem_tourmaline.name=Tourmaline Crystal
 item.arcanemechina.gem_sapphire.name=Sapphire
+item.arcanemechina.gem_chalk.name=Chalk
 item.arcanemechina.ingot_silver.name=Silver Ingot
 item.arcanemechina.ingot_lead.name=Lead Ingot
 item.arcanemechina.ingot_tin.name=Tin Ingot
 item.arcanemechina.ingot_copper.name=Copper Ingot
 item.arcanemechina.ingot_zinc.name=Zinc Ingot
+
+
+item.arcanemechina.chalk.name=Glyphic Chalk
 
 
 
@@ -29,6 +33,8 @@ tile.arcanemechina.gemOre.amber.name=Amber Ore
 tile.arcanemechina.gemOre.zircon.name=Zircon Ore
 tile.arcanemechina.gemOre.tourmaline.name=Tourmaline Ore
 tile.arcanemechina.gemOre.sapphire.name=Sapphire Ore
+tile.arcanemechina.gemOre.chalk.name=Chalk Ore
+
 tile.arcanemechina.metalOre.silver.name=Silver Ore
 tile.arcanemechina.metalOre.lead.name=Lead Ore
 tile.arcanemechina.metalOre.tin.name=Tin Ore
@@ -36,6 +42,8 @@ tile.arcanemechina.metalOre.copper.name=Copper Ore
 tile.arcanemechina.metalOre.zinc.name=Zinc Ore
 
 
+tile.arcanemechina.arrayFurnace.name=Array Furnace
+tile.arcanemechina.glyph.name=Glyph
 
 itemGroup.arcanemechina.name=Arcane Mechina
 
