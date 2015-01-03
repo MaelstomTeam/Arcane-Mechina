@@ -2,7 +2,7 @@ package com.maelstrom.arcaneMechina.client.model;
 
 import org.lwjgl.opengl.GL11;
 
-import com.maelstrom.arcaneMechina.reference.Reference;
+import com.maelstrom.arcaneMechina.common.reference.Reference;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;

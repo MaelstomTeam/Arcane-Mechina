@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.maelstrom.arcaneMechina.reference.Texture;
+import com.maelstrom.arcaneMechina.common.reference.Texture;
 
 public class TileRendererFurnace extends TileEntitySpecialRenderer {
 

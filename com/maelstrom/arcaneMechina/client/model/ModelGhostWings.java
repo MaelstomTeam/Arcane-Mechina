@@ -13,8 +13,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import com.maelstrom.arcaneMechina.interfaces.IBaubleRenderer;
-import com.maelstrom.arcaneMechina.reference.Reference;
+import com.maelstrom.arcaneMechina.common.interfaces.IBaubleRenderer;
+import com.maelstrom.arcaneMechina.common.reference.Reference;
 
 /**
  * Wings - hybolic Created using Tabula 4.0.2

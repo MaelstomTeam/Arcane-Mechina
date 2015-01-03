@@ -3,13 +3,13 @@ package com.maelstrom.arcaneMechina;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.maelstrom.arcaneMechina.handler.PlayerJoinWorldEvent;
-import com.maelstrom.arcaneMechina.init.InitBlock;
-import com.maelstrom.arcaneMechina.init.InitItem;
-import com.maelstrom.arcaneMechina.init.InitRecipe;
-import com.maelstrom.arcaneMechina.reference.Reference;
-import com.maelstrom.arcaneMechina.tileentity.TileEntityFurnace;
-import com.maelstrom.arcaneMechina.world.WorldGen;
+import com.maelstrom.arcaneMechina.common.handler.PlayerJoinWorldEvent;
+import com.maelstrom.arcaneMechina.common.init.InitBlock;
+import com.maelstrom.arcaneMechina.common.init.InitItem;
+import com.maelstrom.arcaneMechina.common.init.InitRecipe;
+import com.maelstrom.arcaneMechina.common.reference.Reference;
+import com.maelstrom.arcaneMechina.common.tileentity.TileEntityFurnace;
+import com.maelstrom.arcaneMechina.common.world.WorldGen;
 import com.maelstrom.snowcone.proxy.IProxy;
 
 import cpw.mods.fml.common.Loader;
