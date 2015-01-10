@@ -8,7 +8,15 @@ The Maelstrom Team's first mod. It is based on the integration of Magic and Tech
 |0.0.0.8 | first alpha release | yes
 |0.0.0.9-tv | test version | no
 
-Refer to these for licenseing
+Members of Maelstrom
+{
+	Hybolic
+	SporNightReloaded
+		(The names Spor or SNR are also used)
+	Brizzle
+}
+
+Refer to these for licensing
 
 | License | site |
 |------|-----|
