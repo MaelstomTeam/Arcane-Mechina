@@ -38,11 +38,6 @@ public class BlockArrayFurnace extends Block implements ITileEntityProvider {
 	public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer ply, int face, float xf, float yf, float zf) {
 		return true;
 	}
-
-
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
 	
     public void randomDisplayTick(World w, int x, int y, int z, Random rand)
     {
@@ -74,6 +69,10 @@ public class BlockArrayFurnace extends Block implements ITileEntityProvider {
 
 	public int getRenderType(){
 		return -1;
+	}
+
+	public boolean renderAsNormalBlock() {
+		return false;
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -15,6 +15,9 @@ import net.minecraft.world.World;
 import com.maelstrom.arcaneMechina.api.power.IMagicAcceptor;
 import com.maelstrom.arcaneMechina.common.init.InitBlock;
 import com.maelstrom.arcaneMechina.common.reference.Reference;
+import com.maelstrom.arcaneMechina.common.tileentity.TileEntityCraftingMagiTech;
+import com.maelstrom.arcaneMechina.common.tileentity.TileEntityCraftingMagic;
+import com.maelstrom.arcaneMechina.common.tileentity.TileEntityCraftingTech;
 import com.maelstrom.snowcone.extendables.ExtendableBlock;
 
 public class BlockCraftingTable extends ExtendableBlock implements ITileEntityProvider {
@@ -68,14 +71,14 @@ public class BlockCraftingTable extends ExtendableBlock implements ITileEntityPr
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-//		if (this.equals(InitBlock.cTable))
-//			switch(meta){
-//				case 0: return TileEntityCraftingMagic();
-//				case 1: return TileEntityCraftingTech();
-//				default : return null;
-//			}
-//		else if (this.equals(InitBlock.magiTechTable))
-//			return TileEntityCraftingMagiTech();
+		if (this.equals(InitBlock.cTable))
+			switch(meta){
+				case 0: return new TileEntityCraftingMagic();
+				case 1: return new TileEntityCraftingTech();
+				default : return null;
+			}
+		else if (this.equals(InitBlock.magiTechTable))
+			return new TileEntityCraftingMagiTech();
 		return null;
 	}
 

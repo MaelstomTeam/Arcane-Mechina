@@ -21,6 +21,11 @@ public class InitItem {
 	public static Item rosarioAmulet = new ItemRosarioAmulet("rosarioAmulet");
 	public static Item ingot = new ItemMetadataBased("ingot", Reference.preciousMetals);
 	public static Item gem = new ItemMetadataBased("gem", Reference.gemStones);
+	public static Item chalkfire = new ItemChalk("chalkfire");
+	public static Item chalkice = new ItemChalk("chalkice");
+	public static Item chalkenergy = new ItemChalk("chalkenergy");
+	public static Item chalkearth = new ItemChalk("chalkearth");
+	public static Item chalkair = new ItemChalk("chalkair");
 	public static Item chalk = new ItemChalk("chalk");
 	
 	public static void init(){
@@ -30,7 +35,14 @@ public class InitItem {
 		registerItem(rosarioAmulet);
 		registerItem(ingot);
 		registerItem(gem);
+		
 		registerItem(chalk);
+		
+		registerItem(chalkfire);
+		registerItem(chalkice);
+		registerItem(chalkearth);
+		registerItem(chalkair);
+		registerItem(chalkenergy);
 	}
 	
 	private static void registerItem(Item item){

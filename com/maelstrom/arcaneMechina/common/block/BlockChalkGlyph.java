@@ -4,10 +4,22 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
+import com.maelstrom.arcaneMechina.common.init.InitBlock;
+import com.maelstrom.arcaneMechina.common.init.InitItem;
 import com.maelstrom.arcaneMechina.common.reference.Reference;
+import com.maelstrom.arcaneMechina.common.world.Structure;
+import com.maelstrom.arcaneMechina.common.world.StructureRegistery;
+import com.maelstrom.arcaneMechina.common.world.structure.Layer;
+import com.maelstrom.arcaneMechina.common.world.structure.Row;
 import com.maelstrom.snowcone.extendables.ExtendableBlock;
 
 import cpw.mods.fml.relauncher.Side;
@@ -20,6 +32,32 @@ public class BlockChalkGlyph extends ExtendableBlock {
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.03125F, 1.0F);
         this.setTickRandomly(true);
         this.bounds(0);
+	}
+	
+	public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer ply, int face, float xf, float yf, float zf) {
+		if(w.isRemote){
+			System.out.println("StructuresRegistered");
+			for(Structure s : StructureRegistery.getList())
+				s.printStructure();
+		}
+		if(this == InitBlock.glyphblank){
+			if(ply.inventory.getCurrentItem() != null && ply.inventory.getCurrentItem().isItemEqual(new ItemStack(InitItem.gem, 1, 3))){
+				Structure s = StructureRegistery.getStructuresByName("SmallArrayActivator")[0];
+				if(!s.checkStructure(w, x, y, z, ForgeDirection.UNKNOWN, true))
+					return false;
+				w.setBlock(x,y,z,InitBlock.glyphCenter);
+				ply.getCurrentEquippedItem().stackSize = ply.getCurrentEquippedItem().stackSize - 1;
+				return true;
+			}
+		}
+		else if(this == InitBlock.glyphCenter){
+			Structure s = StructureRegistery.getStructuresByName("arrayCompression")[0];
+			if(!s.checkStructure(w, x, y, z, ForgeDirection.NORTH, false))
+				return false;
+			return true;
+
+		}
+		return false;
 	}
 	
     public int quantityDropped(Random r) {

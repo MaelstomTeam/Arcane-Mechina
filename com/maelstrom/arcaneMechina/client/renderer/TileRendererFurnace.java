@@ -23,14 +23,21 @@ public class TileRendererFurnace extends TileEntitySpecialRenderer {
 		GL11.glTranslated(x, y, z);
 		
 		GL11.glDisable(GL11.GL_LIGHTING);
-
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		 
+//		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10497.0F); 
+//		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10497.0F); 
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+//		GL11.glDepthMask(false);
 		GL11.glColor4f(1F, 1F, 1F, 1F);
 		switch(tile.getWorldObj().getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord)){
 			case 0: { renderArray(Tessellator.instance, tile, x, y, z, ticks); break; }
 			case 1: { renderBlock(Tessellator.instance, tile, x, y, z, ticks); break; }
 		}
+//		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glPopMatrix();
 	}
 	

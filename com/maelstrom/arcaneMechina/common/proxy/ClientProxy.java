@@ -1,5 +1,6 @@
 package com.maelstrom.arcaneMechina.common.proxy;
 
+import net.minecraft.init.Blocks;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -12,7 +13,6 @@ import com.maelstrom.arcaneMechina.common.init.InitItem;
 import com.maelstrom.arcaneMechina.common.tileentity.TileEntityFurnace;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ClientProxy extends CommonProxy {
 	
