@@ -15,6 +15,7 @@ public class ItemList {
 	public static final ItemStack ore_Zircon = new ItemStack(InitBlock.gemOre, 1, 2);
 	public static final ItemStack ore_Tourmaline = new ItemStack(InitBlock.gemOre, 1, 3);
 	public static final ItemStack ore_Saphire = new ItemStack(InitBlock.gemOre, 1, 4);
+	public static final ItemStack ore_Dust = new ItemStack(InitBlock.gemOre, 1, 5);
 
 	public static final ItemStack ore_Silver = new ItemStack(InitBlock.metalOre, 1, 0);
 	public static final ItemStack ore_Lead = new ItemStack(InitBlock.metalOre, 1, 1);

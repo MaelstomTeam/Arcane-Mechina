@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.maelstrom.arcaneMechina.common.init.InitBlock;
-import com.maelstrom.arcaneMechina.common.world.custom.NoEffect;
+import com.maelstrom.arcaneMechina.common.world.custom.EffectNone;
 import com.maelstrom.arcaneMechina.common.world.structure.Layer;
 import com.maelstrom.arcaneMechina.common.world.structure.Row;
 
@@ -14,6 +14,14 @@ public class Structure {
 	private Layer[] layers;
 	private String name;
 	private Effect effect;
+	private boolean setAir = false;
+	public Structure(String n, Layer[] l, Effect e, boolean air){
+		name = n;
+		layers = l;
+		effect = e;
+		setAir = air;
+	}
+	
 	public Structure(String n, Layer[] l, Effect e){
 		name = n;
 		layers = l;
@@ -23,7 +31,7 @@ public class Structure {
 	public Structure(String n, Layer[] l){
 		name = n;
 		layers = l;
-		effect = new NoEffect();
+		effect = new EffectNone();
 	}
 	
 	
@@ -74,6 +82,50 @@ public class Structure {
 			return false;
 		else
 			effect.effect(w, x, y, z);
+		if(setAir)
+			for(int y2 = 0; y2 < layers.length; y2++){
+				Layer l = layers[y2];
+				for(int i2 = 0; i2 < l.getRows().length; i2++){
+					Row r = l.getRows()[i2];
+					int center = (r.getBlocks().length / 2);
+					for(int i = 0; i < r.getBlocks().length; i++)
+						if(r.getBlocks()[i] != Blocks.air)
+							switch(direction){
+								case NORTH : { 
+									if(w.getBlock(x+(i-center), y, z+(i2-center)) == r.getBlocks()[i])
+										w.setBlock(x+(i-center), y, z+(i2-center), Blocks.air);
+									break;
+									}
+								case SOUTH : { 
+									if(w.getBlock(x-(i-center), y, z-(i2-center)) == r.getBlocks()[i])
+										w.setBlock(x-(i-center), y, z-(i2-center), Blocks.air);
+									break;
+									}
+								case EAST : { 
+									if(w.getBlock(x-(i2-center), y, z+(i-center)) == r.getBlocks()[i])
+										w.setBlock(x-(i2-center), y, z+(i-center), Blocks.air);
+									break;
+									}
+								case WEST : { 
+									if(w.getBlock(x+(i2-center), y, z-(i-center)) == r.getBlocks()[i])
+										w.setBlock(x+(i2-center), y, z-(i-center), Blocks.air);
+									break;
+									}
+								case UNKNOWN :{
+									if(w.getBlock(x+(i-center), y, z+(i2-center)) == r.getBlocks()[i])
+										w.setBlock(x+(i-center), y, z+(i2-center), Blocks.air);
+									else if(w.getBlock(x-(i-center), y, z-(i2-center)) == r.getBlocks()[i])
+											w.setBlock(x-(i-center), y, z-(i2-center), Blocks.air);
+									else if(w.getBlock(x-(i2-center), y, z+(i-center)) == r.getBlocks()[i])
+										w.setBlock(x-(i2-center), y, z+(i-center), Blocks.air);
+									else if(w.getBlock(x+(i2-center), y, z-(i-center)) == r.getBlocks()[i])
+										w.setBlock(x+(i2-center), y, z-(i-center), Blocks.air);
+									break; //return
+								}
+								default : { break; }
+							}
+				}
+			}
 		return true;
 	}
 

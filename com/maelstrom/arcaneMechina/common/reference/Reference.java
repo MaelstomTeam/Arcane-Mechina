@@ -14,7 +14,7 @@ public class Reference {
 	public static final String MOD_ID = "arcanemechina";
 	public static final String MOD_NAME = "Arcane Mechina";
 	public static final String MOD_VERSION = "@VERSION@";
-	public static final String MOD_DEPENDENCIES = "after:snowconeUtil@[1.0];after:NotEnoughItems;after:Baubles;";
+	public static final String MOD_DEPENDENCIES = "required-after:snowconeUtil@[1.0];required-after:Baubles;after:Thaumcraft";
 	public static final String PROXY_CLIENT = "com.maelstrom.arcaneMechina.common.proxy.ClientProxy";
 	public static final String PROXY_SERVER = "com.maelstrom.arcaneMechina.common.proxy.ServerProxy";
 	public static final String MODTAB_NAME = "arcaneMechina.tab";
