@@ -20,24 +20,22 @@ import com.maelstrom.snowcone.Util;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
 
 public class ItemChalk extends ExtendableItem {
-
+	public int i = 0;
 	public ItemChalk(String name) {
 		super(name, Reference.MOD_ID);
 		this.setMaxDamage(64);
+		this.setMaxStackSize(1);
 	}
+	
     public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat){
     	//test
     	if(ply.isSneaking()){
-			Structure s = StructureRegistery.getStructuresByName("SmallArrayActivator")[0];
+			Structure s = StructureRegistery.getStructuresByName("AM")[i];
 			Layer l = s.getLayers()[0];
 			for(int i2 = 0; i2 < l.getRows().length; i2++){
 				int center = (l.getRows()[i2].getBlocks().length / 2);
 				for(int i = 0; i < l.getRows()[i2].getBlocks().length; i++){
 					w.setBlock(x-(i - center), y+1, z+(i2 - center), l.getRows()[i2].getBlocks()[i]);
-					//North w.setBlock(x+(i - center), y+1, z+(i2 - center), l.getRows()[i2].getBlocks()[i]);
-					//North w.setBlock(x-(i - center), y+1, z+(i2 - center), l.getRows()[i2].getBlocks()[i]);
-					//East  w.setBlock(x+(i2 - center), y+1, z+(i - center), l.getRows()[i2].getBlocks()[i]);
-					//West w.setBlock(x+(i2 - center), y+1, z-(i - center), l.getRows()[i2].getBlocks()[i]);
 				}
 			}
     	}
@@ -107,5 +105,17 @@ public class ItemChalk extends ExtendableItem {
     		}
     	}
     	return false;
+    }
+    public boolean justRan = false;
+    public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer ply) {
+    	if(!justRan)
+	    	if(this == InitItem.chalk){
+		    	i++;
+		    	if(i > StructureRegistery.getStructuresByName("AM").length - 1)
+		    		i = 0;
+		    	ply.addChatMessage(new ChatComponentText(i + ""));
+	    	}
+    	justRan = !justRan;
+        return is;
     }
 }

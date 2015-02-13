@@ -35,14 +35,9 @@ public class BlockChalkGlyph extends ExtendableBlock {
 	}
 	
 	public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer ply, int face, float xf, float yf, float zf) {
-		if(w.isRemote){
-			System.out.println("StructuresRegistered");
-			for(Structure s : StructureRegistery.getList())
-				s.printStructure();
-		}
 		if(this == InitBlock.glyphblank){
 			if(ply.inventory.getCurrentItem() != null && ply.inventory.getCurrentItem().isItemEqual(new ItemStack(InitItem.gem, 1, 3))){
-				Structure s = StructureRegistery.getStructuresByName("SmallArrayActivator")[0];
+				Structure s = StructureRegistery.getStructuresByName("AM.t0.small.ArrayActivator")[0];
 				if(!s.checkStructure(w, x, y, z, ForgeDirection.UNKNOWN, true))
 					return false;
 				w.setBlock(x,y,z,InitBlock.glyphCenter);
@@ -50,11 +45,12 @@ public class BlockChalkGlyph extends ExtendableBlock {
 				return true;
 			}
 		}
-		else if(this == InitBlock.glyphCenter){
-			Structure s = StructureRegistery.getStructuresByName("arrayCompression")[0];
-			if(!s.checkStructure(w, x, y, z, ForgeDirection.NORTH, false))
-				return false;
-			return true;
+		else if(this == InitBlock.glyphCenter && !w.isRemote){
+			Structure[] s = StructureRegistery.getStructuresByName("AM.t1");
+			for(Structure ss : s){
+				if(!ss.checkStructure(w, x, y, z, ForgeDirection.NORTH, false))
+					return false;
+			}
 
 		}
 		return false;

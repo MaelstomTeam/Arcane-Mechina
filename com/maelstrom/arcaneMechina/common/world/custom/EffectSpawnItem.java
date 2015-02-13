@@ -13,11 +13,12 @@ public class EffectSpawnItem extends Effect {
 	
 	public boolean rItem;
 	public ItemStack spawn, need;
+	public int amount = 0;
 	
-	public EffectSpawnItem(ItemStack stack, ItemStack stack2){
+	public EffectSpawnItem(ItemStack stack2, ItemStack stack){
 		rItem = true;
-		spawn = stack;
-		need = stack2;
+		spawn = stack2;
+		need = stack;
 	}
 	public EffectSpawnItem(ItemStack stack){
 		rItem = false;
@@ -27,23 +28,32 @@ public class EffectSpawnItem extends Effect {
 
 	@Override
 	public void effect(World w, int x, int y, int z) {
-		w.spawnEntityInWorld(new EntityItem(w, x+.5, y+.5, z+.5, spawn.copy()));
+		if(rItem){
+			if(amount == 0)
+				w.spawnEntityInWorld(new EntityItem(w, x+.5, y+.5, z+.5, spawn.copy()));
+			for(int ignore; amount > 0; amount--)
+				w.spawnEntityInWorld(new EntityItem(w, x+.5, y+.5, z+.5, spawn.copy()));
+		}
 		w.playSoundEffect(x+.5, y+.5, z+.5, "mob.endermen.portal", 1, 1);
+		amount = 0;
 	}
 
 	@Override
 	public boolean effectCheck(World w, int x, int y, int z) {
-		List<EntityItem> entities = (List<EntityItem>) w.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x-1, y-1, z-1, x+1, y+1, z+1));
-		if(rItem)
-			for(EntityItem entity : entities ){
-				if(entity.getEntityItem().isItemEqual(need)){
-					entity.getEntityItem().stackSize -= need.stackSize;
-					return true;
-				}
-			}
-		else
+		List<EntityItem> entities = (List<EntityItem>) w.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x-1, y-1, z-1, x+2, y+1, z+2));
+		boolean temp = false;
+		if(!rItem)
 			return true;
-		return false;
+		for(EntityItem entity : entities)
+			if(entity.getEntityItem().isItemEqual(need))
+				if(entity.getEntityItem().stackSize >= need.stackSize){
+					temp = true;
+					while(entity.getEntityItem().stackSize >= need.stackSize){
+						amount++;
+						entity.getEntityItem().stackSize -= need.stackSize;
+					}
+				}
+		return temp;
 	}
 
 }

@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 
 import com.maelstrom.arcaneMechina.common.item.ItemChalk;
 import com.maelstrom.arcaneMechina.common.item.ItemDebug;
+import com.maelstrom.arcaneMechina.common.item.ItemGems;
 import com.maelstrom.arcaneMechina.common.item.ItemMetadataBased;
 import com.maelstrom.arcaneMechina.common.item.ItemPegasusWingAmulet;
 import com.maelstrom.arcaneMechina.common.item.ItemRosarioAmulet;
@@ -20,7 +21,7 @@ public class InitItem {
 	public static Item ScrewDriver = new ItemScrewdriver("ScrewDriver");
 	public static Item rosarioAmulet = new ItemRosarioAmulet("rosarioAmulet");
 	public static Item ingot = new ItemMetadataBased("ingot", Reference.preciousMetals);
-	public static Item gem = new ItemMetadataBased("gem", Reference.gemStones);
+	public static Item gem = new ItemGems("gem", Reference.gemStones);
 	public static Item chalkfire = new ItemChalk("chalkfire");
 	public static Item chalkice = new ItemChalk("chalkice");
 	public static Item chalkenergy = new ItemChalk("chalkenergy");

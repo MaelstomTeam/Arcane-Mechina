@@ -2,6 +2,7 @@ package com.maelstrom.arcaneMechina;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -58,7 +59,9 @@ public class ArcaneMechina {
 		Row saa1 = new Row(" GGG " ,' ', null, 'G', InitBlock.glyphblank);
 		Row saa2 = new Row("G   G" ,' ', null, 'G', InitBlock.glyphblank);
 		Row saa3 = new Row("G G G" ,' ', null, 'G', InitBlock.glyphblank);
-		StructureRegistery.register(new Structure("SmallArrayActivator", new Layer[]{new Layer(new Row[]{saa1,saa2,saa3,saa2,saa1})}, new EffectSpawnItem(new ItemStack(InitItem.chalk), new ItemStack(InitBlock.gemOre, 3, 5)), true));
+		Row saa3v2 = new Row("G C G" ,' ', null, 'G', InitBlock.glyphblank, 'C', InitBlock.glyphCenter);
+		StructureRegistery.register(new Structure("AM.t0.small.ArrayActivator", new Layer[]{new Layer(new Row[]{saa1,saa2,saa3,saa2,saa1})}, new EffectNone(), true));
+		StructureRegistery.register(new Structure("AM.t1.chalk", new Layer[]{new Layer(new Row[]{saa1,saa2,saa3v2,saa2,saa1})}, new EffectSpawnItem(new ItemStack(InitItem.chalk), new ItemStack(InitItem.gem, 3, 5))));
 
 		Row r1  = new Row("               E   E               ",' ', null, 'E', InitBlock.glyphenergy);
 		Row r2  = new Row("                E E                ",' ', null, 'E', InitBlock.glyphenergy);
@@ -76,7 +79,7 @@ public class ArcaneMechina {
 		Row r13 = new Row("EE    E  E   B       B   E  E    EE",' ', null, 'E', InitBlock.glyphenergy, 'B', InitBlock.glyphblank);
 		Row r14 = new Row("  EE   E  E B         B E  E   EE  ",' ', null, 'E', InitBlock.glyphenergy, 'B', InitBlock.glyphblank);
 		Row r15 = new Row("    EE  E E B    C    B E E  EE    ",' ', null, 'E', InitBlock.glyphenergy, 'B', InitBlock.glyphblank, 'C', InitBlock.glyphCenter);
-		StructureRegistery.register(new Structure("arrayCompression", new Layer[]{new Layer(new Row[]{r1,r1,r2,r2,r3,r4,r4_,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r14,r13,r12,r11,r10,r9,r8,r7,r6,r5,r4_,r4,r3,r2,r2,r1,r1})}, new EffectNone()));
+		StructureRegistery.register(new Structure("AM.t1.arrayCompression", new Layer[]{new Layer(new Row[]{r1,r1,r2,r2,r3,r4,r4_,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r14,r13,r12,r11,r10,r9,r8,r7,r6,r5,r4_,r4,r3,r2,r2,r1,r1})}, new EffectSpawnItem(new ItemStack(Items.written_book)), true));
 
 		
 		//jump boost for pegasus wings 1.5 blocks
