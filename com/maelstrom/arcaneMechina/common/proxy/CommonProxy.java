@@ -1,8 +1,11 @@
 package com.maelstrom.arcaneMechina.common.proxy;
 
-import net.minecraftforge.common.MinecraftForge;
-
+import com.maelstrom.arcaneMechina.common.tile.TileEntityFurnaceBasic;
+import com.maelstrom.arcaneMechina.common.tile.TileEntityFurnaceBasicPower;
+import com.maelstrom.arcaneMechina.common.tile.TileEntityGlyph;
 import com.maelstrom.snowcone.proxy.IProxy;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy implements IProxy {
 

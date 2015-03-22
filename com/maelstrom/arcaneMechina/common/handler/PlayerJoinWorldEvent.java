@@ -1,16 +1,11 @@
 package com.maelstrom.arcaneMechina.common.handler;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import baubles.common.container.InventoryBaubles;
-import baubles.common.lib.PlayerHandler;
 
-import com.maelstrom.arcaneMechina.common.init.InitItem;
 import com.maelstrom.arcaneMechina.common.reference.Reference;
-import com.maelstrom.snowcone.nbt.PlayerNbt;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -26,9 +21,9 @@ public class PlayerJoinWorldEvent {
 		if(!event.world.isRemote)
 			ply.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal(Reference.MOD_ID + ".login.notice")));
 //		give helpers, modders and community a Rosario Amulet as thanx
-		if(Reference.isContributor(ply.getDisplayName()) && !hasLoggedBefore(ply)){
-			ply.inventory.addItemStackToInventory(new ItemStack(InitItem.rosarioAmulet));
-		}
+		//if(Reference.isContributor(ply.getDisplayName()) && !hasLoggedBefore(ply)){
+			//ply.inventory.addItemStackToInventory(new ItemStack(InitItem.rosarioAmulet));
+		//}
 	}
 
 	private boolean hasLoggedBefore(EntityPlayer ply) {
