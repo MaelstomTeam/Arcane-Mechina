@@ -22,3 +22,7 @@ Refer to these for licensing
 |------|-----|
 | LGPL | http://opensource.org/licenses/LGPL-3.0
 | GPL | http://www.gnu.org/copyleft/gpl.html
+
+| Install |
+|------|
+| Put it in the Mods folder, just like any other mod |
