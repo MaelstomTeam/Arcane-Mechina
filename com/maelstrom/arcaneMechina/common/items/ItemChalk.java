@@ -10,9 +10,9 @@ import com.maelstrom.arcaneMechina.common.blocks.ModBlocks;
 import com.maelstrom.arcaneMechina.common.reference.Reference;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
 
-public class Chalk extends ExtendableItem {
+public class ItemChalk extends ExtendableItem {
 	public int i = 0;
-	public Chalk(String name) {
+	public ItemChalk(String name) {
 		super(name, Reference.MOD_ID);
 		this.setMaxDamage(64);
 		this.setMaxStackSize(1);

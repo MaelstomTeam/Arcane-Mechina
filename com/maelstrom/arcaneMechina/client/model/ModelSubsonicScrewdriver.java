@@ -77,12 +77,12 @@ public class ModelSubsonicScrewdriver extends ModelBase {
     	float b = f4;
     	
     	GL11.glPushMatrix();
-    	
-	    	GL11.glTranslated(0.6, .9, 0);
+    		GL11.glScaled(0.05f, 0.05f, 0.05f);
+	    	GL11.glTranslated(0.6, 9, 0);
 	    	GL11.glRotated(130, 1, 0, 0);
 	    	Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-	    	if(entity != null)
-	    		nill.rotateAngleY = MathHelper.cos((entity.ticksExisted + f2) * .3F) * (float) Math.PI;
+	    	if(Minecraft.getMinecraft().thePlayer != null)
+	    		nill.rotateAngleY = (Minecraft.getMinecraft().thePlayer.ticksExisted + f2) * 0.1f ;
 	    	
 	        this.hilt.render(f5);
 			GL11.glEnable(GL11.GL_BLEND);

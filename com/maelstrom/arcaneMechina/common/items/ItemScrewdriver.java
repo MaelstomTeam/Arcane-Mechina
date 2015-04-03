@@ -6,19 +6,19 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
-import com.maelstrom.arcaneMechina.common.blocks.BlockChalkGlyph;
+import cofh.api.energy.IEnergyStorage;
+
+import com.maelstrom.arcaneMechina.common.blocks.BlockCompressedArray;
 import com.maelstrom.arcaneMechina.common.blocks.ModBlocks;
 import com.maelstrom.arcaneMechina.common.interfaces.IPower;
 import com.maelstrom.arcaneMechina.common.reference.Reference;
-import com.maelstrom.arcaneMechina.common.tile.TileEntityFurnaceBasic;
-import com.maelstrom.arcaneMechina.common.tile.TileEntityFurnaceBasicPower;
-import com.maelstrom.arcaneMechina.common.tile.TileEntityGlyph;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
 
 public class ItemScrewdriver extends ExtendableItem {
@@ -47,33 +47,52 @@ private IIcon icon;
     		l.add("§dPointless in Creative Mode");
     }
     
-    public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat)
+    @SuppressWarnings("unused")
+	public boolean onItemUse(ItemStack is, EntityPlayer ply, World w, int x, int y, int z, int face, float xFloat, float yFloat, float zFloat)
     {
     	if(ply.isSneaking()){
     		if(w.getBlock(x, y, z).equals(Blocks.furnace) && w.getBlock(x, y+1, z).equals(Blocks.furnace) && w.getBlock(x, y+2, z).equals(Blocks.heavy_weighted_pressure_plate)){
     			w.setBlock(x, y, z, ModBlocks.basicPowerGen, 0, 2);
     			w.setBlock(x, y+1, z, ModBlocks.basicPowerGen, 1, 2);
     			w.setBlock(x, y+2, z, Blocks.air);
-    		}
-//    		else if(w.getTileEntity(x,y,z) instanceof IPower /*&& ((IPower)w.getTileEntity(x,y,z)).distributesPower()*/){
-//    			tile = (IPower) w.getTileEntity(x,y,z);
+    			return true;
+    		}else if(w.getBlock(x, y, z).equals(Blocks.quartz_block)){
+    			w.setBlock(x, y, z, ModBlocks.rfStorageArray);
+    			return true;
+//    		}else if(w.getBlock(x, y, z).equals(ModBlocks.glyphBlank)){
+//    			w.setBlockMetadataWithNotify(x, y, z, 1, 2);
 //    			return true;
-//    		}
-    	} /*else if (tile != null){
-    		if(w.getBlock(x,y,z) instanceof BlockChalkGlyph && w.getBlockMetadata(x,y,z) == 0){
-    			w.setBlock(x, y, z, ModBlocks.glyphBlank, 1, 2);
-    			TileEntityGlyph t = new TileEntityGlyph();
-    			t.link(tile);
-    			w.setTileEntity(x, y, z, t);
-    			return true;
     		}
-    		if(w.getTileEntity(x,y,z) instanceof IPower && ((IPower)w.getTileEntity(x,y,z)).acceptsPower()){
-    			((IPower)w.getTileEntity(x,y,z)).link(tile);
-    			return true;
-    		}
-    	}*/
+    	}else if(w.getTileEntity(x, y, z) instanceof IEnergyStorage){
+			IEnergyStorage tile = (IEnergyStorage) w.getTileEntity(x, y, z);
+			if(!w.isRemote)
+				ply.addChatComponentMessage(new ChatComponentText(convert(tile.getEnergyStored()) + "/" + convert(tile.getMaxEnergyStored()) + " RF"));
+		}
     	
+    	
+    	
+    	if(false){
+    		for (int i = -9; i <= 9; i++){
+    			for (int i2 = -9; i2 <= 9; i2++){
+    				if(w.getBlock(x + i, y, z + i2).equals(ModBlocks.glyphBlank))
+    					System.out.print("#");
+    				else
+    					System.out.print(" ");
+    			}
+    			System.out.println();
+    		}
+    	}
         return super.onItemUse(is, ply, w, x, y, z, face, xFloat, yFloat, zFloat);
+    }
+    private String convert(int i){
+    	if(i >= 1000000){
+    		int temp = i / 1000000;
+    		return temp + "M";
+    	}else if(i >= 1000){
+    		int temp = i / 1000;
+    		return temp + "K";
+    	}
+    	return "" + i;
     }
     
     public ItemStack onItemRightClick(ItemStack is, World w, EntityPlayer ply)

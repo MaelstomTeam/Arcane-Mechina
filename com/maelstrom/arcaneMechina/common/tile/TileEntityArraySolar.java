@@ -4,45 +4,43 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.energy.TileEnergyHandler;
-
-import com.maelstrom.arcaneMechina.common.interfaces.IPower;
-
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityGlyph extends TileEnergyHandler implements IEnergyStorage {
+public class TileEntityArraySolar extends TileEnergyHandler implements IEnergyStorage {
 	
-	public TileEntityGlyph(){
-		storage = new EnergyStorage(100000, 0, 64);
+	public TileEntityArraySolar(EnergyStorage e){
+		storage = e;
 	}
 	
 	public void updateEntity() {
 		World w = worldObj;
-		float sunAng = w.getCelestialAngle(1f) * 360;
-		
-		float minEffAng1 = 7f;
-		float noEffAng1 = 80f;
-		
-		float maxEffAng2 = 353f;
-		float noEffAng2 = 280f;
-		if(sunAng > noEffAng2 || sunAng < noEffAng1)
-			this.storage.modifyEnergyStored((int)(16 * calculateLightRatio(w,xCoord,yCoord,zCoord)));
-//		System.out.println(this.storage.getEnergyStored());
-		for(int i = - 7; i < 7; i++)
-			for(int i2 = - 7; i2 < 7; i2++)
-				for(int i3 = -7; i3 < 1; i3++){
-					if(distance(xCoord - i, yCoord, zCoord - i2) <= 5f)
-						if(w.getTileEntity(xCoord + i, yCoord + i2, zCoord + i3) instanceof TileEntityRFStorageArray)
-							for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-								transferEnergyToBlock(xCoord + i, yCoord + i2, zCoord + i3, dir);
-				}
+		if(!w.isRemote){
+			if(w.canBlockSeeTheSky(xCoord, yCoord, zCoord)){
+				float sunAng = w.getCelestialAngle(1f) * 360;
+				
+				float minEffAng1 = 7f;
+				float noEffAng1 = 80f;
+				
+				float maxEffAng2 = 353f;
+				float noEffAng2 = 280f;
+				if(sunAng > noEffAng2 || sunAng < noEffAng1)
+					this.storage.modifyEnergyStored((int)(16 * calculateLightRatio(w,xCoord,yCoord,zCoord)));
+				for(int i = - 7; i < 7; i++)
+					for(int i2 = - 7; i2 < 7; i2++)
+						for(int i3 = -7; i3 < 1; i3++){
+							if(distance(xCoord - i, yCoord, zCoord - i2) <= 5f)
+								if(w.getTileEntity(xCoord + i, yCoord + i2, zCoord + i3) instanceof TileEntityRFStorageArray)
+									for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+										transferEnergyToBlock(xCoord + i, yCoord + i2, zCoord + i3, dir);
+						}
+			}
+		}
 	}
-
+	
 	public static float calculateLightRatio(World world, int x, int y, int z) {
 		int lightValue = world.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) - world.skylightSubtracted;
 		float sunAngle = world.getCelestialAngleRadians(1.0F);
@@ -56,27 +54,6 @@ public class TileEntityGlyph extends TileEnergyHandler implements IEnergyStorage
 		lightValue = MathHelper.clamp_int(lightValue, 0, 15);
 		return lightValue / 15.0F;
 	}
-	/*		 Solar Panel Array
-			         #         
-			         #         
-			  #   #  #  #   #  
-			   #   # # #   #   
-			    #  # # #  #    
-			     #       #     
-			  #     ###     #  
-			   ##  #   #  ##   
-			      #     #      
-			##### #  #  # #####
-			      #     #      
-			   ##  #   #  ##   
-			  #     ###     #  
-			     #       #     
-			    #  # # #  #    
-			   #   # # #   #   
-			  #   #  #  #   #  
-			         #         
-			         #         
-	 */
 	
 	public float distance(int x, int y, int z){
         float f  = (float)((this.xCoord + 0.5) - (x + 0.5f));
@@ -125,5 +102,4 @@ public class TileEntityGlyph extends TileEnergyHandler implements IEnergyStorage
 	public int getMaxEnergyStored() {
 		return storage.getMaxEnergyStored();
 	}
-
 }

@@ -37,7 +37,15 @@ public class BlockPowerFurnace extends ExtendableBlock implements ITileEntityPro
     	}
         return false;
     }
-
+//	public int getRenderType(){
+//		return -1;
+//	}
+//	public boolean isOpaqueCube() {
+//		return false;
+//	}
+//	public boolean renderAsNormalBlock() {
+//		return false;
+//	}
 	@Override
 	public TileEntity createNewTileEntity(World w, int meta) {
 		switch(meta){

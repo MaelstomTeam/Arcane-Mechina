@@ -8,14 +8,15 @@ import net.minecraft.item.Item;
 public class ModItems {
 
 	public static Item ScrewDriver = new ItemScrewdriver("ScrewDriver");
-	public static Item glyphicChalk = new Chalk("chalk");
+	public static Item glyphicChalk = new ItemChalk("chalk");
 	public static Item ghostWingAmulet = new ItemGhostWingAmmulet("pegasusWingAmulet");
-	
+	public static Item arcaneMechina = new ItemAMBook();
 	
 	public static void init(){
 		registerItem(ScrewDriver);
 		registerItem(glyphicChalk);
 		registerItem(ghostWingAmulet);
+		registerItem(arcaneMechina);
 	}
 	
 	private static void registerItem(Item item){

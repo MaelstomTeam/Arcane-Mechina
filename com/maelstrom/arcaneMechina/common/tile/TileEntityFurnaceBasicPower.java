@@ -4,7 +4,7 @@ import com.maelstrom.arcaneMechina.common.interfaces.IPower;
 
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityFurnaceBasicPower extends TileEntity implements IPower {
+public class TileEntityFurnaceBasicPower extends TileEntityFurnaceBasic implements IPower {
 	
 	public int pLevel = 0;
 	
