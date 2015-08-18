@@ -1,44 +1,40 @@
-package com.maelstrom.arcaneMechina;
+package com.maelstrom.arcanemechina;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import com.maelstrom.arcaneMechina.common.blocks.ModBlocks;
-import com.maelstrom.arcaneMechina.common.handler.PlayerJoinWorldEvent;
-import com.maelstrom.arcaneMechina.common.items.ModItems;
-import com.maelstrom.arcaneMechina.common.reference.Reference;
-import com.maelstrom.arcaneMechina.common.tile.TileEntityFurnaceBasic;
-import com.maelstrom.arcaneMechina.common.tile.TileEntityFurnaceBasicPower;
-import com.maelstrom.arcaneMechina.common.tile.TileEntityGlyph;
-import com.maelstrom.snowcone.proxy.IProxy;
+import com.maelstrom.arcanemechina.client.handler.render.BaubleRenderHandler;
+import com.maelstrom.arcanemechina.common.Reference;
+import com.maelstrom.arcanemechina.common.proxy.CommonProxy;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, useMetadata = Reference.MOD_METADATA)
-public class ArcaneMechina {
+public class ArcaneMechina
+{
 	
 	@SidedProxy(clientSide = Reference.PROXY_CLIENT, serverSide = Reference.PROXY_SERVER)
-	public static IProxy proxy;
+	public static CommonProxy proxy;
+
 	
 	@Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event){
-		ModItems.init();
-		ModBlocks.init();
-		ModRecipes.init();
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		proxy.preInit(event);
+	}
+	@Mod.EventHandler
+	public void init    (FMLInitializationEvent event)
+	{
+		proxy.init(event);
+	}
+	
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		proxy.postInit(event);
 	}
 
-	@Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event){
-		proxy.registerEvents();
-		proxy.registerRenderers();
-		GameRegistry.registerTileEntity(TileEntityFurnaceBasic.class, "furance.power");
-		GameRegistry.registerTileEntity(TileEntityFurnaceBasicPower.class, "furance.power.storage");
-		GameRegistry.registerTileEntity(TileEntityGlyph.class, "glyph");
-		MinecraftForge.EVENT_BUS.register(new PlayerJoinWorldEvent());
-		MinecraftForge.EVENT_BUS.register(ModItems.ghostWingAmulet);
-	}
-	
 }

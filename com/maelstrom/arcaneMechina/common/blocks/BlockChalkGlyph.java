@@ -1,178 +1,171 @@
-package com.maelstrom.arcaneMechina.common.blocks;
+package com.maelstrom.arcanemechina.common.blocks;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.item.Item;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import com.maelstrom.arcaneMechina.common.other.Structures;
-import com.maelstrom.arcaneMechina.common.reference.Reference;
-import com.maelstrom.arcaneMechina.common.tile.TileEntityGlyph;
+import com.maelstrom.arcanemechina.common.BlocksReference;
+import com.maelstrom.arcanemechina.common.ItemsReference;
+import com.maelstrom.arcanemechina.common.Reference;
 import com.maelstrom.snowcone.extendables.ExtendableBlock;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockChalkGlyph extends ExtendableBlock implements ITileEntityProvider {
+public class BlockChalkGlyph extends ExtendableBlock {
 	
-	public BlockChalkGlyph(String local) {
-		super(Material.circuits, local, Reference.MOD_ID);
-        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.03125F, 1.0F);
-        this.setTickRandomly(true);
-        this.bounds(0);
+	private IIcon[] icons;
+	public BlockChalkGlyph() {
+		super(Material.circuits, BlocksReference.glyphName, Reference.MOD_ID);
+		this.setBlockBounds(0f, 0f, 0f, 1f, 0f, 1f);
 	}
 	
-	public boolean listContainsStack(List<EntityItem> list, ItemStack is, boolean consume){
-		for(EntityItem item : list)
-			if(item.getEntityItem().isItemEqual(is)){
-				if(consume)
-					item.getEntityItem().stackSize -= is.stackSize;
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    {
+    	//if block cannot be placed
+    	if(!this.canPlaceBlockAt(world, x, y, z))
+    		//remove block
+    		world.setBlockToAir(x, y, z);
+    }
+    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    {
+    	//if block top is solid or equal to glowstone then it can be placed
+    	return world.getBlock(x, y-1, z).isSideSolid(world, x, y, z, ForgeDirection.UP) || world.getBlock(x,y-1,z).equals(Blocks.glowstone);
+    }
+	
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float sideXFloat, float sideYFloat, float sideZFloat)
+    {
+    	//if player is sneaking continue
+    	if(player.getCurrentEquippedItem() != null)
+    	{
+	    	if(player.getCurrentEquippedItem().getItem() == ItemsReference.chalk)
+	    	{
+	    		//if meta is zero then change it to one/center block metadata else revert it to 0
+	    		if(world.getBlockMetadata(x, y, z) == 0)
+	    			world.setBlockMetadataWithNotify(x, y, z, 1, 3);
+	    		else
+	    			world.setBlockMetadataWithNotify(x, y, z, 0, 3);
 				return true;
-			}
-		return false;
-	}
-	public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer ply, int face, float xf, float yf, float zf) {
-		//goto array class
-		List<EntityItem> ents = w.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x,y,z,x,y,z).expand(3, 0.5, 3));
-		if(!ply.isSneaking()){
-			if(ply.capabilities.isCreativeMode){
-				if(ply.getCurrentEquippedItem().isItemEqual(new ItemStack(Items.blaze_rod))){
-					if(!w.isRemote){
-						//Kill all dragons and re-spawn one 20 blocks above glyph location
-						List<EntityDragon> dragon = w.getEntitiesWithinAABB(EntityDragon.class, AxisAlignedBB.getBoundingBox(x,y,z,x,y,z).expand(300, 300, 300));
-						for(EntityDragon d : dragon)
-							d.setHealth(0f);
-						Entity e = new EntityDragon(w);
-						e.setPosition(x, y+20, z);
-						w.spawnEntityInWorld(e);
-					}
-				}else if(ply.getCurrentEquippedItem().isItemEqual(new ItemStack(Items.iron_sword))){
-					List<EntityLivingBase> ent = w.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x,y,z,x,y,z).expand(300, 300, 300));
-					for(EntityLivingBase e : ent)
-						if(!(e instanceof EntityPlayer))
-							e.setHealth(0f);
-				}
-				else if(ply.getCurrentEquippedItem().isItemEqual(new ItemStack(Items.stick))){
-					for(int i = -10; i < 10; i++)
-						for(int i2 = 0; i2 < 15; i2++)
-							for(int i3 = -10; i3 < 10; i3++)
-								if(w.getBlock(x+i, y+i2, z+i3) == Blocks.diamond_block ||
-								w.getBlock(x+i, y+i2, z+i3) == Blocks.bedrock ||
-								w.getBlock(x+i, y+i2, z+i3) == Blocks.end_portal ||
-								w.getBlock(x+i, y+i2, z+i3) == Blocks.dragon_egg ||
-								w.getBlock(x+i, y+i2, z+i3) == this){
-									System.out.print("w.getBlock(x+" + i + ", y+" + i2 + ", z+" + i3 + ") == " + w.getBlock(x+i, y+i2, z+i3).getLocalizedName() + " &&\n");
-								}
-					System.out.println("\n\n\n\n\n\n\n");
-				}
-				else if(ply.getCurrentEquippedItem().isItemEqual(new ItemStack(Items.arrow))){
-//					if(isDragonRes(w,x,y,z)){
-//						System.out.println("IT WORKED");
-//					}
-				}
-			}
-		}
-		else if(listContainsStack(ents, new ItemStack(Items.clock), false)){
-			if (!w.isRemote) {
-				if(w.getBlock(x, y-1, z).equals(Blocks.gold_block)){
-			        w.addWeatherEffect(new EntityLightningBolt(w, x, y, z));
-			        w.setWorldTime((w.getWorldTime() / 24000) * 24000 + 24000);
-			        listContainsStack(ents, new ItemStack(Items.clock), true);
-				}
-				else if(w.getBlock(x, y-1, z).equals(Blocks.lapis_block)){
-			        w.addWeatherEffect(new EntityLightningBolt(w, x, y, z));
-			        w.setWorldTime((w.getWorldTime() / 24000) * 24000 + 13800);
-			        listContainsStack(ents, new ItemStack(Items.clock), true);
-				}
-				else if(w.getBlock(x, y-1, z).equals(Blocks.diamond_block)
-						&& (w.getBlock(x+1, y-1, z).equals(Blocks.emerald_block) && w.getBlock(x-1, y-1, z).equals(Blocks.emerald_block)
-						|| w.getBlock(x, y-1, z+1).equals(Blocks.emerald_block) && w.getBlock(x, y-1, z-1).equals(Blocks.emerald_block))){
-					w.addWeatherEffect(new EntityLightningBolt(w, x, y, z));
-			        w.setWorldTime((w.getWorldTime() / 24000) * 24000 + 13800 + w.rand.nextInt(100) + ((8 - (w.getWorldTime() / 24000) % 8) * 24000));
-			        listContainsStack(ents, new ItemStack(Items.clock), true);
-				}
-			}
-		}
-		if(ply.getCurrentEquippedItem().isItemEqual(new ItemStack(Items.brick))){
-			Structures.allBlankGlyph(w,x,y,z);
-		}
-		return false;
-		
-	}
-	
-    public int quantityDropped(Random r) {
-        return 0;
-    }
-	
-    public void setBlockBoundsForItemRender() {
-        this.bounds(0);
-    }
-    
-    private void bounds(int i) {
-        byte b0 = 0;
-        float f = (float)(1 * (1 + b0)) / 16.0F;
-        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f, 1.0F);
-    }
-    
-    public boolean isOpaqueCube() {
+	    	}
+	    	else
+	    	{
+		    	int centerX = 0;
+		    	int centerZ = 0;
+		    	boolean found = false;
+		    	
+		    	//run through a 9x9 area
+		    	breakTheLoop : for(int x2 = -4; x2 < 4; x2++)
+		        	for(int z2 = -4; z2 < 4; z2++)
+		        		//if block is this and meta is equal to 1
+		        		if(world.getBlock(x + x2, y, z + z2) == this && world.getBlockMetadata(x + x2, y, z + z2) == 1)
+		        		{
+		        			centerX = x + x2;
+		        			centerZ = z + z2;
+		        			found = true;
+		        			break breakTheLoop;
+		        		}
+		    	//if array center specified and is valid then remove it and place a new center piece
+		    	if(found && checkBeginingArray(world,centerX,y,centerZ))
+		    	{
+		    			removeBeginingArray(world, centerX, y, centerZ);
+		    			return true;
+		    	}
+	    	}
+    	}
         return false;
     }
-    
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-    
-    public boolean canPlaceBlockAt(World w, int x, int y, int z)
+    //register the two icons for this blocl
+    public void registerBlockIcons(IIconRegister register)
     {
-        return super.canPlaceBlockAt(w, x, y, z) && this.canBlockStay(w, x, y, z);
+        icons = new IIcon[2];
+        icons[0] = register.registerIcon(this.getTextureName());
+        icons[1] = register.registerIcon(this.getTextureName()+"Center");
     }
-    
-    public void onNeighborBlockChange(World w, int x, int y, int z, Block block)
+    //return icon for meta and default
+    public IIcon getIcon(int side, int meta)
     {
-        this.func_150090_e(w, x, y, z);
-    }
-
-    private boolean func_150090_e(World w, int x, int y, int z)
-    {
-        if (!this.canBlockStay(w, x, y, z)){
-            w.setBlockToAir(x, y, z);
-            return false;
-        }
-        else
-        {
-            return true;
+        switch(meta){
+	        case 1 :
+	        	return icons[1];
+	        case 0: default:
+	        	return icons[0];
         }
     }
     
-    public boolean canBlockStay(World w, int x, int y, int z) {
-        return w.getBlock(x, y - 1, z).isOpaqueCube();
-    }
+    //===================================================================
+    //==       Ignore functions bellow and just trust me on this       ==
+    //===================================================================
     
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess iblock, int x, int y, int z, int i) {
-        return i == 1 ? true : super.shouldSideBeRendered(iblock, x, y, z, i);
+    public boolean isOpaqueCube()
+    {
+        return false;
     }
 
-	@Override
-	public TileEntity createNewTileEntity(World w, int meta) {
-		if(meta == 1){
-			return new TileEntityGlyph();
-		}
-		return null;
-	}
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+    
+    public Item getItemDropped(int metadata, Random random, int fortune)
+    {
+        return null;
+    }
+    
+    private boolean isBlockThis(World world, int x, int y, int z)
+    {
+    	return world.getBlock(x, y, z) == this;
+    }
+    
+    private void removeThis(World world, int x, int y, int z)
+    {
+    	if(world.getBlock(x, y, z) == this)
+    		world.setBlockToAir(x, y, z);
+    }
+    
+    private boolean checkBeginingArray(World world, int x, int y, int z)
+    {
+    	return isBlockThis(world,x+3,y,z) &&
+		isBlockThis(world,x+3,y,z+1) &&
+		isBlockThis(world,x+3,y,z-1) &&
+		isBlockThis(world,x-3,y,z) &&
+		isBlockThis(world,x-3,y,z+1) &&
+		isBlockThis(world,x-3,y,z-1) &&
+		isBlockThis(world,x-1,y,z+3) &&
+		isBlockThis(world,x+1,y,z+3) &&
+		isBlockThis(world,x,y,z+3) &&
+		isBlockThis(world,x-1,y,z-3) &&
+		isBlockThis(world,x+1,y,z-3) &&
+		isBlockThis(world,x,y,z-3) &&
+		isBlockThis(world,x-2,y,z-2) &&
+		isBlockThis(world,x-2,y,z+2) &&
+		isBlockThis(world,x+2,y,z+2) &&
+		isBlockThis(world,x+2,y,z-2);
+    }
+    
+    private void removeBeginingArray(World world, int x, int y, int z)
+    {
+		world.setBlock(x, y, z, BlocksReference.arrayBlock);
+    	removeThis(world,x+3,y,z);
+    	removeThis(world,x+3,y,z+1);
+		removeThis(world,x+3,y,z-1);
+		removeThis(world,x-3,y,z);
+		removeThis(world,x-3,y,z+1);
+		removeThis(world,x-3,y,z-1);
+		removeThis(world,x-1,y,z+3);
+		removeThis(world,x+1,y,z+3);
+		removeThis(world,x,y,z+3);
+		removeThis(world,x-1,y,z-3);
+		removeThis(world,x+1,y,z-3);
+		removeThis(world,x,y,z-3);
+		removeThis(world,x-2,y,z-2);
+		removeThis(world,x-2,y,z+2);
+		removeThis(world,x+2,y,z+2);
+		removeThis(world,x+2,y,z-2);
+    }
+    
 }

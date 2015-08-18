@@ -1,11 +1,8 @@
-package com.maelstrom.arcaneMechina.client.model;
+package com.maelstrom.arcanemechina.client.model;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
@@ -13,17 +10,24 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import com.maelstrom.arcaneMechina.common.interfaces.IBaubleRenderer;
-import com.maelstrom.arcaneMechina.common.reference.Reference;
+import com.maelstrom.arcanemechina.common.Reference;
 
 /**
- * Wings - hybolic Created using Tabula 4.0.2
- * Animation by hybolic
- * Texture by hybolic
- * Function by hybolic
- * Name by Sporeknight
+ * Wings - hybolic Created using Tabula 4.0.2 ====== 
+ * Animation by hybolic ====== 
+ * Texture by hybolic ====== 
+ * Function by hybolic ====== 
+ * Name by Sporeknight    
  * :P
  */
+
+//=======================================================
+//=======================================================
+//===================  CLASS SALVAGE  ===================
+//=======================================================
+//=======================================================
+
+
 public class ModelGhostWings extends ModelBase {
 	public static ModelGhostWings wingsTemp = new ModelGhostWings();
 	
@@ -40,8 +44,7 @@ public class ModelGhostWings extends ModelBase {
 	public ModelRenderer skin4;
 	public ModelRenderer skin5;
 
-	private ResourceLocation texture = Reference
-			.getTextureResource("models/wings.png");
+	private ResourceLocation texture = Reference.getTextureResource("models/wings.png");
 
 	public ModelGhostWings() {
 		this.textureWidth = 64;
@@ -127,7 +130,7 @@ public class ModelGhostWings extends ModelBase {
 
 			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 			
-			GL11.glColor4f(1F, 1F, 1F, 0.5F);
+			GL11.glColor4f(1F, 1F, 1F, 0.25F);
 			
 			renderPiece(wingOut, f5);
 			

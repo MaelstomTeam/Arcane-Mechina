@@ -3,9 +3,6 @@ item.arcanemechina.WandODebug.lore=raika tengwa e' i' parma
 item.arcanemechina.ScrewDriver.name=Subsonic Screwdriver
 item.arcanemechina.ScrewDriver.line1.lore=A gift from a madman
 item.arcanemechina.ScrewDriver.line2.lore=  in a box
-item.arcanemechina.pegasusWingAmulet.name=Pegasus Wing Amulet
-item.arcanemechina.pegasusWingAmulet.line1.lore=It's not 16.5 wing
-item.arcanemechina.pegasusWingAmulet.line2.lore=power but it'll do~
 item.arcanemechina.rosarioAmulet.name=Rosario Amulet
 item.arcanemechina.rosarioAmulet.line1.lore="Thank you for your contribution!!"
 item.arcanemechina.rosarioAmulet.line2.lore=- Maelstrom Mod Team
@@ -23,11 +20,6 @@ item.arcanemechina.ingot_tin.name=Tin Ingot
 item.arcanemechina.ingot_copper.name=Copper Ingot
 item.arcanemechina.ingot_zinc.name=Zinc Ingot
 
-
-item.arcanemechina.chalk.name=Glyphic Chalk
-
-
-
 tile.arcanemechina.gemOre.opal.name=Opal Ore
 tile.arcanemechina.gemOre.amber.name=Amber Ore
 tile.arcanemechina.gemOre.zircon.name=Zircon Ore
@@ -41,10 +33,28 @@ tile.arcanemechina.metalOre.tin.name=Tin Ore
 tile.arcanemechina.metalOre.copper.name=Copper Ore
 tile.arcanemechina.metalOre.zinc.name=Zinc Ore
 
-
 tile.arcanemechina.arrayFurnace.name=Array Furnace
 tile.arcanemechina.glyph.name=Glyph
 
-itemGroup.arcanemechina.name=Arcane Mechina
-
 arcanemechina.login.notice=thank you for using the alpha of Arcane Mechina
+
+
+
+item.arcanemechina.chalk.name=Glyphic Chalk
+item.arcanemechina.ambook.name=Book of Mechanized Arcaia
+item.arcanemechina.ringofstone.name=Stone Ring
+item.arcanemechina.ringofiron.name=Iron Ring
+item.arcanemechina.ringofgold.name=Gold Ring
+item.arcanemechina.ringofdiamond.name=Diamond Ring
+item.arcanemechina.ringofemerald.name=Emerald Ring
+item.arcanemechina.tCompassZero.name=ZeroZeroZero
+item.arcanemechina.tCompassNorth.name=Northern Reaches
+item.arcanemechina.tCompassGPS.name=Point
+item.arcanemechina.craftingPart.GoldChainLink.name=Golden Chainlinks
+item.arcanemechina.craftingPart.IronChainLink.name=Iron Chainlinks
+
+
+item.arcanemechina.pegasusWingAmulet.name=Pegasus Wing Amulet
+item.arcanemechina.pegasusWingAmulet.line1.lore=It's not 16.5 wing
+item.arcanemechina.pegasusWingAmulet.line2.lore=power but it'll do~
+itemGroup.arcanemechina.name=Arcane Mechina

@@ -1,4 +1,4 @@
-package com.maelstrom.arcaneMechina.common.items;
+package com.maelstrom.arcanemechina.common.items;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +9,13 @@ import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
 
 import com.maelstrom.snowcone.extendables.ExtendableItem;
+
+
+//=======================================================
+//=======================================================
+//===================  CLASS SALVAGE  ===================
+//=======================================================
+//=======================================================
 
 public abstract class ItemBaubleEx extends ExtendableItem implements IBauble {
 
@@ -49,4 +56,5 @@ public abstract class ItemBaubleEx extends ExtendableItem implements IBauble {
 		if(!player.worldObj.isRemote)
 			player.worldObj.playSoundAtEntity(player, "arcanemechina:unequipBauble", 1F, 1.3F);
 	}
+
 }
