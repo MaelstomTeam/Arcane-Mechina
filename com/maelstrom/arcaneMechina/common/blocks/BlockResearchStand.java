@@ -84,6 +84,8 @@ public class BlockResearchStand extends ExtendableBlock implements ITileEntityPr
     
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xFloat, float yFloat, float zFloat)
     {
+    	if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemBlock)
+    		return false;
     	if(world.getBlockMetadata(x, y, z) == 0 && yFloat > .875f) //.9375 top 1 pixel current is top 2 pixels
     	{
     		//open gui
@@ -103,8 +105,7 @@ public class BlockResearchStand extends ExtendableBlock implements ITileEntityPr
         			}
     		return onBlockActivated(world, x + offsetX, y, z + offsetZ, player, side, xFloat, yFloat, zFloat);
     	}
-    	else
-    		return false;
+		return false;
     }
     
 	@Override
@@ -160,10 +161,15 @@ public class BlockResearchStand extends ExtendableBlock implements ITileEntityPr
         Blocks.stonebrick.onBlockDestroyedByExplosion(world, x, y, z, explosion);
     }
     
+    public boolean isOpaqueCube()
+    {
+    	return false;
+    }
     
-    
-    
-    
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int i, int i2, int i3, int i4)
+    {
+    	return true;
+    }
     
     
     
@@ -216,7 +222,6 @@ public class BlockResearchStand extends ExtendableBlock implements ITileEntityPr
     					return SR;
     				else if(ForgeDirection.getOrientation(side).equals(ForgeDirection.WEST))
     					return SL;
-
     				else if(ForgeDirection.getOrientation(side).equals(ForgeDirection.EAST))
     					return SL;
     				else if(ForgeDirection.getOrientation(side).equals(ForgeDirection.UP) && (world.getBlock(x, y, z - 1) == this && world.getBlock(x - 1, y, z) == this))
@@ -232,7 +237,6 @@ public class BlockResearchStand extends ExtendableBlock implements ITileEntityPr
     					return SL;
     				else if(ForgeDirection.getOrientation(side).equals(ForgeDirection.WEST))
     					return SR;
-
     				else if(ForgeDirection.getOrientation(side).equals(ForgeDirection.EAST))
     					return SR;
     				else if(ForgeDirection.getOrientation(side).equals(ForgeDirection.UP) && (world.getBlock(x, y, z + 1) == this && world.getBlock(x - 1, y, z) == this))

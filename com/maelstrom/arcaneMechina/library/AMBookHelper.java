@@ -7,7 +7,7 @@ public class AMBookHelper
 {
 	private ItemStack book = null;
 	private boolean creativeBook = false;
-	private String bookOwner = "";
+	private String bookOwner = "?";
 	private NBTTagCompound nbt = null;
 
 
@@ -45,7 +45,7 @@ public class AMBookHelper
 
 	public String getBookOwner()
 	{
-		return bookOwner;
+		return bookOwner.length() > 1 ? bookOwner : null;
 	}
 	public void setBookOwner(String displayName)
 	{

@@ -1,20 +1,16 @@
 package com.maelstrom.arcanemechina.common.proxy;
 
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.maelstrom.arcanemechina.client.handler.render.BaubleRenderHandler;
-import com.maelstrom.arcanemechina.client.texture.TieredCompassTexture;
-import com.maelstrom.arcanemechina.common.ItemsReference;
-import com.maelstrom.arcanemechina.common.Reference;
-import com.maelstrom.arcanemechina.common.registery.IconRegestry;
+import com.maelstrom.arcanemechina.client.registry.IconRegestry;
+import com.maelstrom.arcanemechina.client.renderer.ResearchTableRenderer;
+import com.maelstrom.arcanemechina.common.tileentity.TileEntityResearch;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientProxy  extends CommonProxy{
 
@@ -23,6 +19,7 @@ public class ClientProxy  extends CommonProxy{
 		super.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new BaubleRenderHandler());
 		MinecraftForge.EVENT_BUS.register(new IconRegestry());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityResearch.class, new ResearchTableRenderer());
 	}
 
 	@Override

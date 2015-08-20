@@ -19,6 +19,7 @@ public class BlockRegistry extends com.maelstrom.snowcone.registers.BlockRegistr
 		registerBasicBlock(BlocksReference.glyphBlock, BlocksReference.glyphName, false);
 		registerBlockAndTile(BlocksReference.arrayBlock, BlocksReference.arrayName, TileEntityArray.class, false);
 		registerBlockAndTile(BlocksReference.rStand, BlocksReference.rStandName, TileEntityResearch.class, false);
+//		GameRegistry.registerTileEntity(TileWardTest.class, "TILEENTITY-" + "WARDTEST");
 	}
 	
 	
@@ -29,32 +30,20 @@ public class BlockRegistry extends com.maelstrom.snowcone.registers.BlockRegistr
 	
 	private static void registerBasicBlock(Block block, String blockName, boolean addToTab)
 	{
-		if(addToTab)
-			registerBlock(block, blockName, Reference.tab);
-		else
-			registerBlock(block, blockName, null);
+		registerBlock(block, blockName, addToTab ? Reference.tab : null);
 	}
 
 	private static void registerBlockWithHarvest(Block block, String blockName, HarvestType type, int harvestLevel, boolean addToTab)
 	{
-		if(addToTab)
-			registerBlock(block, blockName, type, harvestLevel, Reference.tab, null);
-		else
-			registerBlock(block, blockName, type, harvestLevel, null, null);
+		registerBlock(block, blockName, type, harvestLevel, addToTab ? Reference.tab : null, null);
 	}
 
 	private static void registerBlockAndTileWithHarvest(Block block, String blockName, HarvestType type, int harvestLevel, Class<? extends TileEntity> tile, boolean addToTab)
 	{
-		if(addToTab)
-			registerBlock(block, blockName, type, harvestLevel, Reference.tab, tile);
-		else
-			registerBlock(block, blockName, type, harvestLevel, null, tile);
+		registerBlock(block, blockName, type, harvestLevel, addToTab ? Reference.tab : null, tile);
 	}
 	private static void registerBlockAndTile(Block block, String blockName, Class<? extends TileEntity> tile, boolean addToTab)
 	{
-		if(addToTab)
-			registerBlock(block, blockName, null, 0, Reference.tab, tile);
-		else
-			registerBlock(block, blockName, null, 0, null, tile);
+		registerBlock(block, blockName, null, 0, addToTab ? Reference.tab : null, tile);
 	}
 }

@@ -1,6 +1,7 @@
 package com.maelstrom.arcanemechina.common.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,15 +9,19 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 
 import com.maelstrom.arcanemechina.common.ItemsReference;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityResearch extends TileEntity implements ISidedInventory {	
 	
 	//inventory slot 0
 	private ItemStack researchBook = null;
 	//inventory slot 1
-	private ItemStack ink = null;
+	private ItemStack inkWell = null;
 	//inventory slot 2
 	private ItemStack quill = null;
 	
@@ -34,7 +39,7 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
 		if(slot == 0)
 			return researchBook;
 		else if (slot == 1)
-			return ink;
+			return inkWell;
 		else if (slot == 2)
 			return quill;
 		
@@ -54,8 +59,8 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
 		}
 		else if(slot == 1)
 		{
-			temp = ink;
-			ink = null;
+			temp = inkWell;
+			inkWell = null;
 		}
 		else if(slot == 2)
 		{
@@ -76,8 +81,8 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
 		}
 		else if(slot == 1)
 		{
-			temp = ink;
-			ink = null;
+			temp = inkWell;
+			inkWell = null;
 		}
 		else if(slot == 2)
 		{
@@ -99,7 +104,7 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
 			}
 		    else if(slot == 1 /*&& Stack.getItem() == ItemsReference.InkBottle*/ && this.getStackInSlot(slot) == null)
 		    {
-		    	ink = itemStack;
+		    	inkWell = itemStack;
 				itemStack = null;
 		    }
 		    else if(slot == 2 /*&& Stack.getItem() == ItemsReference.Quill*/ && this.getStackInSlot(slot) == null)
@@ -131,7 +136,7 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -175,16 +180,6 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
 		return isItemValidForSlot(slot, itemStack);
 	}
 
-	public void setResearchBook(ItemStack itemStack)
-	{
-		researchBook = itemStack;
-		markDirty();
-	}
-
-	public ItemStack getResearchBook()
-	{
-		return researchBook;
-	}
 	
 	@Override
 	public Packet getDescriptionPacket()
@@ -213,12 +208,12 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
     	
     	
     	researchBook = null;
-    	ink = null;
+    	inkWell = null;
     	quill = null;
     	
     	
     	researchBook = ItemStack.loadItemStackFromNBT(researchBookNBT);
-    	ink = ItemStack.loadItemStackFromNBT(inkNBT);
+    	inkWell = ItemStack.loadItemStackFromNBT(inkNBT);
     	quill = ItemStack.loadItemStackFromNBT(quillNBT);
     }
 	
@@ -234,8 +229,8 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
     	//write item nbt
     	if(researchBook != null)
     		researchBook.writeToNBT(researchBookNBT);
-    	if(ink != null)
-    		ink.writeToNBT(inkNBT);
+    	if(inkWell != null)
+    		inkWell.writeToNBT(inkNBT);
     	if(quill != null)
     		quill.writeToNBT(quillNBT);
     	
@@ -246,7 +241,80 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
     	
     	//place that into the main nbt
     	nbt.setTag("items", items);
-    	
-    	System.out.println(nbt);
     }
+
+	
+	
+	//////////////////////////////////////////////////////////////////
+	
+	
+	
+	
+    public void useInkWell()
+    {
+    	if(inkWell != null && inkWell.getItem() == ItemsReference.inkWell)
+    	{
+    		inkWell.stackSize--;
+	    	if(inkWell.stackSize <= 0)
+	    		inkWell = null;
+    	}
+    }
+
+    public void refillInkWell(ItemStack inkSack)
+    {
+    	if(inkWell != null && inkWell.getItem() == ItemsReference.inkWell && inkWell.stackSize < ItemsReference.inkWell.getMaxDamage() && inkSack != null && inkSack.getItem() == Items.dye && inkSack.getItemDamage() ==  0)
+    	{
+    		inkWell.stackSize++;
+    		inkSack.stackSize--;
+    		if(inkSack.stackSize <= 0)
+    		{
+    			inkSack = null;
+    		}
+    	}
+    }
+
+	public void setResearchBook(ItemStack itemStack)
+	{
+		researchBook = itemStack;
+		markDirty();
+	}
+
+	public ItemStack getResearchBook()
+	{
+		return researchBook;
+	}
+	
+    public int getInkLevel()
+    {
+    	if(inkWell != null)
+    		return (100 / inkWell.getMaxDamage()) * inkWell.getItemDamage();
+    	return 0;
+    }
+
+    public boolean hasInk()
+    {
+    	return getInkLevel() > 0;
+    }
+    public boolean hasQuill()
+    {
+    	return quill != null;
+    }
+    public boolean hasResearchBook()
+    {
+    	return researchBook != null;
+    }
+
+    public boolean canResearch()
+    {
+    	return hasInk() && hasQuill() && hasResearchBook();
+    }
+    
+
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+    	return this.INFINITE_EXTENT_AABB;
+    }
+
+    
 }

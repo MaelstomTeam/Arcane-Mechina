@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.common.registery;
+package com.maelstrom.arcanemechina.client.registry;
 
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -15,7 +15,6 @@ public class IconRegestry {
 	
 	@SubscribeEvent
 	public void registerTextures(TextureStitchEvent.Pre event) {
-		System.out.println(event.map.getTextureType());
 		TextureMap map = event.map;
 		if (map.getTextureType() == 1) {
 			compass[0] = new TieredCompassTexture("Zero", 0);

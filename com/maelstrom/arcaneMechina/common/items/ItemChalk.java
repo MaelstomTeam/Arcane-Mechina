@@ -1,17 +1,8 @@
 package com.maelstrom.arcanemechina.common.items;
 
-import java.util.ArrayList;
-
-import org.lwjgl.util.vector.Vector;
-
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -34,6 +25,10 @@ public class ItemChalk extends ExtendableItem
 
 	public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float floatX, float floatY, float floatZ)
 	{
+//		if(true)
+//		{
+//			world.setTileEntity(x, y, z, new TileWardTest());
+//		}else
 		//if direction clicked is top, block top is solid and block above is equal to air it can be placed. if block is equal to glowstone it can also be placed
 		if((ForgeDirection.getOrientation(side) == ForgeDirection.UP 
 				&& world.getBlock(x, y, z).isSideSolid(world, x, y, z, ForgeDirection.getOrientation(side)) 

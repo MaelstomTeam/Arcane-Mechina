@@ -1,6 +1,7 @@
 package com.maelstrom.arcanemechina.common.items;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,7 +9,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import com.maelstrom.arcanemechina.common.BlocksReference;
@@ -52,12 +52,10 @@ public class ItemMechanizedArcaneBook extends ExtendableItem
     	}
     	else
     	{
-    		if(book.getBookOwner() == "")
-    		{
-	    		book.setBookOwner(player.getDisplayName());
-	    		book.clearOldAndApplyChanges();
-    		}
-    		list.add("Owner: " + book.getBookOwner());
+    		if(book.getBookOwner() == null)
+    			list.add("Owner: §K1234756789§R");
+    		else
+    			list.add("Owner: " + book.getBookOwner());
     	}
     }
     
@@ -75,17 +73,30 @@ public class ItemMechanizedArcaneBook extends ExtendableItem
     	AMBookHelper book = AMBookHelper.passItemStack(itemStack);
     	book.setBookOwner(player.getDisplayName());
     	book.clearOldAndApplyChanges();
-    	itemStack = book.getItemstack().copy();
     }
 	
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
 	{
+		if(AMBookHelper.passItemStack(itemStack).getBookOwner() == null)
+		{
+			AMBookHelper book = AMBookHelper.passItemStack(itemStack);
+			book.setBookOwner(player.getDisplayName());
+			book.clearOldAndApplyChanges();
+		}
 		//open readonly gui
 		return itemStack;
 	}
 
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float xFloat, float yFloat, float zFloat)
     {
+    	//quick fix
+		if(AMBookHelper.passItemStack(itemStack).getBookOwner() == null)
+		{
+			AMBookHelper book = AMBookHelper.passItemStack(itemStack);
+			book.setBookOwner(player.getDisplayName());
+			book.clearOldAndApplyChanges();
+		}
+		
     	if(world.getBlock(x, y, z) == Blocks.stonebrick && world.getBlockMetadata(x, y, z) == 0)
     	{
     		for(int x2 = -1; x2 <= 1; x2++)
@@ -103,11 +114,9 @@ public class ItemMechanizedArcaneBook extends ExtendableItem
             	TileEntityResearch table = (TileEntityResearch) world.getTileEntity(x, y, z);
             	table.setResearchBook(itemStack.copy());
             	itemStack.stackSize = 0;
-            }
 			return true;
+            }
     	}
-    	else
-    		System.out.println(world.getBlockMetadata(x, y, z));
         return false;
     }
 }

@@ -10,9 +10,9 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import com.maelstrom.arcanemechina.client.registry.IconRegestry;
 import com.maelstrom.arcanemechina.common.ItemsReference;
 import com.maelstrom.arcanemechina.common.Reference;
-import com.maelstrom.arcanemechina.common.registery.IconRegestry;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
 
 public class ItemTieredCompass extends ExtendableItem {

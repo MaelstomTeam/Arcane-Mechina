@@ -40,7 +40,7 @@ public class TileWardTest extends TileEntity
 		
         for (int k = 0; k < 2 * height; ++k)
         {
-            this.worldObj.spawnParticle("portal", (x + .5) + (this.rand.nextDouble() - 0.5D), y + 1 + this.rand.nextDouble() * height, (z + .5) + (this.rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D), -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D));
+            this.worldObj.spawnParticle("portal", (x + .5) + (this.rand.nextDouble() - 0.5D), y + .5 + this.rand.nextDouble() * height, (z + .5) + (this.rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D), -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D));
         }
 		AxisAlignedBB point = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+5, z+1);
 		List<Entity> entity = world.getEntitiesWithinAABB(Entity.class, point);

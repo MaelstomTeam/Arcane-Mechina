@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import com.maelstrom.arcanemechina.common.items.ItemChalk;
 import com.maelstrom.arcanemechina.common.items.ItemCraftingParts;
 import com.maelstrom.arcanemechina.common.items.ItemGhostWingAmulet;
+import com.maelstrom.arcanemechina.common.items.ItemInkWell;
 import com.maelstrom.arcanemechina.common.items.ItemMechanizedArcaneBook;
 import com.maelstrom.arcanemechina.common.items.ItemRings;
 import com.maelstrom.arcanemechina.common.items.ItemTieredCompass;
@@ -33,4 +34,7 @@ public class ItemsReference
 		};
 	public static final Item craftingParts = new ItemCraftingParts(craftingItemNames);
 	public static final String craftingPartsBaseName = "craftingPart";
+	
+	public static final Item inkWell = new ItemInkWell();
+	public static final String inkWellName = "inkWell";
 }
