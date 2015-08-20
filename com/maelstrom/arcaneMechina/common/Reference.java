@@ -5,6 +5,8 @@ import net.minecraft.util.ResourceLocation;
 
 import com.maelstrom.arcanemechina.common.creative.CreativeTab;
 
+import cpw.mods.fml.common.network.IGuiHandler;
+
 public class Reference
 {
 
@@ -28,6 +30,7 @@ public class Reference
 	public static final String[] artists = {"brizzle1993", "Drullkus"};
 	public static CreativeTab tab = new CreativeTab();
 	public static final String tabName = "arcanemechina";
+	public static final IGuiHandler guiHandler = new GuiHandler();
 
 	public static boolean isContributor(String playerName)
 	{

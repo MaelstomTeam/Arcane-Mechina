@@ -1,6 +1,9 @@
 package com.maelstrom.arcanemechina.library;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemWritableBook;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class AMBookHelper
@@ -9,7 +12,6 @@ public class AMBookHelper
 	private boolean creativeBook = false;
 	private String bookOwner = "?";
 	private NBTTagCompound nbt = null;
-
 
 	public static AMBookHelper passItemStack(ItemStack itemStack)
 	{

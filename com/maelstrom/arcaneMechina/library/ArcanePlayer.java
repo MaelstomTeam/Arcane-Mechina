@@ -25,7 +25,6 @@ public abstract class ArcanePlayer extends EntityPlayer
         //get values
         isPhilosopherHost = arcaneNBT.getBoolean("isPhilosopherHost");
         philosopherKills  = arcaneNBT.getInteger("philosopherKills");
-    
     }
     
     public void writeEntityToNBT(NBTTagCompound nbt)

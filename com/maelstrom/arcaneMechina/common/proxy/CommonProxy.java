@@ -1,6 +1,5 @@
 package com.maelstrom.arcanemechina.common.proxy;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -8,17 +7,17 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.ItemsReference;
 import com.maelstrom.arcanemechina.common.Reference;
 import com.maelstrom.arcanemechina.common.registery.BlockRegistry;
 import com.maelstrom.arcanemechina.common.registery.ItemRegistry;
-import com.maelstrom.arcanemechina.library.AMBookHelper;
 import com.maelstrom.snowcone.proxy.IProxy;
 
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy implements IProxy {
@@ -27,6 +26,7 @@ public class CommonProxy implements IProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		ItemRegistry.registerALL();
 		BlockRegistry.registerALL();
+		NetworkRegistry.INSTANCE.registerGuiHandler(ArcaneMechina.instance, Reference.guiHandler);
 	}
 
 	@Override

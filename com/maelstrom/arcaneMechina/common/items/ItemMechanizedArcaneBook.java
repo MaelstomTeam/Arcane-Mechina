@@ -1,8 +1,8 @@
 package com.maelstrom.arcanemechina.common.items;
 
 import java.util.List;
-import java.util.Random;
 
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.BlocksReference;
 import com.maelstrom.arcanemechina.common.ItemsReference;
 import com.maelstrom.arcanemechina.common.Reference;
@@ -83,6 +84,8 @@ public class ItemMechanizedArcaneBook extends ExtendableItem
 			book.setBookOwner(player.getDisplayName());
 			book.clearOldAndApplyChanges();
 		}
+		if(world.isRemote)
+			player.openGui(ArcaneMechina.instance, 1, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 		//open readonly gui
 		return itemStack;
 	}

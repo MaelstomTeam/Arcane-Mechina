@@ -54,7 +54,6 @@ public class ModelResearchTable extends ModelBase
 			if(!table.hasQuill())
 			{
 		        GL11.glPushMatrix();
-//			    	GL11.glScaled(2,2,2);
 		        	GL11.glTranslated(0, 4, 0);
 			        GL11.glTranslated(-16, 0, 16);
 //			    	GL11.glRotated(-Math.toDegrees(Math.atan2((x + .5) - Minecraft.getMinecraft().thePlayer.posX, (z + .5) - Minecraft.getMinecraft().thePlayer.posZ)), 0, 1, 0);

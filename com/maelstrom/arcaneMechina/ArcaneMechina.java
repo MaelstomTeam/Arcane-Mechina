@@ -15,6 +15,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, useMetadata = Reference.MOD_METADATA)
 public class ArcaneMechina
 {
+
+	@Mod.Instance(Reference.MOD_ID)
+	public static ArcaneMechina instance;
 	
 	@SidedProxy(clientSide = Reference.PROXY_CLIENT, serverSide = Reference.PROXY_SERVER)
 	public static CommonProxy proxy;
