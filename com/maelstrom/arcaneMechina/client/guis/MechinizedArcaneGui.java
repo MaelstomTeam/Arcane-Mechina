@@ -25,8 +25,9 @@ public class MechinizedArcaneGui extends GuiScreen{
 		//closeButton = new GuiButton(0, 5, 5, 200, 20, "CLOSE");
 		
 		//relative to screen position $Hybolic
-		closeButton = new GuiButton(0, this.width - 40, this.height - 20, 40, 20, "CLOSE");
-		
+		closeButton = new GuiButton(0, this.width - 45, this.height - 25, 40, 20, "CLOSE");
+		//moved the button so it wasn't exactly in the corner, but instead 5 off $Spor
+		//	^^This makes it more aesthetically pleasing $Spor 
 		
 		//add button to list $Hybolic
 		buttonList.add(closeButton);
