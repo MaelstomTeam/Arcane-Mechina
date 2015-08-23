@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 
 import com.maelstrom.arcanemechina.common.items.ItemChalk;
 import com.maelstrom.arcanemechina.common.items.ItemCraftingParts;
+import com.maelstrom.arcanemechina.common.items.ItemDevAndSpecial;
 import com.maelstrom.arcanemechina.common.items.ItemGhostWingAmulet;
 import com.maelstrom.arcanemechina.common.items.ItemInkWell;
 import com.maelstrom.arcanemechina.common.items.ItemMechanizedArcaneBook;
@@ -37,4 +38,7 @@ public class ItemsReference
 	
 	public static final Item inkWell = new ItemInkWell();
 	public static final String inkWellName = "inkWell";
+	
+	public static final Item dsItems = new  ItemDevAndSpecial();
+	public static final String dsItemsName = "devSpecial";
 }

@@ -9,7 +9,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EntityEvent
 {
-	Potion potion = new PotionEffectFreeze();
+	public static final Potion potion = new PotionEffectFreeze();
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event)
 	{

@@ -37,32 +37,28 @@ public class ModelResearchTable extends ModelBase
 	        GL11.glRotated(180, 0, 0, 1);
 	        GL11.glTranslated(0, 4, 0);
 			GL11.glScaled(0.5F, 0.5F, 0.5F);
+        	GL11.glTranslated(0, 4, 0);
+	        GL11.glTranslated(-16, 0, 16);
+	    	GL11.glRotated(-table.rotation + 90, 0, 1, 0);
 			if(!table.hasInk())
 			{
 		        GL11.glPushMatrix();
-		        	GL11.glTranslated(0, 4, 0);
-			        GL11.glTranslated(-16, 0, -16);
-//			    	GL11.glRotated(-Math.toDegrees(Math.atan2((x + .5) - Minecraft.getMinecraft().thePlayer.posX, (z + .5) - Minecraft.getMinecraft().thePlayer.posZ)) - 90, 0, 1, 0);
-			    	GL11.glTranslated(-7, -19, 16);
+			    	GL11.glTranslated(-7, -19, -16);
 			    	GL11.glRotated(14 - MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 3F, -1, 0, 1);
 			    	GL11.glRotated(MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 3F, 0, 1, 0);
 		        	GL11.glTranslated(0, -0.2625 + MathHelper.cos((ticksExisted) * .075F) * (float) Math.PI * 0.4F, 0);
-			    	
 					ModelInkWell.instance.renderInkWell();
 				GL11.glPopMatrix();
 			}
 			if(!table.hasQuill())
 			{
 		        GL11.glPushMatrix();
-		        	GL11.glTranslated(0, 4, 0);
-			        GL11.glTranslated(-16, 0, 16);
-//			    	GL11.glRotated(-Math.toDegrees(Math.atan2((x + .5) - Minecraft.getMinecraft().thePlayer.posX, (z + .5) - Minecraft.getMinecraft().thePlayer.posZ)), 0, 1, 0);
-			    	GL11.glTranslated(9, -14, -14);
+			    	GL11.glTranslated(9, -18, -14);
 			    	GL11.glRotated(185, 0, 1, 0);
 			    	GL11.glRotated(315 + MathHelper.cos((ticksExisted) * .03F) * (float) Math.PI * 4f, 0, 0, 1);
 			    	GL11.glRotated(35, 1, 0, 0);
-		        	GL11.glTranslated(0, -0.2625 - MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 0.04F, 0);
 		        	GL11.glTranslated(0, MathHelper.cos((ticksExisted) * .08267F) * (float) Math.PI * .58922f, 0);
+		        	GL11.glTranslated(0, -0.2625 - MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 0.04F, 0);
 					GL11.glTranslated(4, -20, -19);
 					ModelQuill.instance.renderQuill();
 				GL11.glPopMatrix();
@@ -71,7 +67,11 @@ public class ModelResearchTable extends ModelBase
 			{
 		        GL11.glPushMatrix();
 			    	GL11.glScaled(16,16,16);
-					GL11.glTranslated(-1, .49, 1);
+		        	GL11.glTranslated(0, -0.2625 - MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 0.04F, 0);
+		        	GL11.glTranslated(0, -.3, 0);
+			    	GL11.glRotated(270, 0, 0, 1);
+			    	GL11.glRotated(25, 0, 0, 1);
+			    	GL11.glScaled(2,2,2);
 					ModelResearchBook.instance.renderResearchBook(x,z);
 				GL11.glPopMatrix();
 			}
@@ -271,16 +271,8 @@ public class ModelResearchTable extends ModelBase
 	    	int ticksExisted = Minecraft.getMinecraft().thePlayer.ticksExisted;
 	    	Minecraft.getMinecraft().renderEngine.bindTexture(researchBookTexture);
 	    	
-	        GL11.glPushMatrix();
-	        	GL11.glTranslated(0, -0.2625 - MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 0.04F, 0);
-	        	GL11.glEnable(GL11.GL_CULL_FACE);
-	        	GL11.glTranslated(0, -.3, 0);
-		    	GL11.glRotated(270, 0, 0, 1);
-//		    	GL11.glRotated(Math.toDegrees(Math.atan2((x + .5) - Minecraft.getMinecraft().thePlayer.posX, (z + .5) - Minecraft.getMinecraft().thePlayer.posZ)) - 90, 1, 0, 0);
-		    	GL11.glRotated(25, 0, 0, 1);
-		    	GL11.glScaled(2,2,2);
+//	        GL11.glPushMatrix();
 		    	bookInstance.render((Entity)null, ticksExisted, 0f, .0f, .9f, .0f, 0.0625F);
-			GL11.glPopMatrix();
 	    }
 	}
 }

@@ -15,6 +15,7 @@ public class ItemRegistry extends com.maelstrom.snowcone.registers.ItemRegistry 
 		registerItem(ItemsReference.rings, ItemsReference.ringName);
 		registerItem(ItemsReference.tieredCompass, ItemsReference.tieiredCompassName);
 		registerItem(ItemsReference.craftingParts, ItemsReference.craftingPartsBaseName);
+		registerItem(ItemsReference.dsItems, ItemsReference.dsItemsName);
 	}
 	
 	private static void registerItem(Item item, String itemName)

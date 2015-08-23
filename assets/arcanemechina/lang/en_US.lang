@@ -53,6 +53,8 @@ item.arcanemechina.tCompassGPS.name=Point
 item.arcanemechina.craftingPart.GoldChainLink.name=Golden Chainlinks
 item.arcanemechina.craftingPart.IronChainLink.name=Iron Chainlinks
 
+item.arcanemechina.devSpecial.rosarioAmulet.name=Rosario Amulet
+
 
 item.arcanemechina.pegasusWingAmulet.name=Pegasus Wing Amulet
 item.arcanemechina.pegasusWingAmulet.line1.lore=It's not 16.5 wing

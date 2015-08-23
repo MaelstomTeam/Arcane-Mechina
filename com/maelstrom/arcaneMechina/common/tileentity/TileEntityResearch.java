@@ -1,5 +1,7 @@
 package com.maelstrom.arcanemechina.common.tileentity;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -10,6 +12,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 
 import com.maelstrom.arcanemechina.common.ItemsReference;
 
@@ -247,6 +250,38 @@ public class TileEntityResearch extends TileEntity implements ISidedInventory {
 	
 	//////////////////////////////////////////////////////////////////
 	
+	public double rotation = 0;
+	@Override
+	public void updateEntity()
+	{
+		World world = this.getWorldObj();
+		int x = this.xCoord;
+		int y = this.yCoord;
+		int z = this.zCoord;
+		if(world.isRemote)
+		{
+			AxisAlignedBB space = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1).expand(2, .5, 2);
+			List<EntityPlayer> playersInRange = world.getEntitiesWithinAABB(EntityPlayer.class, space);
+			
+			if(playersInRange.size() == 0)
+				return;
+			
+			double distance = 999d;
+			for(EntityPlayer player : playersInRange)
+			{
+				double xTemp = player.posX - (x + .5);
+				double yTemp = player.posY - (y + 1.5);
+				double zTemp = player.posZ - (z + .5);
+				double tempDistance = Math.sqrt((xTemp * xTemp) + (yTemp * yTemp) + (zTemp * zTemp));
+				if(distance > tempDistance)
+				{
+					distance = tempDistance;
+					double angle = Math.toDegrees(Math.atan2((x + .5) - player.posX, (z + .5) - player.posZ));
+					rotation = angle;
+				}
+			}
+		}
+	}
 	
 	
 	

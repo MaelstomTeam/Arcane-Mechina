@@ -28,8 +28,8 @@ public class PotionEffectFreeze extends Potion
     	if(entity instanceof EntityPlayer && ((EntityPlayer)entity).capabilities.isCreativeMode)
     		return;
 		entity.setPosition(((int)entity.posX) - .5, (int)entity.posY + (entity.height / 2), ((int)entity.posZ) - .5);
-    	if(entity.getHealth() > 6f)
-			entity.setHealth(6f);
+//    	if(entity.getHealth() > 6f)
+//			entity.setHealth(6f);
     	entity.motionY = 0;
     }
     
