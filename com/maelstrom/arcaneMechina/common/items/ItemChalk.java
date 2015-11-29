@@ -2,14 +2,18 @@ package com.maelstrom.arcanemechina.common.items;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.maelstrom.arcanemechina.common.BlocksReference;
 import com.maelstrom.arcanemechina.common.ItemsReference;
 import com.maelstrom.arcanemechina.common.Reference;
-import com.maelstrom.arcanemechina.common.tileentity.TileWardTest;
 import com.maelstrom.snowcone.extendables.ExtendableItem;
 
 public class ItemChalk extends ExtendableItem
@@ -25,10 +29,6 @@ public class ItemChalk extends ExtendableItem
 
 	public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float floatX, float floatY, float floatZ)
 	{
-//		if(true)
-//		{
-//			world.setTileEntity(x, y, z, new TileWardTest());
-//		}else
 		//if direction clicked is top, block top is solid and block above is equal to air it can be placed. if block is equal to glowstone it can also be placed
 		if((ForgeDirection.getOrientation(side) == ForgeDirection.UP 
 				&& world.getBlock(x, y, z).isSideSolid(world, x, y, z, ForgeDirection.getOrientation(side)) 
@@ -44,6 +44,18 @@ public class ItemChalk extends ExtendableItem
 	
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
 	{
+		if(player.capabilities.isCreativeMode && player.capabilities.isFlying && player.isSneaking() && player.inventory.armorInventory[3] != null && ((ItemBlock)player.inventory.armorInventory[3].getItem()).field_150939_a == Blocks.pumpkin && player.posY > 256d){
+			ItemStack newItemBook = new ItemStack(Items.written_book);
+			NBTTagCompound bookNBT = new NBTTagCompound();
+			bookNBT.setString("title", "Kaptop");
+			bookNBT.setString("author", "The Maelstrom Devs");
+			NBTTagList pages = new NBTTagList();
+			pages.appendTag(new NBTTagString("List of Out Typos")); // 256 lines per page
+			pages.appendTag(new NBTTagString("Boolean ture = true;//this line in place for typos\n\n\nin basic, SNR has issues typing True and this sorta became a thing after awhile!"));
+			bookNBT.setTag("pages", pages);
+			newItemBook.stackTagCompound = bookNBT;
+			player.inventory.addItemStackToInventory(newItemBook);
+		}
 		return itemStack;
 	}
 	

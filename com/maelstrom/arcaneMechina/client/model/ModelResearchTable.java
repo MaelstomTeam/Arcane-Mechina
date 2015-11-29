@@ -43,7 +43,7 @@ public class ModelResearchTable extends ModelBase
 			if(!table.hasInk())
 			{
 		        GL11.glPushMatrix();
-			    	GL11.glTranslated(-7, -19, -16);
+			    	GL11.glTranslated(-7, -22, -17);
 			    	GL11.glRotated(14 - MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 3F, -1, 0, 1);
 			    	GL11.glRotated(MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 3F, 0, 1, 0);
 		        	GL11.glTranslated(0, -0.2625 + MathHelper.cos((ticksExisted) * .075F) * (float) Math.PI * 0.4F, 0);
@@ -106,7 +106,7 @@ public class ModelResearchTable extends ModelBase
 		    	tess.addVertexWithUV(0, 0, 0, 0, 0);
 		    	tess.draw();
 		    	
-	    		GL11.glColor3d(1, 1, 1);
+//	    		GL11.glColor3d(1, 1, 1);
 
 
 	    		GL11.glTranslated(0, MathHelper.cos((ticksExisted) * .05F) * (float) Math.PI * 0.005F, 0);

@@ -50,11 +50,15 @@ item.arcanemechina.ringofemerald.name=Emerald Ring
 item.arcanemechina.tCompassZero.name=ZeroZeroZero
 item.arcanemechina.tCompassNorth.name=Northern Reaches
 item.arcanemechina.tCompassGPS.name=Point
+item.arcanemechina.soulBoundRing.name=Soul Binding Ring
 item.arcanemechina.craftingPart.GoldChainLink.name=Golden Chainlinks
 item.arcanemechina.craftingPart.IronChainLink.name=Iron Chainlinks
 
 item.arcanemechina.devSpecial.rosarioAmulet.name=Rosario Amulet
 
+item.arcanemechina.functionalItem.bloodRose.name=Blood Rose
+item.arcanemechina.functionalItem.bloodRose.lore1=He Burnt up a star to say,
+item.arcanemechina.functionalItem.bloodRose.lore2=            "Rose Tyler I"
 
 item.arcanemechina.pegasusWingAmulet.name=Pegasus Wing Amulet
 item.arcanemechina.pegasusWingAmulet.line1.lore=It's not 16.5 wing

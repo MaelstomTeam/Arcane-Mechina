@@ -2,9 +2,11 @@ package com.maelstrom.arcanemechina.common;
 
 import net.minecraft.item.Item;
 
+import com.maelstrom.arcanemechina.common.items.ItemSoulBound;
 import com.maelstrom.arcanemechina.common.items.ItemChalk;
 import com.maelstrom.arcanemechina.common.items.ItemCraftingParts;
 import com.maelstrom.arcanemechina.common.items.ItemDevAndSpecial;
+import com.maelstrom.arcanemechina.common.items.ItemFunctional;
 import com.maelstrom.arcanemechina.common.items.ItemGhostWingAmulet;
 import com.maelstrom.arcanemechina.common.items.ItemInkWell;
 import com.maelstrom.arcanemechina.common.items.ItemMechanizedArcaneBook;
@@ -41,4 +43,9 @@ public class ItemsReference
 	
 	public static final Item dsItems = new  ItemDevAndSpecial();
 	public static final String dsItemsName = "devSpecial";
+	
+	public static final String functionalName = "functionalItem";
+	public static final Item bloodRose = new ItemFunctional("bloodRose");
+	public static final String boundRingName = "soulBoundRing";
+	public static final Item boundRing = new ItemSoulBound();
 }

@@ -14,7 +14,7 @@ import com.maelstrom.arcanemechina.client.model.ModelResearchTable;
 public class ResearchTableRenderer extends TileEntitySpecialRenderer {
 
 	@Override
-	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float f)
+	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTick)
 	{
 		GL11.glPushMatrix();
 		

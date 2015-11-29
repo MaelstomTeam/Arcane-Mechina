@@ -7,9 +7,6 @@ import com.maelstrom.arcanemechina.common.BlocksReference;
 import com.maelstrom.arcanemechina.common.Reference;
 import com.maelstrom.arcanemechina.common.tileentity.TileEntityArray;
 import com.maelstrom.arcanemechina.common.tileentity.TileEntityResearch;
-import com.maelstrom.arcanemechina.common.tileentity.TileWardTest;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockRegistry extends com.maelstrom.snowcone.registers.BlockRegistry
 {
@@ -19,7 +16,6 @@ public class BlockRegistry extends com.maelstrom.snowcone.registers.BlockRegistr
 		registerBasicBlock(BlocksReference.glyphBlock, BlocksReference.glyphName, false);
 		registerBlockAndTile(BlocksReference.arrayBlock, BlocksReference.arrayName, TileEntityArray.class, false);
 		registerBlockAndTile(BlocksReference.rStand, BlocksReference.rStandName, TileEntityResearch.class, false);
-//		GameRegistry.registerTileEntity(TileWardTest.class, "TILEENTITY-" + "WARDTEST");
 	}
 	
 	

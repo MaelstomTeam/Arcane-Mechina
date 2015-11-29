@@ -16,21 +16,15 @@ import net.minecraft.util.ResourceLocation;
 public class PotionEffectFreeze extends Potion
 {
 
-	public PotionEffectFreeze()
+	public PotionEffectFreeze(String name, int id)
 	{
-		super(25, true, 5149489);
+		super(id, true, 5149489);
 		this.setIconIndex(0, 0);
-		this.setPotionName("freeze");
+		this.setPotionName(name);
 	}
 	
     public void affectEntity(EntityLivingBase entity, EntityLivingBase otherEntity, int p_76402_3_, double p_76402_4_)
     {
-    	if(entity instanceof EntityPlayer && ((EntityPlayer)entity).capabilities.isCreativeMode)
-    		return;
-		entity.setPosition(((int)entity.posX) - .5, (int)entity.posY + (entity.height / 2), ((int)entity.posZ) - .5);
-//    	if(entity.getHealth() > 6f)
-//			entity.setHealth(6f);
-    	entity.motionY = 0;
     }
     
     public int getStatusIconIndex()

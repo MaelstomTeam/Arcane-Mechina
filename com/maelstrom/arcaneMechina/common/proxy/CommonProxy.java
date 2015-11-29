@@ -11,6 +11,7 @@ import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.ItemsReference;
 import com.maelstrom.arcanemechina.common.Reference;
 import com.maelstrom.arcanemechina.common.event.EntityEvent;
+import com.maelstrom.arcanemechina.common.items.ItemFunctional;
 import com.maelstrom.arcanemechina.common.registery.BlockRegistry;
 import com.maelstrom.arcanemechina.common.registery.ItemRegistry;
 import com.maelstrom.snowcone.proxy.IProxy;
@@ -39,6 +40,7 @@ public class CommonProxy implements IProxy {
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(ItemsReference.amuletWing);
+		MinecraftForge.EVENT_BUS.register(new ItemFunctional(""));
 		MinecraftForge.EVENT_BUS.register(new EntityEvent());
 		registerCrafting();
 	}
