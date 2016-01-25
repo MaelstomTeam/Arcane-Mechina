@@ -1,0 +1,47 @@
+item.help_book.name=The Arcane Mechina Handbook
+helpbook.subtext=by Nade & Snar
+
+
+
+tile.dust_ore.name=Dust Ore
+
+
+item.dust_crystal.name=Dust Crystal
+item.glass_jar_dust.name=Jar of Solution
+item.glass_jar.name=Glass Jar
+item.gold_rod.name=Golden Rods
+item.morter_and_pestal.name=Morter & Pestal
+dust_crystal.mixed=Mixed Dust Crystal
+dust_crystal.pure=Pure Dust Crystal
+dust_ore.mixed=Mixed Dust Ore
+dust_ore.pure=Pure Dust Ore
+
+
+dust_type.air=Air
+dust_type.earth=Earth
+dust_type.fire=Fire
+dust_type.water=Water
+dust_type.dark=Dark
+dust_type.light=Light
+dust_type.bright_air=Bright Air
+dust_type.bright_earth=Bright Earth
+dust_type.bright_fire=Bright Fire
+dust_type.bright_water=Bright Water
+dust_type.dark_air=Dark Air
+dust_type.dark_earth=Dark Earth
+dust_type.dark_fire=Dark Fire
+dust_type.dark_water=Dark Water
+dust_type.life=Life
+dust_type.death=Poison
+dust_type.molten=Molten
+dust_type.steam=Gaseous
+dust_type.strong_fire=Strong Fire
+dust_type.earth_unstable=[Unused]
+dust_type.explosive=Explosive
+dust_type.ender=Ender
+dust_type.hellish=Hellish
+dust_type.power=Powered
+dust_type.overcharged=Overcharged
+
+itemGroup.tab_armech=Arcane Mechina
+itemGroup.tab_armech.dust=Arcane Mechina Dusts
