@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "type=air": { "model":"armech:dust_ore" },
+        "type=earth": { "model":"armech:dust_ore" },
+        "type=fire": { "model":"armech:dust_ore" },
+        "type=water": { "model":"armech:dust_ore" },
+        "type=dark": { "model":"armech:dust_ore" },
+        "type=light": { "model":"armech:dust_ore" },
+        "type=bright_air": { "model":"armech:dust_ore" },
+        "type=bright_earth": { "model":"armech:dust_ore" },
+        "type=bright_fire": { "model":"armech:dust_ore" },
+        "type=bright_water": { "model":"armech:dust_ore" },
+        "type=dark_air": { "model":"armech:dust_ore" },
+        "type=dark_earth": { "model":"armech:dust_ore" },
+        "type=dark_fire": { "model":"armech:dust_ore" },
+        "type=dark_water": { "model":"armech:dust_ore" }
+    }
+}

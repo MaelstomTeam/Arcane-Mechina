@@ -1,0 +1,47 @@
+#################################################
+         ForgeGradle 2.0-SNAPSHOT        
+  https://github.com/MinecraftForge/ForgeGradle  
+#################################################
+               Powered by MCP 9.10               
+             http://modcoderpack.com             
+         by: Searge, ProfMobius, Fesh0r,         
+         R4wk, ZeuX, IngisKahn, bspkrs           
+#################################################
+:deobfCompileDummyTask
+:getVersionJson
+:extractUserdev UP-TO-DATE
+:downloadClient SKIPPED
+:downloadServer SKIPPED
+:splitServerJar SKIPPED
+:mergeJars SKIPPED
+:applyBinaryPatches SKIPPED
+:extractDependencyATs SKIPPED
+:extractMcpData SKIPPED
+:extractMcpMappings SKIPPED
+:genSrgs SKIPPED
+:deobfMcMCP SKIPPED
+:deobfProvidedDummyTask
+:extractNatives SKIPPED
+:getAssetIndex UP-TO-DATE
+:getAssets
+Current status: 117/734   15%
+Current status: 199/734   27%
+Current status: 267/734   36%
+Current status: 356/734   48%
+Current status: 447/734   60%
+Current status: 506/734   68%
+Current status: 513/734   69%
+Current status: 521/734   70%
+Current status: 558/734   76%
+Current status: 612/734   83%
+Current status: 658/734   89%
+Current status: 712/734   97%
+Current status: 726/734   98%
+:makeStart
+[ant:javac] warning: [options] bootstrap class path not set in conjunction with -source 1.6
+[ant:javac] 1 warning
+:setupDevWorkspace
+
+BUILD SUCCESSFUL
+
+Total time: 36.628 secs

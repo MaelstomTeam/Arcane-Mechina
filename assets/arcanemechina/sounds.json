@@ -1,4 +1,0 @@
-{
-	"equipBauble": { "category": "neutral", "sounds":["AmuletEquip"] },
-	"unequipBauble": { "category": "neutral", "sounds":["AmuletUnequip"] }
-}
