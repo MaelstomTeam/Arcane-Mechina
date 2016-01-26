@@ -2,8 +2,10 @@ package com.maelstrom.armech.common.items;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Random;
 
 import com.maelstrom.armech.ArMechMain;
+import com.maelstrom.armech.common.Reference;
 import com.maelstrom.armech.common.blocks.BlockDustOre;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,7 +21,7 @@ public class ItemDustDust extends Item {
 	public ItemDustDust()
 	{
 		super();
-		this.setUnlocalizedName("dust_crystal");
+		this.setUnlocalizedName("dust_dust");
 		this.setHasSubtypes(true);
 		this.setCreativeTab(ArMechMain.tab_armech_dust);
 	}
@@ -27,23 +29,24 @@ public class ItemDustDust extends Item {
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack)
 	{
-		return super.getUnlocalizedName() + "." + BlockDustOre.EnumType.getType(itemstack.getItemDamage()).getName();
+		return super.getUnlocalizedName();// + "." + Reference.dustNames[itemstack.getItemDamage()] != null ? Reference.dustNames[itemstack.getItemDamage()] : "air";
 	}
 	
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List items)
 	{
-		for(int i = 0; i < BlockDustOre.EnumType.length(); i++)
-			items.add(new ItemStack(item, 1,i));
+		for(int i = 0; i < Reference.dustNames.length; i++)
+			if(i != 19)
+				items.add(new ItemStack(item, 1,i));
 	}
 	
 	@Override
-	public void addInformation(ItemStack item_stack, EntityPlayer player, List subtext, boolean bool)
+	public void addInformation(ItemStack itemstack, EntityPlayer player, List subtext, boolean bool)
 	{
-		if(item_stack.getItemDamage() >= 6)
-			subtext.add(StatCollector.translateToLocal("dust_crystal.mixed") + " of " + StatCollector.translateToLocal("dust_type."+BlockDustOre.EnumType.getType(item_stack.getItemDamage()).getName()));
+		if(itemstack.getItemDamage() >= 6)
+			subtext.add(StatCollector.translateToLocal("dust_dust.mixed") + " of " + StatCollector.translateToLocal("dust_type."+Reference.dustNames[itemstack.getItemDamage()]));
 		else
-			subtext.add(StatCollector.translateToLocal("dust_crystal.pure") + " of " + StatCollector.translateToLocal("dust_type."+BlockDustOre.EnumType.getType(item_stack.getItemDamage()).getName()));
+			subtext.add(StatCollector.translateToLocal("dust_dust.pure") + " of " + StatCollector.translateToLocal("dust_type."+Reference.dustNames[itemstack.getItemDamage()]));
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -58,13 +61,13 @@ public class ItemDustDust extends Item {
 		else if(stack.getItemDamage() == 4)
 			return Color.BLACK.hashCode();
 		else if(stack.getItemDamage() == 5)
-			return new Color(255,255,255).hashCode();
+			return Color.WHITE.hashCode();
 		else if(stack.getItemDamage() == 6)
 			return new Color(255,255,144).hashCode();
 		else if(stack.getItemDamage() == 7)
 			return new Color(144,255,144).hashCode();
 		else if(stack.getItemDamage() == 8)
-			return new Color(255,144,144).hashCode();
+			return new Color(255,104,104).hashCode();
 		else if(stack.getItemDamage() == 9)
 			return new Color(144,144,255).hashCode();
 		else if(stack.getItemDamage() == 10)
@@ -75,7 +78,35 @@ public class ItemDustDust extends Item {
 			return new Color(144,0,0).hashCode();
 		else if(stack.getItemDamage() == 13)
 			return new Color(0,0,144).hashCode();
+		else if(stack.getItemDamage() == 14)
+			return Color.PINK.hashCode();
+		else if(stack.getItemDamage() == 15)
+			return new Color(70,95,10).hashCode();
+		else if(stack.getItemDamage() == 16)
+			return Color.ORANGE.hashCode();
+		else if(stack.getItemDamage() == 17)
+			return new Color(192,192,192).hashCode();
+		else if(stack.getItemDamage() == 18)
+			return new Color(255,69,0).hashCode();
+		else if(stack.getItemDamage() == 19)
+		{
+			if(new Random().nextInt(10) >= 5)
+				return Color.GREEN.hashCode();
+			else
+				return new Color(85,205,47).hashCode();
+		}
+		else if(stack.getItemDamage() == 20)
+			return new Color(220,20,60).hashCode();
+		else if(stack.getItemDamage() == 21)
+			return new Color(0,100,0).hashCode();
+		else if(stack.getItemDamage() == 22)
+			return new Color(220,20,60).hashCode();
+		else if(stack.getItemDamage() == 23)
+			return new Color(125, 249, 255).hashCode();
+		else if(stack.getItemDamage() == 24)
+			return new Color(8, 232, 222).hashCode();
 		else
 			return Color.yellow.hashCode();
 	}
+
 }

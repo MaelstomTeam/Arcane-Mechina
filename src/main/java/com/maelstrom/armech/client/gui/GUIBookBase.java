@@ -1,9 +1,12 @@
 package com.maelstrom.armech.client.gui;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.Item;
@@ -11,16 +14,22 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.maelstrom.armech.ArMechMain;
 import com.maelstrom.armech.common.Reference;
-
+@SuppressWarnings("all")
 public class GUIBookBase extends GuiScreen
 {
-	
-	public GuiButton closeButton;
-	public GuiButton next, prev, home, reset;
+	public GUIBookBase()
+	{
+		super();
+//		defaultBackground = rand.nextInt(3) + 1;
+	}
+	public static Random rand = new Random();
+	public GuiButton  reset;
 	int pageNumber = 0;
 	
-	private static Page page;
+	public static Page page;
+	public static int defaultBackground = 1;
 	
 	public boolean doesGuiPauseGame(){return false;}
 	
@@ -30,30 +39,31 @@ public class GUIBookBase extends GuiScreen
 		//sets page if it hasn't been set already
 		if(page == null)
 			page = Page.homePage;
+		else if(page == Page.index)
+			Minecraft.getMinecraft().thePlayer.openGui(ArMechMain.INSTANCE, 1, Minecraft.getMinecraft().theWorld, 0, 0, 0);
 		
 		//clear list
 		this.buttonList.clear();
 		
 		//create buttons
-		buttonList.add(closeButton = new GuiButton(0, 0, 0, 35, 20, "Close"));
-		buttonList.add(next = new GuiButton(1, width - 50, height - 20, 50, 20, "Next"));
-		buttonList.add(prev = new GuiButton(2, 0, height - 20, 50, 20, "Previous"));
-		buttonList.add(home = new GuiButton(3, width - 50, 0, 50, 20, "home"));
+//		buttonList.add(closeButton = new GuiButton(0, 0, 0, 35, 20, "Close"));
+//		buttonList.add(next = new GuiButton(1, width - 50, height - 20, 50, 20, "Next"));
+//		buttonList.add(prev = new GuiButton(2, 0, height - 20, 50, 20, "Previous"));
+//		buttonList.add(home = new GuiButton(3, width - 50, 0, 50, 20, "home"));
 		buttonList.add(reset = new GuiButton(4, width / 2 - 55, 0, 110, 20, "RELOAD PAGE INIT()"));
 	}
 
 //	final String VERT = Util.r
 	
-	@SuppressWarnings("all")
 	public void drawScreen(int mouseX, int mouseY, float partialTick)
 	{
-		checkPages();
-		
+		if(Reference.isDecompVersion())
+			Page.init();
     	if(Item.class.getCanonicalName() == "net.minecraft.item.Item")
     	{
     		GL11.glPushMatrix();
     		GL11.glScaled(.5, .5, .5);
-    		drawString(Minecraft.getMinecraft().fontRendererObj, "MINECRAFT DECOMPILED WORKSPACE!" , 102, height * 2 - 12, Color.YELLOW.hashCode());
+    		drawString(Minecraft.getMinecraft().fontRendererObj, "MINECRAFT DECOMPILED WORKSPACE!" , 2, 2, Color.YELLOW.hashCode());
     		GL11.glPopMatrix();
     	}
     	
@@ -77,7 +87,6 @@ public class GUIBookBase extends GuiScreen
 			GL11.glTranslated(posx, posy, 0);
 			if(page.getDrawTitle())
 				fontRendererObj.drawString(page.getTitle(), 13, 15, Color.BLACK.hashCode());
-			
 			GL11.glScaled(.5, .5, .5);
 			
 			List<String> lines = page.getText();
@@ -88,7 +97,7 @@ public class GUIBookBase extends GuiScreen
 					throw new Exception("Number of lines in Page [" + page.getTitle() + "] is greater than 50!" );
 				else if(i + secondary >= 25 )
 				{
-					if(lines.get(i).contains("/n"))
+					if(lines.get(i).contains("/n") && !lines.get(i).contains("<Image>"))
 						for(String line : lines.get(i).split("/n"))
 						{
 							fontRendererObj.drawString(line, 100, 10 * (i + secondary - 24) + 45, Color.DARK_GRAY.hashCode());
@@ -106,7 +115,7 @@ public class GUIBookBase extends GuiScreen
 					}
 				}
 				else{
-					if(lines.get(i).contains("/n"))
+					if(lines.get(i).contains("/n") && !lines.get(i).contains("<Image>"))
 						for(String line : lines.get(i).split("/n"))
 						{
 							fontRendererObj.drawString(line, 39, 10 * (i + secondary + 1) + 45, Color.DARK_GRAY.hashCode());
@@ -139,11 +148,11 @@ public class GUIBookBase extends GuiScreen
 			for(StackTraceElement part : e.getStackTrace())
 				fontRendererObj.drawString(part.toString(), 20, 10 * (temp++ +3) + 45, Color.WHITE.hashCode());
 			GL11.glPopMatrix();
-			next.enabled = false;
-			prev.enabled = false;
+//			next.enabled = false;
+//			prev.enabled = false;
 		}
 		
-		this.reset.visible = isShiftKeyDown();
+		this.reset.visible = isShiftKeyDown() && Reference.isDecompVersion();
 		this.reset.displayString = isCtrlKeyDown() ? "RELOAD GUI INIT()" : "RELOAD PAGE INIT()";
 		
 		//do noraml background stuff
@@ -187,7 +196,10 @@ public class GUIBookBase extends GuiScreen
 		int posy = (height - 256) / 2 + 50;
 		
 		//bind texture
-		this.mc.renderEngine.bindTexture(new ResourceLocation(Reference.MODID + ":textures/gui/help_book_main.png"));
+		if(page.getPageBackground() != -1)
+			this.mc.renderEngine.bindTexture(new ResourceLocation(Reference.MODID + ":textures/gui/help_book_main"+page.getPageBackground()+".png"));
+		else
+			this.mc.renderEngine.bindTexture(new ResourceLocation(Reference.MODID + ":textures/gui/help_book_main"+defaultBackground+".png"));
 		
 		// FIXME Increase size rendered!!
 		//draws book background
@@ -196,30 +208,49 @@ public class GUIBookBase extends GuiScreen
 		//end matrix
 		GL11.glPopMatrix();
 	}
-	public void checkPages()
-	{
-		next.enabled = page.getNext() != null;
-		prev.enabled = page.getPrevious() != null;
-	}
+	
 	public void actionPerformed(GuiButton button)
 	{
-		checkPages();
-		//TODO: send packet to server containing page id and itemstack that needs to be changed
-		if(button.equals(closeButton))
-			this.mc.thePlayer.closeScreen();
-		if(button.equals(next) && next.enabled)
-			page = page.getNext();
-		if(button.equals(prev) && prev.enabled)
-			page = page.getPrevious();
-		if(button.equals(home))
-			page = Page.homePage;
 		if(button.equals(reset) && Reference.isDecompVersion())
 			if(isCtrlKeyDown())
 				this.initGui();
 			else
 				Page.init();
 	}
-
-	
-	
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+	{
+		if(mouseButton == 1)
+		{
+			if(page.equals(Page.homePage))
+				return;
+			if(page.getPrevious() != null)
+				page = page.getPrevious();
+			else
+			{
+				page = Page.index;
+				Minecraft.getMinecraft().thePlayer.openGui(ArMechMain.INSTANCE, 1, Minecraft.getMinecraft().theWorld, 0, 0, 0);
+			}
+			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+			return;
+		}
+		else if(page.equals(Page.homePage) && mouseButton == 0)
+		{
+			page = Page.index;
+			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+			Minecraft.getMinecraft().thePlayer.openGui(ArMechMain.INSTANCE, 1, Minecraft.getMinecraft().theWorld, 0, 0, 0);
+		}
+		else if(mouseButton == 0)
+			if(page.getNext() != null)
+			{
+				page = page.getNext();
+				Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+			}
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+	}
+	public void keyTyped(char typedChar, int keyCode) throws IOException
+	{
+		if(typedChar == 'e')
+			keyTyped((char)1, 1);
+		super.keyTyped(typedChar, keyCode);
+	}
 }

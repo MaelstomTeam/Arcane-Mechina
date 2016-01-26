@@ -27,7 +27,8 @@ public class ItemDustMixture extends Item {
 	public void getSubItems(Item item, CreativeTabs tab, List items)
 	{
 		for(int i = 0; i < Reference.dustNames.length; i++)
-			items.add(new ItemStack(item, 1,i));
+			if(i != 19)
+				items.add(new ItemStack(item, 1,i));
 	}
 
 	@Override

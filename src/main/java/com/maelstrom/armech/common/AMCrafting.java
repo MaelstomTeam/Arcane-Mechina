@@ -16,9 +16,12 @@ public class AMCrafting {
 	{
 		for(int i = 0; i < Reference.dustNames.length; i++)
 		{
-			//OreDictionary.registerOre("AM_dust", new ItemStack(AMItems.dust_dust,1,i));
-			OreDictionary.registerOre("AM_dust_crystal", new ItemStack(AMItems.dust_crystal,1,i));
-			OreDictionary.registerOre("AM_dust_disolved", new ItemStack(AMItems.glass_jar_dust,1,i));
+			if(i!=19)
+			{
+				OreDictionary.registerOre("AM_dust_crystal", new ItemStack(AMItems.dust_crystal,1,i));
+				OreDictionary.registerOre("AM_dust_disolved", new ItemStack(AMItems.glass_jar_dust,1,i));
+				OreDictionary.registerOre("AM_dust", new ItemStack(AMItems.dust_dust,1,i));
+			}
 		}
 		for(int i = 0; i < BlockDustOre.EnumType.length(); i++)
 			OreDictionary.registerOre("AM_dust_ore", new ItemStack(AMBlocks.dust_ore,1,i));
@@ -37,7 +40,12 @@ public class AMCrafting {
 		GameRegistry.addShapedRecipe(new ItemStack(AMItems.morter_and_pestal), "wsw", " w ", 'w', Blocks.stone, 's', Items.stick);
 		
 		for(int i = 0; i < Reference.dustNames.length; i++)
-			GameRegistry.addShapelessRecipe(new ItemStack(AMItems.glass_jar_dust,1,i), AMItems.glass_jar, Items.water_bucket, new ItemStack(AMItems.dust_crystal,1,i));
+			if(i != 19)
+				GameRegistry.addShapelessRecipe(new ItemStack(AMItems.glass_jar_dust,1,i), AMItems.glass_jar, Items.water_bucket, new ItemStack(AMItems.dust_dust,1,i));
+		
+		for(int i = 0; i < Reference.dustNames.length; i++)
+			if(i != 19)
+				GameRegistry.addShapelessRecipe(new ItemStack(AMItems.dust_dust,1,i), AMItems.morter_and_pestal, new ItemStack(AMItems.dust_crystal,1,i));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(AMItems.help_book), "AM_dust_crystal", Items.book, Items.feather, "dyeBlack"));
 //		GameRegistry.addShapedRecipe(new ItemStack(AMBlocks.test_block), "g g", "ihi", "ici", 'g', AMItems.gold_rod, 'h', Blocks.iron_trapdoor, 'i', Items.iron_ingot, 'c', Items.cauldron);

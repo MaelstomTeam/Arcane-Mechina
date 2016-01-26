@@ -6,7 +6,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import com.maelstrom.armech.client.gui.GUIBookBase;
-import com.maelstrom.armech.client.gui.Page;
+import com.maelstrom.armech.client.gui.GuiBookIndex;
 import com.maelstrom.armech.common.AMBlocks;
 import com.maelstrom.armech.common.AMItems;
 
@@ -24,10 +24,11 @@ public class ClientProxy extends CommonProxy {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		TileEntity tileEntity = world.getTileEntity(new BlockPos(x,y,z));
-		if(tileEntity != null);
+//		if(tileEntity != null);
 		switch(ID)
 		{
 		case 0:{return new GUIBookBase();}
+		case 1:{return new GuiBookIndex();}
 		}
 		return null;
 	}

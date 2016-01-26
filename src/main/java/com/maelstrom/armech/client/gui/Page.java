@@ -19,6 +19,188 @@ public class Page
 	
 	//index!
 	public static Page index = new Page("Index");
+	public static Page worldGen = new Page("World Gen");//possibly a interlinking page
+	public static Page structureGen = new Page("World Gen");
+	public static Page intro = new Page("Introduction");
+
+	public static Page lyrics1 = new Page("Check List!");
+
+	
+	public static void init()
+	{
+		//ignore for now
+		homePage.clearText();
+		index.clearText();
+		intro.clearText();
+		worldGen.clearText();
+		structureGen.clearText();
+		//==================================================================================
+		//Brandon's awful attempt at making the home and index pages!
+		//==================================================================================
+		
+		//setup homepage
+		homePage.setNext(Page.index);
+		homePage.addImage("Logo.png", 256, 256, 27, 30, .85d);
+		homePage.addImage("alchemy-bw.png", 256, 256, 75, 165, .5d);
+		homePage.addImage("navigation.png", 256, 256, 280, 230, 1.2d);
+		//inserts 25 lines in order to have a blank page might add something better for this later :p
+		for(int i = 0; i < 25; i++)
+			homePage.addTextLine("");
+		homePage.removeTitleFromRenderer();
+		//have a comment or something here!
+		homePage.addTextLine("INTRO INTO ARCANE MECHINA!!");
+		homePage.setNext(index);
+		
+		index.setPrevious(homePage); //sets the next page
+
+		//==================================================================================
+		//==================================================================================
+		
+
+		intro.addTextLine("well, this needs to be done by someone who knows the lore better then us?");
+		
+		//EXAMPLE!
+		worldGen.addTextLine("world generation consists of"); //add a line of text
+		worldGen.addTextLine("Dust crystals and so on"); //and again
+		structureGen.addTextLine("You're kidding right?"); //add text to a different page!
+		structureGen.removeTitleFromRenderer(); //do not render title
+		structureGen.setPrevious(worldGen);//sets previous page for structureGen
+		worldGen.setNext(structureGen); // sets next page for worldGen
+		
+		lyricsfrombatmetal(); // you see nothing NOTHING!! >.>
+	}
+	
+	/**ignore this.. you see nothing >.>*/
+	public static void lyricsfrombatmetal()
+	{
+		lyrics1.clearText();
+		index.setNext(lyrics1);
+		lyrics1.setPrevious(homePage);
+		lyrics1.addTextLine("[✔] Knives");
+		lyrics1.addTextLine("[✔] Rope");
+		lyrics1.addTextLine("[✔] Dagger");
+		lyrics1.addTextLine("[✔] Chains");
+		lyrics1.addTextLine("[✔] Rock");
+		lyrics1.addTextLine("[✔] Laser Beams");
+		lyrics1.addTextLine("[✔] Acid");
+		lyrics1.addTextLine("[✔] Body bag?");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("");
+		lyrics1.addTextLine("\"There are no fingerprints");
+		lyrics1.addTextLine("deep under water");
+		lyrics1.addTextLine("Nothing to tie one to a crime");
+		lyrics1.addTextLine("And if you seek vengeance");
+		lyrics1.addTextLine("All you need are instruments of pain\"");
+		lyrics1.addTextLine("- Dethklok Murmaider");
+	}
+	/**SUPER BASIC CONSTRUCTOR FTW*/
+	public Page(String title)
+	{
+		this.title = title;
+	}
+	/**set's the previous page of the current page*/
+	public Page setPrevious(Page page)
+	{
+		if(page == this)
+			try {
+				throw new Exception("linking to self is not allowed");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		else
+			previous = page;
+		return this;
+	}
+	/**set's the next page of the current page*/
+	public Page setNext(Page page)
+	{
+		if(page == this)
+			try {
+				throw new Exception("linking to self is not allowed");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		else
+			next = page;
+		return this;
+	}
+	
+	@Deprecated
+	public Page setUpIndex(Page page)
+	{
+		if(page == this)
+			try {
+				throw new Exception("linking to self is not allowed");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		else
+			upPage = page;
+		return this;
+	}
+	/**DO NOT USE UNLESS CLEARING THE TEXT ARRAY IS SOMETHING YOU WANT!?*/
+	public Page clearText()
+	{
+		text.clear();
+		return this;
+	}
+	/**Adds a new line of text to the array*/
+	public Page addTextLine(String text)
+	{
+		/*FIXME: add handling for word wrapping!
+		 * including line max length and find a way to make sure words do not overflow
+		 */
+		this.text.add(text);
+		return this;
+	}
+	/**stops the title from rendering*/
+	public Page removeTitleFromRenderer()
+	{
+		this.drawTitle = false;
+		return this;
+	}
+	/**temporary solution to the different backgrounds per page issue*/
+	public Page setPageBackground(int backgroundIndex)
+	{
+		pageBackgorund = backgroundIndex;
+		return this;
+	}
+	
+	//=============================================================================
+	//USED BY GUI SO I THOUGHT I WOULDN'T NEED TO DOCUMENT THESE FOR YOU TRAVIS! <3
+	//=============================================================================
+	
+
+	private int pageBackgorund = -1;
 	
 	//page title! DUH!
 	private String title;
@@ -39,91 +221,11 @@ public class Page
 	//FIXME: FIND WAY TO IMPLMENT BUTTONS!!
 	//private ArrayList<GuiButton> buttonlist = new ArrayList<GuiButton>();
 	
-	public static void init()
+
+	public int getPageBackground()
 	{
-		//ignore for now
-		homePage.clearText();
-		index.clearText();
-		
-		homePage.setNext(Page.index);
-		homePage.addImage("Logo.png", 256, 256, 27, 30, .85d);
-		homePage.addImage("alchemy-bw.png", 256, 256, 75, 165, .5d);
-		
-		//inserts 25 lines in order to have a blank page
-		for(int i = 0; i < 25; i++)
-			homePage.addTextLine("");
-		homePage.removeTitleFromRenderer();
-		
-		//have something a little more.. Intro-y
-		homePage.addTextLine("INTRO INTO ARCANE MECHINA!!");
-		homePage.setNext(index);
-		
-		index.addTextLine("some fancy text about the mod that/ndoesn't break immersion!!");
-		index.setPrevious(homePage);
+		return pageBackgorund;
 	}
-	
-	public Page(String title)
-	{
-		this.title = title;
-	}
-	
-	public Page setPrevious(Page page)
-	{
-		if(page == this)
-			try {
-				throw new Exception("linking to self is not allowed");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		else
-			previous = page;
-		return this;
-	}
-	public Page setNext(Page page)
-	{
-		if(page == this)
-			try {
-				throw new Exception("linking to self is not allowed");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		else
-			next = page;
-		return this;
-	}
-	
-	public Page setUpIndex(Page page)
-	{
-		if(page == this)
-			try {
-				throw new Exception("linking to self is not allowed");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		else
-			upPage = page;
-		return this;
-	}
-	public Page clearText()
-	{
-		text.clear();
-		return this;
-	}
-	public Page addTextLine(String text)
-	{
-		this.text.add(text);
-		return this;
-	}
-	public Page removeTitleFromRenderer()
-	{
-		this.drawTitle = false;
-		return this;
-	}
-	
-	//=============================================================================
-	//USED BY GUI SO I THOUGHT I WOULDN'T NEED TO DOCUMENT THESE FOR YOU TRAVIS! <3
-	//=============================================================================
-	
 	public Page getNext()
 	{
 		return next;

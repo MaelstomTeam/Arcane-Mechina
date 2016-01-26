@@ -26,6 +26,7 @@ public class AMItems
 		test_item = new Item().setUnlocalizedName("test_item");//.setCreativeTab(ArMechMain.tab_armech);
 		help_book = new ItemAMBook();
 		dust_crystal = new ItemDustCrystal();
+		dust_dust = new ItemDustDust();
 		glass_jar = new Item().setUnlocalizedName("glass_jar").setCreativeTab(ArMechMain.tab_armech);
 		glass_jar_dust = new ItemDustMixture();
 		morter_and_pestal = new Item().setUnlocalizedName("morter_and_pestal").setCreativeTab(ArMechMain.tab_armech);
@@ -36,6 +37,7 @@ public class AMItems
 	{
 		registerItem(test_item);
 		registerItem(dust_crystal);
+		registerItem(dust_dust);
 		registerItem(help_book);
 		registerItem(glass_jar);
 		registerItem(glass_jar_dust);
@@ -46,13 +48,16 @@ public class AMItems
 	public static void registerRenders()
 	{
 		registerRenderer(test_item);
-//		registerRenderer(dust_crystal);
 		for(int i = 0; i < Reference.dustNames.length; i++)
 			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(dust_crystal, i, new ModelResourceLocation(Reference.MODID +":"+dust_crystal.getUnlocalizedName().substring(5), "inventory"));
 		registerRenderer(help_book);
 		registerRenderer(glass_jar);
 		for(int i = 0; i < Reference.dustNames.length; i++)
 			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(glass_jar_dust, i, new ModelResourceLocation(Reference.MODID +":"+glass_jar_dust.getUnlocalizedName().substring(5), "inventory"));
+
+		for(int i = 0; i < Reference.dustNames.length; i++)
+			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(dust_dust, i, new ModelResourceLocation(Reference.MODID +":"+dust_dust.getUnlocalizedName().substring(5), "inventory"));
+		
 		registerRenderer(morter_and_pestal);
 		registerRenderer(gold_rod);
 	}

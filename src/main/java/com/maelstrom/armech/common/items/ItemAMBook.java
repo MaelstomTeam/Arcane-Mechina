@@ -11,6 +11,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.maelstrom.armech.ArMechMain;
+import com.maelstrom.armech.client.gui.GUIBookBase;
 
 public class ItemAMBook extends Item
 {
@@ -37,7 +38,10 @@ public class ItemAMBook extends Item
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
 	{
 		if(!player.isSneaking())
+		{
 			player.openGui(ArMechMain.INSTANCE, 0, world, 0, 0, 0);
+			GUIBookBase.defaultBackground = GUIBookBase.rand.nextInt(3) + 1;
+		}
 		
 		return itemStack;
 	}
