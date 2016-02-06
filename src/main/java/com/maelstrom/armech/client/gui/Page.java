@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.vecmath.Vector4d;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import com.maelstrom.armech.common.Reference;
@@ -22,9 +24,10 @@ public class Page
 	public static Page worldGen = new Page("World Gen");//possibly a interlinking page
 	public static Page structureGen = new Page("World Gen");
 	public static Page intro = new Page("Introduction");
-
-	public static Page lyrics1 = new Page("Check List!");
-
+	//public static Page lyrics1 = new Page("Check List!");
+	
+	public static Page itemIndex = new Page("Item Index");
+	public static Page dust = new Page("-------§1§lDust§r-------");
 	
 	public static void init()
 	{
@@ -34,8 +37,12 @@ public class Page
 		intro.clearText();
 		worldGen.clearText();
 		structureGen.clearText();
+		
+		itemIndex.clearText();
+		dust.clearText();
+		
 		//==================================================================================
-		//Brandon's awful attempt at making the home and index pages!
+		//Brandon's awful attempt at making pages!
 		//==================================================================================
 		
 		//setup homepage
@@ -45,32 +52,49 @@ public class Page
 		homePage.addImage("navigation.png", 256, 256, 280, 230, 1.2d);
 		//inserts 25 lines in order to have a blank page might add something better for this later :p
 		for(int i = 0; i < 25; i++)
-			homePage.addTextLine("");
+			homePage.addTextLine();
 		homePage.removeTitleFromRenderer();
 		//have a comment or something here!
-		homePage.addTextLine("INTRO INTO ARCANE MECHINA!!");
+		homePage.addTextLine("Thank you for using §o§lArcane Mechina§r!");
+		homePage.addTextLine("In advance we would like to appologise for the §nvery little documentation§r we have on what things do as we are still figuring out how it all works together.");
+		homePage.addTextLine("- §oMaelstrom Mod Team");
 		homePage.setNext(index);
 		
-		index.setPrevious(homePage); //sets the next page
-
+		//itemIndex page
+		itemIndex.setNext(dust);
+		itemIndex.addTextLine("- §1Dust§r");
+		
+		
+		dust.addImage("dust.png", 256, 256, 300, 150, .45d);
+		dust.addTextLine("§l§1Dust§r, is an source of elemental energy found within this New World.");
+		dust.addTextLine();
+		dust.addTextLine("§l§1Dust Crystals§r if ignited forms small explosion relitive to the elemental properties it's form of, this potential energy can be increase in a powdered state as well.");
+		dust.addTextLine();
+		dust.addTextLine("Pure forms of §l§1Dust Crystals§r can be harvested natrually but it's a rare occurrence.");
+		dust.addTextLine();
+		dust.addTextLine("Some users of §l§1Dust§r have shown it's usefulness as a source of power and storage cell as it stands some forms of crystals have the potential to store large amounts of engergy, although if not maintained can result in an explosive outcome! Another use of dust has been in propelent, circutry and more importanly runes.");
+		dust.addTextLine();
+		dust.addTextLine();
+		dust.addTextLine();
+		dust.addTextLine("NOTE: In it's powdered state some forms of §l§1Dust§r has shown properties similiar to fertilize increase growth of plantlife as well as being an explosive.");
+		dust.addTextLine("This gives it both cultural and militaristic potential!");
 		//==================================================================================
 		//==================================================================================
 		
 
-		intro.addTextLine("well, this needs to be done by someone who knows the lore better then us?");
+		intro.addTextLine("well, this needs to be done by someone, but who knows the lore better then us?");
 		
 		//EXAMPLE!
-		worldGen.addTextLine("world generation consists of"); //add a line of text
-		worldGen.addTextLine("Dust crystals and so on"); //and again
+		worldGen.addTextLine("world generation consists of Dust crystals and so on"); //add a line of text
 		structureGen.addTextLine("You're kidding right?"); //add text to a different page!
 		structureGen.removeTitleFromRenderer(); //do not render title
 		structureGen.setPrevious(worldGen);//sets previous page for structureGen
 		worldGen.setNext(structureGen); // sets next page for worldGen
 		
-		lyricsfrombatmetal(); // you see nothing NOTHING!! >.>
+	//	lyricsfrombatmetal(); // you see nothing NOTHING!! >.>
 	}
-	
 	/**ignore this.. you see nothing >.>*/
+	/*
 	public static void lyricsfrombatmetal()
 	{
 		lyrics1.clearText();
@@ -121,7 +145,7 @@ public class Page
 		lyrics1.addTextLine("And if you seek vengeance");
 		lyrics1.addTextLine("All you need are instruments of pain\"");
 		lyrics1.addTextLine("- Dethklok Murmaider");
-	}
+	}*/
 	/**SUPER BASIC CONSTRUCTOR FTW*/
 	public Page(String title)
 	{
@@ -150,7 +174,10 @@ public class Page
 				e.printStackTrace();
 			}
 		else
+		{
 			next = page;
+			next.setPrevious(this);
+		}
 		return this;
 	}
 	
@@ -176,11 +203,36 @@ public class Page
 	/**Adds a new line of text to the array*/
 	public Page addTextLine(String text)
 	{
-		/*FIXME: add handling for word wrapping!
-		 * including line max length and find a way to make sure words do not overflow
-		 */
-		this.text.add(text);
+		FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
+		if(font != null && text != null && text.replace(" ", "") != "")
+		{
+			String[] temp = text.split(" ");
+			String temp2 = "";
+			int temp3 = 0;
+			for(String word : temp)
+			{
+				temp3++;
+				if(font.getStringWidth(temp2+ " " + word) > 212)
+				{
+					this.text.add(temp2);
+					temp2 = word;
+				}
+				else
+					if(temp3 == 1)
+						temp2 += word;
+					else
+						temp2 += " " + word;
+				if((temp.length == temp3))
+					this.text.add(temp2);
+			}
+		}
+		else
+			this.text.add(text);
 		return this;
+	}
+	public Page addTextLine()
+	{
+		return addTextLine("");
 	}
 	/**stops the title from rendering*/
 	public Page removeTitleFromRenderer()

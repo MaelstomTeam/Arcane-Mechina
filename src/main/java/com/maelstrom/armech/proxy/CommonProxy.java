@@ -6,6 +6,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
+import com.maelstrom.armech.client.fx.ParticleDispatcher;
+
 public class CommonProxy implements IGuiHandler {
 
 	public void registerRenders() {
@@ -25,6 +27,11 @@ public class CommonProxy implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+	{
+		return null;
+	}
+	
+	public ParticleDispatcher getVFX()
 	{
 		return null;
 	}

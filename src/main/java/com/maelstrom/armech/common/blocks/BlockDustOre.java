@@ -39,7 +39,6 @@ public class BlockDustOre extends Block implements IMetaBlockName {
 		setHardness(1f);
 		setResistance(1f);
 	    setHarvestLevel("pickaxe", 1);
-		this.setLightLevel(1f/15f);
 		setDefaultState(blockState.getBaseState().withProperty(TYPE, EnumType.AIR));
 	}
 	
@@ -66,7 +65,7 @@ public class BlockDustOre extends Block implements IMetaBlockName {
 	public int getMetaFromState(IBlockState state)
 	{
 		EnumType type = (EnumType) state.getValue(TYPE);
-		return type.getId();
+		return type.getID();
 	}
 	
 	@Override
@@ -96,8 +95,6 @@ public class BlockDustOre extends Block implements IMetaBlockName {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition targe, World world, BlockPos pos)
 	{
-	    setHarvestLevel("pickaxe", 1);
-		this.setLightLevel(.2f);
 		return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(world.getBlockState(pos)));
 	}
 	
@@ -118,7 +115,7 @@ public class BlockDustOre extends Block implements IMetaBlockName {
 		else if(getMetaFromState(world.getBlockState(pos)) == 3)
 			return Color.BLUE.hashCode();
 		else if(getMetaFromState(world.getBlockState(pos)) == 4)
-			return Color.BLACK.hashCode();
+			return Color.darkGray.hashCode();
 		else if(getMetaFromState(world.getBlockState(pos)) == 5)
 			return new Color(255,255,255).hashCode();
 		else if(getMetaFromState(world.getBlockState(pos)) == 6)
@@ -139,16 +136,6 @@ public class BlockDustOre extends Block implements IMetaBlockName {
 			return new Color(0,0,144).hashCode();
 		else
 			return Color.yellow.hashCode();
-	}
-	@SideOnly(Side.CLIENT)
-	public int getRenderColor(IBlockState state)
-	{
-		return getBlockColor();
-	}
-	@SideOnly(Side.CLIENT)
-	public int getBlockColor()
-	{
-	return Color.white.hashCode();
 	}
 	
 	public enum EnumType implements IStringSerializable {
@@ -185,7 +172,7 @@ public class BlockDustOre extends Block implements IMetaBlockName {
 		public static EnumType getType(int meta)
 		{
 			for(EnumType type : values())
-				if(type.getId() == meta)
+				if(type.getID() == meta)
 					return type;
 			return EnumType.AIR;
 		}
@@ -206,7 +193,7 @@ public class BlockDustOre extends Block implements IMetaBlockName {
 			return name;
 		}
 		
-		public int getId() {
+		public int getID() {
 			return id;
 		}
 		

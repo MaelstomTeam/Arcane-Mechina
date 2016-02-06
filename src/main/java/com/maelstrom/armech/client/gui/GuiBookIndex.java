@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.maelstrom.armech.ArMechMain;
 import com.maelstrom.armech.common.Reference;
+import com.maelstrom.snowcone.DevEnviroment;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -26,7 +27,7 @@ public class GuiBookIndex extends GuiScreen
 	
 	public void initGui()
 	{
-		GUIBookBase.page = Page.homePage;
+		GuiBookBase.page = Page.homePage;
 		this.buttonList.clear();
 		amount = 1;
 		int posx = (width) / 2 - 120;
@@ -39,7 +40,9 @@ public class GuiBookIndex extends GuiScreen
 		
 		buttonList.add(new GuiButtonLinking(2, posx, posy,"Introduction", Page.intro));
 		buttonList.add(new GuiButtonLinking(2, posx, posy + getPosYForButton(),"World Generation", Page.worldGen));
+		buttonList.add(new GuiButtonLinking(2, posx, posy + getPosYForButton(),"Items", Page.itemIndex));
 	}
+	
 	int amount = 1;
 	public int getPosYForButton()
 	{
@@ -49,7 +52,7 @@ public class GuiBookIndex extends GuiScreen
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
 	{
-    	if(Item.class.getCanonicalName() == "net.minecraft.item.Item")
+    	if(DevEnviroment.isDevEnviroment())
     	{
     		GL11.glPushMatrix();
     		GL11.glScaled(.5, .5, .5);
@@ -67,7 +70,7 @@ public class GuiBookIndex extends GuiScreen
 		fontRendererObj.drawString("INDEX", 13, 15, Color.BLACK.hashCode());
 		GL11.glPopMatrix();
 		
-		this.reset.visible = isShiftKeyDown() && Reference.isDecompVersion();
+		this.reset.visible = isShiftKeyDown() && DevEnviroment.isDevEnviroment();
 		this.reset.displayString = isCtrlKeyDown() ? "RELOAD GUI INIT()" : "RELOAD PAGE INIT()";
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
@@ -76,14 +79,14 @@ public class GuiBookIndex extends GuiScreen
 	@Override
 	public void actionPerformed(GuiButton button)
 	{
-		if(button.equals(reset) && Reference.isDecompVersion())
+		if(button.equals(reset) && DevEnviroment.isDevEnviroment())
 			if(isCtrlKeyDown())
 				this.initGui();
 			else
 				Page.init();
 		else if(button instanceof GuiButtonLinking)
 		{
-			GUIBookBase.page = ((GuiButtonLinking) button).getPage();
+			GuiBookBase.page = ((GuiButtonLinking) button).getPage();
 			Minecraft.getMinecraft().thePlayer.openGui(ArMechMain.INSTANCE, 0, Minecraft.getMinecraft().theWorld, 0, 0, 0);
 		}
 	}
@@ -92,7 +95,7 @@ public class GuiBookIndex extends GuiScreen
 	{
 		if(mouseButton == 1)
 		{
-			GUIBookBase.page = Page.homePage;
+			GuiBookBase.page = Page.homePage;
 			Minecraft.getMinecraft().thePlayer.openGui(ArMechMain.INSTANCE, 0, Minecraft.getMinecraft().theWorld, 0, 0, 0);
 			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 			return;
@@ -113,7 +116,7 @@ public class GuiBookIndex extends GuiScreen
 		int posy = (height - 256) / 2 + 50;
 		
 		//bind texture
-		this.mc.renderEngine.bindTexture(new ResourceLocation(Reference.MODID + ":textures/gui/help_book_main"+GUIBookBase.defaultBackground+".png"));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(Reference.MODID + ":textures/gui/help_book_main"+GuiBookBase.defaultBackground+".png"));
 		
 		// FIXME Increase size rendered!!
 		//draws book background
@@ -121,5 +124,11 @@ public class GuiBookIndex extends GuiScreen
 		
 		//end matrix
 		GL11.glPopMatrix();
+	}
+	public void keyTyped(char typedChar, int keyCode) throws IOException
+	{
+		if(typedChar == 'e')
+			keyTyped((char)1, 1);
+		super.keyTyped(typedChar, keyCode);
 	}
 }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.*;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.item.Item;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -11,12 +13,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.*;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.*;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+
+import com.maelstrom.armech.client.fx.ParticleDispatcher;
 
 @Mod(modid = SnowconeMain.MODID, version = SnowconeMain.VERSION)
 public class SnowconeMain
@@ -35,9 +39,21 @@ public class SnowconeMain
 	int rng = 0;
 	int jokeNumber1 = 1, jokeNumber2 = 4, jokeNumber3 = 0;
 	Random rand = new Random();
+	
     @SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void guiDraw(GuiScreenEvent.DrawScreenEvent event){
+    	if(Keyboard.isKeyDown(Keyboard.KEY_RETURN) && DevEnviroment.isDevEnviroment())
+    	{
+			if(event.gui.getClass() == GuiMainMenu.class)
+			{
+				event.gui.mc.displayGuiScreen(new GuiSelectWorld(event.gui));
+			}
+			else if(event.gui instanceof GuiSelectWorld)
+			{
+				((GuiSelectWorld)event.gui).func_146615_e(0);
+			}
+    	}
 		if(event.gui instanceof GuiModList){
 			GuiModList gui = (GuiModList) event.gui;
 			if(gui.modIndexSelected(ModID())){

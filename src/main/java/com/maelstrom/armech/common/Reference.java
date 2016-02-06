@@ -14,10 +14,6 @@ public class Reference
     									"dark_air","dark_earth","dark_fire","dark_water",
     									"life","death","molten","steam","strong_fire","earth_unstable","explosive",
     									"ender","hellish","power","overcharged"};
-
-	public static boolean isDecompVersion() {
-		return net.minecraft.item.Item.class.getCanonicalName() == "net.minecraft.item.Item";
-	}
     
     /*
      * 

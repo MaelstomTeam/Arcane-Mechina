@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.maelstrom.armech.client.gui.Page;
 import com.maelstrom.armech.common.AMBlocks;
@@ -17,6 +18,7 @@ import com.maelstrom.armech.common.AMCrafting;
 import com.maelstrom.armech.common.AMItems;
 import com.maelstrom.armech.common.Reference;
 import com.maelstrom.armech.common.Tab_ArMech;
+import com.maelstrom.armech.common.tileentity.TileEntityPurifier;
 import com.maelstrom.armech.proxy.CommonProxy;
 
 @Mod(modid = Reference.MODID, version = Reference.VERSION)

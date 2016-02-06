@@ -21,6 +21,7 @@ public class ItemDustMixture extends Item {
 		this.setUnlocalizedName("glass_jar_dust");
 		this.setHasSubtypes(true);
 		this.setCreativeTab(ArMechMain.tab_armech_dust);
+		this.setMaxStackSize(1);
 	}
 	
 	@Override

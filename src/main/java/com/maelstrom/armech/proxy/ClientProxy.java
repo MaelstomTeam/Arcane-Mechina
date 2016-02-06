@@ -5,12 +5,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-import com.maelstrom.armech.client.gui.GUIBookBase;
+import com.maelstrom.armech.client.fx.ParticleDispatcher;
+import com.maelstrom.armech.client.gui.GuiBookBase;
 import com.maelstrom.armech.client.gui.GuiBookIndex;
 import com.maelstrom.armech.common.AMBlocks;
 import com.maelstrom.armech.common.AMItems;
 
 public class ClientProxy extends CommonProxy {
+	
+	private ParticleDispatcher vfx;
+	
+	public ClientProxy()
+	{
+		this.vfx = new ParticleDispatcher();
+	}
 	
 	@Override
 	public void registerRenders()
@@ -27,9 +35,14 @@ public class ClientProxy extends CommonProxy {
 //		if(tileEntity != null);
 		switch(ID)
 		{
-		case 0:{return new GUIBookBase();}
+		case 0:{return new GuiBookBase();}
 		case 1:{return new GuiBookIndex();}
 		}
 		return null;
+	}
+	
+	public ParticleDispatcher getVFX()
+	{
+		return vfx;
 	}
 }

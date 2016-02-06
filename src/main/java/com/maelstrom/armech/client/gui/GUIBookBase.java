@@ -9,24 +9,28 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.item.Item;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
 import com.maelstrom.armech.ArMechMain;
 import com.maelstrom.armech.common.Reference;
+import com.maelstrom.snowcone.DevEnviroment;
+
 @SuppressWarnings("all")
-public class GUIBookBase extends GuiScreen
+public class GuiBookBase extends GuiScreen
 {
-	public GUIBookBase()
+	public GuiBookBase()
 	{
 		super();
 //		defaultBackground = rand.nextInt(3) + 1;
 	}
 	public static Random rand = new Random();
 	public GuiButton  reset;
-	int pageNumber = 0;
 	
 	public static Page page;
 	public static int defaultBackground = 1;
@@ -45,7 +49,7 @@ public class GUIBookBase extends GuiScreen
 		//clear list
 		this.buttonList.clear();
 		
-		//create buttons
+//		create buttons
 //		buttonList.add(closeButton = new GuiButton(0, 0, 0, 35, 20, "Close"));
 //		buttonList.add(next = new GuiButton(1, width - 50, height - 20, 50, 20, "Next"));
 //		buttonList.add(prev = new GuiButton(2, 0, height - 20, 50, 20, "Previous"));
@@ -57,10 +61,9 @@ public class GUIBookBase extends GuiScreen
 	
 	public void drawScreen(int mouseX, int mouseY, float partialTick)
 	{
-		if(Reference.isDecompVersion())
-			Page.init();
-    	if(Item.class.getCanonicalName() == "net.minecraft.item.Item")
+    	if(DevEnviroment.isDevEnviroment())
     	{
+			Page.init();
     		GL11.glPushMatrix();
     		GL11.glScaled(.5, .5, .5);
     		drawString(Minecraft.getMinecraft().fontRendererObj, "MINECRAFT DECOMPILED WORKSPACE!" , 2, 2, Color.YELLOW.hashCode());
@@ -95,30 +98,11 @@ public class GUIBookBase extends GuiScreen
 			{
 				if(i + secondary >= 50)
 					throw new Exception("Number of lines in Page [" + page.getTitle() + "] is greater than 50!" );
-				else if(i + secondary >= 25 )
-				{
-					if(lines.get(i).contains("/n") && !lines.get(i).contains("<Image>"))
-						for(String line : lines.get(i).split("/n"))
-						{
-							fontRendererObj.drawString(line, 100, 10 * (i + secondary - 24) + 45, Color.DARK_GRAY.hashCode());
-							secondary++;
-						}
-					else
-					{
-						if(lines.get(i).contains("<Image>"))
-						{
-							drawImageFromText(lines.get(i));
-							secondary--;
-						}
-						else
-							fontRendererObj.drawString(lines.get(i), 270, 10 * (i + secondary - 24) + 45, Color.DARK_GRAY.hashCode());
-					}
-				}
 				else{
 					if(lines.get(i).contains("/n") && !lines.get(i).contains("<Image>"))
 						for(String line : lines.get(i).split("/n"))
 						{
-							fontRendererObj.drawString(line, 39, 10 * (i + secondary + 1) + 45, Color.DARK_GRAY.hashCode());
+							fontRendererObj.drawString(line, 39, 10 * (i + secondary + (i + secondary >= 25 ? -24 : 1)) + 45, Color.DARK_GRAY.hashCode());
 							secondary++;
 						}
 					else
@@ -129,7 +113,7 @@ public class GUIBookBase extends GuiScreen
 							secondary--;
 						}
 						else
-							fontRendererObj.drawString(lines.get(i), 39, 10 * (i + secondary + 1) + 45, Color.DARK_GRAY.hashCode());
+							fontRendererObj.drawString(lines.get(i), i + secondary >= 25 ? 270 : 39, 10 * (i + secondary + (i + secondary >= 25 ? -24 : 1)) + 45, Color.DARK_GRAY.hashCode());
 					}
 				}
 			}
@@ -148,11 +132,9 @@ public class GUIBookBase extends GuiScreen
 			for(StackTraceElement part : e.getStackTrace())
 				fontRendererObj.drawString(part.toString(), 20, 10 * (temp++ +3) + 45, Color.WHITE.hashCode());
 			GL11.glPopMatrix();
-//			next.enabled = false;
-//			prev.enabled = false;
 		}
 		
-		this.reset.visible = isShiftKeyDown() && Reference.isDecompVersion();
+		this.reset.visible = isShiftKeyDown() && DevEnviroment.isDevEnviroment();
 		this.reset.displayString = isCtrlKeyDown() ? "RELOAD GUI INIT()" : "RELOAD PAGE INIT()";
 		
 		//do noraml background stuff
@@ -164,6 +146,8 @@ public class GUIBookBase extends GuiScreen
 
 		GL11.glPushMatrix();
 		GL11.glColor3f(1f,1f,1f);
+    	GL11.glEnable(GL11.GL_BLEND);
+    	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		ResourceLocation image = Page.getResourceFromString(string);
 		int width = (int)Page.getImageSize(string).getX();
 		int height = (int)Page.getImageSize(string).getY();
@@ -176,6 +160,7 @@ public class GUIBookBase extends GuiScreen
 		
 		this.mc.renderEngine.bindTexture(image);
 		drawTexturedModalRect( 0, 0, 0, 0, width, height );
+        GL11.glDisable(GL11.GL_BLEND);
 		GL11.glPopMatrix();
 	}
 
@@ -211,7 +196,7 @@ public class GUIBookBase extends GuiScreen
 	
 	public void actionPerformed(GuiButton button)
 	{
-		if(button.equals(reset) && Reference.isDecompVersion())
+		if(button.equals(reset) && DevEnviroment.isDevEnviroment())
 			if(isCtrlKeyDown())
 				this.initGui();
 			else
