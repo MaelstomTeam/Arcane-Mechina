@@ -1,37 +1,50 @@
 package com.maelstrom.snowcone;
 
 import java.awt.Color;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiSelectWorld;
-import net.minecraft.item.Item;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.*;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.GuiModList;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import com.maelstrom.armech.client.fx.ParticleDispatcher;
-
-@Mod(modid = SnowconeMain.MODID, version = SnowconeMain.VERSION)
+@Mod(modid = SnowconeMain.MODID, version = SnowconeMain.VERSION, guiFactory = "com.maelstrom.snowcone.client.GUIFactory")
 public class SnowconeMain
 {
     public static final String MODID = "snowcone";
     public static final String VERSION = "Lemon";
+    public static ConfigurationSnowcone config;
+    @EventHandler
+    public void init(FMLPreInitializationEvent event)
+    {
+    	config = new ConfigurationSnowcone(new Configuration(ConfigurationHelper.getMaelstromTeamConfigurationFile(event, MODID)));
+    }
     
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-		MinecraftForge.EVENT_BUS.register(this);
+    	MinecraftForge.EVENT_BUS.register(this);
     }
     
 
@@ -43,71 +56,73 @@ public class SnowconeMain
     @SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void guiDraw(GuiScreenEvent.DrawScreenEvent event){
-    	if(Keyboard.isKeyDown(Keyboard.KEY_RETURN) && DevEnviroment.isDevEnviroment())
+//		System.out.println(config.secret);
+    	if(config.secret)
     	{
-			if(event.gui.getClass() == GuiMainMenu.class)
-			{
-				event.gui.mc.displayGuiScreen(new GuiSelectWorld(event.gui));
-			}
-			else if(event.gui instanceof GuiSelectWorld)
-			{
-				((GuiSelectWorld)event.gui).func_146615_e(0);
-			}
-    	}
-		if(event.gui instanceof GuiModList){
-			GuiModList gui = (GuiModList) event.gui;
-			if(gui.modIndexSelected(ModID())){
-		        Calendar calendar = Calendar.getInstance();
-				GL11.glPushMatrix();
-		        GL11.glTranslatef(70f, 2.0F, 0.0F);
-//				GL11.glRotated(-10, 0, 0, 1);
-		        float f1 = 1.8F - MathHelper.abs(MathHelper.sin((float)(Minecraft.getSystemTime() % 1000L) / 1000.0F * (float)Math.PI * 2.0F) * 0.1F);
-		        f1 = f1 * ((rng == 4 || rng == 8) ? 60 : 75.0F) / (float)(Minecraft.getMinecraft().fontRendererObj.getStringWidth("HAPPY B-DAY HYBOLIC!!") + 32);
-		        GL11.glScalef(f1, f1, f1);
-		        //EVENTS
-				if((calendar.get(2) + 1 == 2 && calendar.get(5) == 7))
-					event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "HAPPY B-DAY HYBOLIC!!", 0, 0, Color.YELLOW.hashCode());
-		        else if((calendar.get(2) + 1 == 12 && calendar.get(5) == 16))   
-					event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "HAPPY B-DAY SNR!!", 0, 0, Color.YELLOW.hashCode());
-		        else if((calendar.get(2) + 1 == 10 && calendar.get(5) == 31))
-					event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "§6S§4p§6o§6o§4k§6y §4S§6c§4a§6r§4y §6S§4k§6ele§4t§6o§4n§6s!", 0, 0, Color.WHITE.hashCode());
-		        else if((calendar.get(2) + 1 == 4 && calendar.get(5) == 4))
-					event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "SNOWCONE IS OLDER! :D", 0, 0, Color.YELLOW.hashCode());
-//		        else if((calendar.get(2) + 1 == 4 && calendar.get(5) == 4))
-//					event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "SNOWCONE IS OLDER! :D", 0, 0, Color.YELLOW.hashCode());
-		        //add the first day out of alpha here
-//		        else if((calendar.get(2) + 1 == 10 && calendar.get(5) == 31))
-//					event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "HAPPY B-DAY Arcane Mechina!", 0, 0, Color.yellow.hashCode());
-				
-		        else{
-		        	if (rng == 1)
-		        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "It's not icecream!", 0, 0, Color.YELLOW.hashCode());
-		        	else if (rng == 4)
-		        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, jokeNumber1+","+jokeNumber2+jokeNumber3+"3rd times the charm right?", 0, 0, Color.YELLOW.hashCode());
-		        	else if (rng == 7)
-		        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Superwholock!", 0, 0, Color.YELLOW.hashCode());
-		        	else if (rng == 8)
-		        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, dateBetweenNowAndMC()+" Days since Minecraft Released!", 0, 0, Color.YELLOW.hashCode());
-		        	else
-		        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Don't worry It's "+VERSION+"!", 0, 0, Color.YELLOW.hashCode());
-		        }
-				GL11.glPopMatrix();
-				if(rngLast != rng)
-					rngLast = rng;
-			}else{
-				if(rand.nextInt(5) == 4)
-					while(rngLast == rng)
-						rng = rand.nextInt(10);
-				else
-					rng = 0;
-				if(rng == 4)
+	    	if(Keyboard.isKeyDown(Keyboard.KEY_RETURN) && DevEnviroment.isDevEnviroment())
+	    	{
+				if(event.gui.getClass() == GuiMainMenu.class)
 				{
-					jokeNumber1 = rand.nextInt(999)+1;
-					jokeNumber2 = rand.nextInt(10);
-					jokeNumber3 = rand.nextInt(10);
+					event.gui.mc.displayGuiScreen(new GuiSelectWorld(event.gui));
+				}
+				else if(event.gui instanceof GuiSelectWorld)
+				{
+					((GuiSelectWorld)event.gui).func_146615_e(0);
+				}
+	    	}
+			if(event.gui instanceof GuiModList){
+				GuiModList gui = (GuiModList) event.gui;
+				if(gui.modIndexSelected(ModID())){
+			        Calendar calendar = Calendar.getInstance();
+					GL11.glPushMatrix();
+			        GL11.glTranslatef(70f, 2.0F, 0.0F);
+			        float f1 = 1.8F - MathHelper.abs(MathHelper.sin((float)(Minecraft.getSystemTime() % 1000L) / 1000.0F * (float)Math.PI * 2.0F) * 0.1F);
+			        f1 = f1 * ((rng == 4 || rng == 8) ? 60 : 75.0F) / (float)(Minecraft.getMinecraft().fontRendererObj.getStringWidth("HAPPY B-DAY HYBOLIC!!") + 32);
+			        GL11.glScalef(f1, f1, f1);
+			        
+			        
+			        //EVENTS
+					if((calendar.get(2) + 1 == 2 && calendar.get(5) == 7))
+						event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "HAPPY B-DAY HYBOLIC!!", 0, 0, Color.YELLOW.hashCode());
+			        else if((calendar.get(2) + 1 == 12 && calendar.get(5) == 16))   
+						event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "HAPPY B-DAY SNR!!", 0, 0, Color.YELLOW.hashCode());
+			        else if((calendar.get(2) + 1 == 10 && calendar.get(5) == 31))
+						event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "§6S§4p§6o§6o§4k§6y §4S§6c§4a§6r§4y §6S§4k§6ele§4t§6o§4n§6s!", 0, 0, Color.WHITE.hashCode());
+			        else if((calendar.get(2) + 1 == 4 && calendar.get(5) == 4))
+						event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "SNOWCONE IS OLDER! :D", 0, 0, Color.YELLOW.hashCode());
+			        //add the first day out of alpha here
+	//		        else if((calendar.get(2) + 1 == 10 && calendar.get(5) == 31))
+	//					event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "HAPPY B-DAY Arcane Mechina!", 0, 0, Color.yellow.hashCode());
+			        else{
+			        	if (rng == 1)
+			        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "It's not icecream!", 0, 0, Color.YELLOW.hashCode());
+			        	else if (rng == 4)
+			        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, jokeNumber1+","+jokeNumber2+jokeNumber3+"3rd times the charm right?", 0, 0, Color.YELLOW.hashCode());
+			        	else if (rng == 7)
+			        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Superwholock!", 0, 0, Color.YELLOW.hashCode());
+			        	else if (rng == 8)
+			        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, dateBetweenNowAndMC()+" Days since Minecraft Released!", 0, 0, Color.YELLOW.hashCode());
+			        	else
+			        		event.gui.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "Don't worry It's "+VERSION+"!", 0, 0, Color.YELLOW.hashCode());
+			        }
+					GL11.glPopMatrix();
+					if(rngLast != rng)
+						rngLast = rng;
+				}else{
+					if(rand.nextInt(5) == 4)
+						while(rngLast == rng)
+							rng = rand.nextInt(10);
+					else
+						rng = 0;
+					if(rng == 4)
+					{
+						jokeNumber1 = rand.nextInt(999)+1;
+						jokeNumber2 = rand.nextInt(10);
+						jokeNumber3 = rand.nextInt(10);
+					}
 				}
 			}
-		}
+    	}
 	}
     
     public static Object dateBetweenNowAndMC()

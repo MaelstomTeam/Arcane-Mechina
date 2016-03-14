@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.maelstrom.armech.common.tileentity.TileEntityPurifier;
+import com.maelstrom.armech.common.tileentity.OLD_TileEntityPurifier;
 
 public class BlockTest extends Block implements ITileEntityProvider {
 	public BlockTest(Material mat) {
@@ -32,6 +32,12 @@ public class BlockTest extends Block implements ITileEntityProvider {
 	{
 		return false;
 	}
+
+	public boolean canBeReplacedByLeaves(IBlockAccess world, BlockPos pos)
+	{
+		return false;
+	}
+	
 	@Override
 	public boolean isOpaqueCube()
 	{
@@ -52,61 +58,61 @@ public class BlockTest extends Block implements ITileEntityProvider {
 	
 	public Color getGlassColorFromTile(TileEntity tile, int renderPass)
 	{
-		if(tile != null && tile instanceof TileEntityPurifier)
-			if(((TileEntityPurifier) tile).getJarID(renderPass) == 0)
+		if(tile != null && tile instanceof OLD_TileEntityPurifier)
+			if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 0)
 				return Color.YELLOW;
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 1)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 1)
 				return Color.GREEN;
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 2)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 2)
 				return Color.RED;
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 3)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 3)
 				return Color.BLUE;
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 4)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 4)
 				return Color.BLACK;
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 5)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 5)
 				return Color.WHITE;
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 6)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 6)
 				return new Color(255,255,144);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 7)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 7)
 				return new Color(144,255,144);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 8)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 8)
 				return new Color(255,104,104);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 9)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 9)
 				return new Color(144,144,255);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 10)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 10)
 				return new Color(144,144,0);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 11)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 11)
 				return new Color(0,144,0);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 12)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 12)
 				return new Color(144,0,0);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 13)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 13)
 				return new Color(0,0,144);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 14)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 14)
 				return Color.PINK;
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 15)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 15)
 				return new Color(70,95,10);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 16)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 16)
 				return Color.ORANGE;
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 17)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 17)
 				return new Color(192,192,192);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 18)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 18)
 				return new Color(255,69,0);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 19)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 19)
 			{
 				if(new Random().nextInt(10) >= 5)
 					return Color.GREEN;
 				else
 					return new Color(85,205,47);
 			}
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 20)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 20)
 				return new Color(220,20,60);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 21)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 21)
 				return new Color(0,100,0);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 22)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 22)
 				return new Color(220,20,60);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 23)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 23)
 				return new Color(125, 249, 255);
-			else if(((TileEntityPurifier) tile).getJarID(renderPass) == 24)
+			else if(((OLD_TileEntityPurifier) tile).getJarID(renderPass) == 24)
 				return new Color(8, 232, 222);
 		return Color.WHITE;
 		
@@ -114,7 +120,7 @@ public class BlockTest extends Block implements ITileEntityProvider {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityPurifier();
+		return new OLD_TileEntityPurifier();
 	}
 	
 
@@ -127,7 +133,7 @@ public class BlockTest extends Block implements ITileEntityProvider {
     {
     	if(worldIn.getTileEntity(pos) == null)
     		return 15;
-        return ((TileEntityPurifier)worldIn.getTileEntity(pos)).getJarCount();
+        return ((OLD_TileEntityPurifier)worldIn.getTileEntity(pos)).getJarCount();
     }
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)

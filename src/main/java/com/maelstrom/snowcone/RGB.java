@@ -4,16 +4,18 @@ import java.awt.Color;
 
 public class RGB
 {
-	public static RGB RED = new RGB(Color.RED);
-	public static RGB BLUE = new RGB(Color.BLUE);
-	public static RGB YELLOW = new RGB(Color.YELLOW);
+	public static final RGB RED = new RGB(1,0,0);
+	public static final RGB BLUE = new RGB(0,0,1);
+	public static final RGB YELLOW = new RGB(0,1,1);
 	
-	public static RGB GREEN = new RGB(Color.GREEN);
-	public static RGB ORANGE = new RGB(Color.ORANGE);
-	public static RGB PURPLE = new RGB(1f,0f,1f);
+	public static final RGB GREEN = new RGB(0,1,0);
+	public static final RGB ORANGE = new RGB(1,.5f, 0);
+	public static final RGB PURPLE = new RGB(1f,0f,1f);
 	
-	public static RGB BLACK = new RGB(Color.BLACK);
-	public static RGB WHITE = new RGB(Color.WHITE);
+	public static final RGB BLACK = new RGB(0,0,0);
+	public static final RGB WHITE = new RGB(1,1,1);
+	
+	public static final RGB ELECTRIC_BLUE = new RGB((125f/256f),(249f / 256f),1f);
 	
 	private float red;
 	private float green;

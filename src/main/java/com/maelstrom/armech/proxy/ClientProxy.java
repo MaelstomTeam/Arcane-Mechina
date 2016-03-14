@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 import com.maelstrom.armech.client.fx.ParticleDispatcher;
 import com.maelstrom.armech.client.gui.GuiBookBase;
 import com.maelstrom.armech.client.gui.GuiBookIndex;
-import com.maelstrom.armech.common.AMBlocks;
-import com.maelstrom.armech.common.AMItems;
+import com.maelstrom.armech.common.registry.AMBlocks;
+import com.maelstrom.armech.common.registry.AMItems;
 
 public class ClientProxy extends CommonProxy {
 	

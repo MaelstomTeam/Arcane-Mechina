@@ -1,7 +1,10 @@
 package com.maelstrom.armech;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -13,21 +16,25 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.maelstrom.armech.client.gui.Page;
-import com.maelstrom.armech.common.AMBlocks;
-import com.maelstrom.armech.common.AMCrafting;
-import com.maelstrom.armech.common.AMItems;
+import com.maelstrom.armech.common.ConfigurationArcaneMechina;
 import com.maelstrom.armech.common.Reference;
-import com.maelstrom.armech.common.Tab_ArMech;
-import com.maelstrom.armech.common.tileentity.TileEntityPurifier;
+import com.maelstrom.armech.common.pleasesortthis.OreGen;
+import com.maelstrom.armech.common.registry.AMBlocks;
+import com.maelstrom.armech.common.registry.AMCrafting;
+import com.maelstrom.armech.common.registry.AMItems;
+import com.maelstrom.armech.common.tab.Tab_ArMech;
 import com.maelstrom.armech.proxy.CommonProxy;
+import com.maelstrom.snowcone.ConfigurationHelper;
 
-@Mod(modid = Reference.MODID, version = Reference.VERSION)
+
+@Mod(modid = Reference.MODID, version = Reference.VERSION, guiFactory = "com.maelstrom.armech.client.GUIFactory")
 public class ArMechMain
 {
 	@SidedProxy(clientSide=Reference.CLIENT_PROXY_CLASS, serverSide=Reference.SERVER_PROXY_CLASS)
 	public static CommonProxy proxy;
 	public static CreativeTabs tab_armech = new Tab_ArMech("tab_armech").setNoTitle();
 	public static CreativeTabs tab_armech_dust = new Tab_ArMech("tab_armech.dust");
+	public static CreativeTabs tab_armech_unimplemented = new Tab_ArMech("tab_armech.unimplemented").setTabIcon(new ItemStack(Blocks.barrier)).setNoTitle();
 	
 	@Instance(Reference.MODID)
 	public static ArMechMain INSTANCE;
@@ -35,6 +42,8 @@ public class ArMechMain
     @EventHandler
     public void preinit(FMLPreInitializationEvent event)
     {
+    	Reference.config = new ConfigurationArcaneMechina(new Configuration(ConfigurationHelper.getMaelstromTeamConfigurationFile(event, Reference.MODID)));
+    	
     	//try to create pages
 		Page.init();
 		
@@ -60,6 +69,8 @@ public class ArMechMain
     @EventHandler
     public void postinit(FMLPostInitializationEvent event)
     {
+    	MinecraftForge.EVENT_BUS.register(new com.maelstrom.armech.common.event.EventHandler());
+    	GameRegistry.registerWorldGenerator(new OreGen(), 0);
     }
 
 }

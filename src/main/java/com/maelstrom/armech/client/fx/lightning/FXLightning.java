@@ -24,18 +24,17 @@ public class FXLightning extends EntityFX
 	private double tX = 0d;
 	private double tY = 0d;
 	private double tZ = 0d;
-	public float length = 1.0F;
+	public float length = 1f;
+	public float size = .25f;
 	
 	ArrayList<Vec3> points = new ArrayList<Vec3>();
 	
 	ResourceLocation texture = new ResourceLocation("armech", "textures/misc/bolt.png");
 	ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
 	
-	public FXLightning(World world, double x, double y, double z, double tx, double ty, double tz)
+	public FXLightning(World world, double x, double y, double z, double tx, double ty, double tz, double arc_height)
 	{
 		super(world,x,y,z,0,0,0);
-		
-		this.setRGB(1f,1f,1f);
 		
 		this.setSize(0f, 0f);
 		this.noClip = true;
@@ -52,14 +51,14 @@ public class FXLightning extends EntityFX
 		double zz = 0d;
 		
 		double gravity = 0.115d;
-		double noise = 0.25d;
+		double noise = 0.25d / 2d;
 		
 		Vec3 vs = new Vec3(xx, yy, zz);
 		Vec3 ve = new Vec3(this.tX, this.tY, this.tZ);
 		Vec3 vc = new Vec3(xx, yy, zz);
 		
 		this.length = ((float) ve.lengthVector());
-		Vec3 vv = calculateVelocity(vs, ve, .75d, gravity);
+		Vec3 vv = calculateVelocity(vs, ve, arc_height, gravity);
 		double l = distanceSquared3d(new Vec3(0d,0d,0d), vv);
 		
 		this.points.add(vs);
@@ -97,6 +96,8 @@ public class FXLightning extends EntityFX
 		this.particleBlue = b;
 	}
 	
+	float fade = 0.8f;
+	
 	public void renderParticle(WorldRenderer wr, Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		Tessellator.getInstance().draw();
@@ -106,7 +107,7 @@ public class FXLightning extends EntityFX
 		double ePY = this.prevPosY + (this.posY - this.prevPosY) * f - this.interpPosY;
 		double ePZ = this.prevPosZ + (this.posZ - this.prevPosZ) * f - this.interpPosZ;
 		GL11.glTranslated(ePX, ePY, ePZ);
-		float size = 0.25f;
+//		float size = 0.25f;
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
@@ -119,7 +120,11 @@ public class FXLightning extends EntityFX
 		int i = 220;
 		int j = i >> 16 & 65535;
 		int k = i & 65535;
-
+		
+//		fade -= (f / 2);
+//		if(fade < 0f)
+//			fade = 0f;
+		
 		wr.begin(5, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
 
 		for (int c = 0; c < this.points.size(); c++) {
@@ -128,8 +133,8 @@ public class FXLightning extends EntityFX
 			double dx = v.xCoord;
 			double dy = v.yCoord;
 			double dz = v.zCoord;
-			wr.pos(dx, dy - size, dz).tex(f13, 1f).lightmap(j, k).color(this.particleRed, this.particleGreen,this.particleBlue, 0.8F).endVertex();
-			wr.pos(dx, dy + size, dz).tex(f13, 0f).lightmap(j, k).color(this.particleRed, this.particleGreen,this.particleBlue, 0.8F).endVertex();
+			wr.pos(dx, dy - size, dz).tex(f13, 1f).lightmap(j, k).color(this.particleRed, this.particleGreen,this.particleBlue, fade).endVertex();
+			wr.pos(dx, dy + size, dz).tex(f13, 0f).lightmap(j, k).color(this.particleRed, this.particleGreen,this.particleBlue, fade).endVertex();
 		}
 
 		Tessellator.getInstance().draw();
@@ -142,8 +147,8 @@ public class FXLightning extends EntityFX
 			double dx = v.xCoord;
 			double dy = v.yCoord;
 			double dz = v.zCoord;
-			wr.pos(dx - size, dy, dz - size).tex(f13, 1f).lightmap(j, k).color(this.particleRed, this.particleGreen,this.particleBlue, 0.8F).endVertex();
-			wr.pos(dx + size, dy, dz + size).tex(f13, 0f).lightmap(j, k).color(this.particleRed, this.particleGreen,this.particleBlue, 0.8F).endVertex();
+			wr.pos(dx - size, dy, dz - size).tex(f13, 1f).lightmap(j, k).color(this.particleRed, this.particleGreen,this.particleBlue, fade).endVertex();
+			wr.pos(dx + size, dy, dz + size).tex(f13, 0f).lightmap(j, k).color(this.particleRed, this.particleGreen,this.particleBlue, fade).endVertex();
 		}
 		Tessellator.getInstance().draw();
 
@@ -202,5 +207,17 @@ public class FXLightning extends EntityFX
 		double dy = to.yCoord - from.yCoord;
 		double dz = to.zCoord - from.zCoord;
 		return dx * dx + dy * dy + dz * dz;
+	}
+
+	public FXLightning setArcSize(float f)
+	{
+		size = f;
+		return this;
+	}
+
+	public FXLightning setFadeAmount(float f)
+	{
+		fade = f;
+		return this;
 	}
 }

@@ -22,12 +22,15 @@ public class Page
 	//index!
 	public static Page index = new Page("Index");
 	public static Page worldGen = new Page("World Gen");//possibly a interlinking page
-	public static Page structureGen = new Page("World Gen");
+	public static Page CrystalGen = new Page("World Gen");
 	public static Page intro = new Page("Introduction");
+	public static Page pca = new Page("Power Crystal");
 	//public static Page lyrics1 = new Page("Check List!");
 	
 	public static Page itemIndex = new Page("Item Index");
 	public static Page dust = new Page("-------§1§lDust§r-------");
+
+	public static Page arrays = new Page("Array Crafting");
 	
 	public static void init()
 	{
@@ -36,11 +39,22 @@ public class Page
 		index.clearText();
 		intro.clearText();
 		worldGen.clearText();
-		structureGen.clearText();
+		CrystalGen.clearText();
 		
 		itemIndex.clearText();
 		dust.clearText();
+		arrays.clearText();
+		pca.clearText();
 		
+		arrays.setNext(pca);
+		arrays.addTextLine("- §1Power Crystal");
+		pca.addImage("powerCrystalCrafting.png", 256, 256, 270, 80, .8d);
+		pca.addTextLine("using chalk, a redstone block, four item frames (containing §4fire, §1water, §6air §rand §7light §rdust crystals)");
+		pca.addTextLine();
+		pca.addTextLine("place a redstone block in the center then proceed to draw four arrows each being a 3x3 in size in formation of image to right. once done place an item frame on each side of the redstone block containing one crystal of each type descrubed above, this should complete the array.");
+		for(int i = 0; i < 8; i++)
+			pca.addTextLine();
+		pca.addTextLine("§4Side Note§r: apparently this array can only be activated by crouching and using a drawing chalk on it. This is a very strange way of activation but seems to be the only way to make this work.");
 		//==================================================================================
 		//Brandon's awful attempt at making pages!
 		//==================================================================================
@@ -86,10 +100,11 @@ public class Page
 		
 		//EXAMPLE!
 		worldGen.addTextLine("world generation consists of Dust crystals and so on"); //add a line of text
-		structureGen.addTextLine("You're kidding right?"); //add text to a different page!
-		structureGen.removeTitleFromRenderer(); //do not render title
-		structureGen.setPrevious(worldGen);//sets previous page for structureGen
-		worldGen.setNext(structureGen); // sets next page for worldGen
+		CrystalGen.addTextLine("Dust Crystal lore that contains information about its harest time and spawn levels and drops"); //add text to a different page!
+		CrystalGen.addImage("dustCrystal.png", 256, 256, 250, 15, .94d);
+		CrystalGen.removeTitleFromRenderer();
+		CrystalGen.setPrevious(worldGen);//sets previous page for structureGen
+		worldGen.setNext(CrystalGen); // sets next page for worldGen
 		
 	//	lyricsfrombatmetal(); // you see nothing NOTHING!! >.>
 	}

@@ -13,11 +13,13 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -25,8 +27,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.maelstrom.armech.ArMechMain;
-import com.maelstrom.armech.common.AMBlocks;
-import com.maelstrom.armech.common.WorldAccess;
+import com.maelstrom.armech.common.pleasesortthis.WorldAccess;
+import com.maelstrom.armech.common.registry.AMBlocks;
+import com.maelstrom.armech.common.registry.AMItems;
 import com.maelstrom.snowcone.RGB;
 
 public class BlockRuneCenter extends Block
@@ -44,6 +47,11 @@ public class BlockRuneCenter extends Block
 		return 0;
 	}
 
+	public boolean canBeReplacedByLeaves(IBlockAccess world, BlockPos pos)
+	{
+		return false;
+	}
+	
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
 	{
 		return canBlockStay(world, pos);
@@ -82,9 +90,11 @@ public class BlockRuneCenter extends Block
 		this.onBlockClicked(worldIn, pos, playerIn);
 		return !playerIn.isSneaking();
 	}
-	
+	Random rand;
 	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player)
 	{
+		if(rand == null)
+			rand = new Random(world.getSeed());
 		boolean level1 = false, level2 = false, level3 = false;
 		if(getIsChalk(world, pos.east().east()) &&
 			getIsChalk(world, pos.east().east().north()) &&
@@ -151,43 +161,52 @@ public class BlockRuneCenter extends Block
 		{
 			level3 = true;
 		}
-		if(!world.isRemote)
-			if(level1)
+		if(player.inventory.getCurrentItem() == null)
+		{
+			List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(1, 1, 1));
+			
+			boolean clay = false;
+			boolean paper = false;
+			boolean sand = false;
+			boolean exact = items.size() > 1;
+			for(EntityItem item : items)
 			{
-				List<EntityItem> itemList = WorldAccess.getItemsInWorld(world, pos.south().south().west().west().down(), pos.north().north().east().east().up());
-				if(itemList.size() > 0)
+				if(item.getEntityItem().getItem() == Item.getItemFromBlock(Blocks.clay) && !clay)
+					clay = true;
+				else if(item.getEntityItem().getItem() == Items.paper && !paper)
+					paper = true;
+				else if(item.getEntityItem().getItem() == Item.getItemFromBlock(Blocks.sand) && !sand)
+					sand = true;
+				else
 				{
-					for(EntityItem item : itemList)
-					{
-						if(item.getEntityItem().isItemEqual(new ItemStack(Items.golden_apple, 1, 0)))
-						{
-							for(int i = 0; i < 8; i++)
-								WorldAccess.spawnEntityInWorld(new EntityItem(world, item.posX, item.posY, item.posZ, new ItemStack(Items.gold_ingot)));
-							WorldAccess.spawnEntityInWorld(new EntityItem(world, item.posX, item.posY, item.posZ, new ItemStack(Items.apple)));
-							if(item.getEntityItem().stackSize > 1)
-								item.getEntityItem().stackSize--;
-							else
-								item.setDead();
-							break;
-						}
-						else if(item.getEntityItem().isItemEqual(new ItemStack(Items.golden_apple, 1, 1)))
-						{
-							for(int i = 0; i < 8; i++)
-								WorldAccess.spawnEntityInWorld(new EntityItem(world, item.posX, item.posY, item.posZ, new ItemStack(Blocks.gold_block)));
-							WorldAccess.spawnEntityInWorld(new EntityItem(world, item.posX, item.posY, item.posZ, new ItemStack(Items.apple)));
-							if(item.getEntityItem().stackSize > 1)
-								item.getEntityItem().stackSize--;
-							else
-								item.setDead();
-							break;
-						}
-					}
+					exact = false;
+					break;
 				}
 			}
-		if(!player.isSneaking() && !world.isRemote)
-			ArMechMain.proxy.getVFX().arcLightning(pos.getX()+.5, pos.getY(), pos.getZ() +.5, pos.getX()+((world.rand.nextDouble() * 4) - 2), pos.getY(), pos.getZ()+.5+((world.rand.nextDouble() * 4) - 2), new RGB(world.rand.nextFloat(),world.rand.nextFloat(),world.rand.nextFloat()));
-		if(level1 && level2 && level3)
-			ArMechMain.proxy.getVFX().arcLightning(pos.getX()+.5, pos.getY(), pos.getZ() +.5, pos.getX()+((world.rand.nextDouble() * 4) - 2), pos.getY(), pos.getZ()+.5+((world.rand.nextDouble() * 4) - 2), new RGB(world.rand.nextFloat(),world.rand.nextFloat(),world.rand.nextFloat()));
+			if(exact)
+			{
+
+				for(EntityItem item : items)
+				{
+					if(!world.isRemote)
+						if(item.getEntityItem().stackSize-- <= 0)
+							item.setDead();
+				}
+				for (int k = 0; k < 20; k++)
+				{
+					double d2 = this.rand.nextGaussian() * 0.02D;
+					double d0 = this.rand.nextGaussian() * 0.02D;
+					double d1 = this.rand.nextGaussian() * 0.02D;
+					world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (pos.getX() + .5) + this.rand.nextFloat() * 3.0F - 1.5, (pos.getY()) + this.rand.nextFloat(), (pos.getZ() + .5) + this.rand.nextFloat() * 3.0F - 1.5, d2, d0, d1, new int[0]);
+				}
+				if(world.getBlockState(pos.down()).getBlock() != Blocks.wool)
+				world.playSoundEffect((pos.getX() + .5), (pos.getY()), (pos.getZ() + .5), "fireworks.blast", 1f, 5.45f);
+				
+				EntityItem ent;
+				WorldAccess.spawnEntityInWorldWithoutVelocity(ent = new EntityItem(world, player.posX, player.posY, player.posZ, new ItemStack(AMItems.chalk, 1)));
+				ent.setNoPickupDelay();
+			}
+		}
 	}
 	
 	public boolean getIsChalk(World world, BlockPos pos)

@@ -215,20 +215,21 @@ public class GuiBookBase extends GuiScreen
 				page = Page.index;
 				Minecraft.getMinecraft().thePlayer.openGui(ArMechMain.INSTANCE, 1, Minecraft.getMinecraft().theWorld, 0, 0, 0);
 			}
-			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation(Reference.MODID + ":page"), 1.0F));
+
 			return;
 		}
 		else if(page.equals(Page.homePage) && mouseButton == 0)
 		{
 			page = Page.index;
-			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation(Reference.MODID + ":page"), 1.0F));
 			Minecraft.getMinecraft().thePlayer.openGui(ArMechMain.INSTANCE, 1, Minecraft.getMinecraft().theWorld, 0, 0, 0);
 		}
 		else if(mouseButton == 0)
 			if(page.getNext() != null)
 			{
 				page = page.getNext();
-				Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+				Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation(Reference.MODID + ":page"), 1.0F));
 			}
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}

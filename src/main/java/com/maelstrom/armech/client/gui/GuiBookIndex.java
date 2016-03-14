@@ -41,6 +41,7 @@ public class GuiBookIndex extends GuiScreen
 		buttonList.add(new GuiButtonLinking(2, posx, posy,"Introduction", Page.intro));
 		buttonList.add(new GuiButtonLinking(2, posx, posy + getPosYForButton(),"World Generation", Page.worldGen));
 		buttonList.add(new GuiButtonLinking(2, posx, posy + getPosYForButton(),"Items", Page.itemIndex));
+		buttonList.add(new GuiButtonLinking(2, posx, posy + getPosYForButton(),"Arrays", Page.arrays));
 	}
 	
 	int amount = 1;
@@ -97,7 +98,7 @@ public class GuiBookIndex extends GuiScreen
 		{
 			GuiBookBase.page = Page.homePage;
 			Minecraft.getMinecraft().thePlayer.openGui(ArMechMain.INSTANCE, 0, Minecraft.getMinecraft().theWorld, 0, 0, 0);
-			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation(Reference.MODID + ":page"), 1.0F));
 			return;
 		}
 		super.mouseClicked(mouseX, mouseY, mouseButton);

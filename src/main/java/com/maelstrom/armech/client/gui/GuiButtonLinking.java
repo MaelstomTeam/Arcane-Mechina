@@ -3,12 +3,16 @@ package com.maelstrom.armech.client.gui;
 import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+
+import com.maelstrom.armech.common.Reference;
 @SuppressWarnings("all")
 public class GuiButtonLinking extends GuiButton {
 
@@ -26,6 +30,12 @@ public class GuiButtonLinking extends GuiButton {
 	{
 		return linkedPage;
 	}
+	
+	public void playPressSound(SoundHandler sound)
+	{
+		sound.playSound(PositionedSoundRecord.create(new ResourceLocation(Reference.MODID + ":page"), 1.0F));
+	}
+	
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY)
 	{

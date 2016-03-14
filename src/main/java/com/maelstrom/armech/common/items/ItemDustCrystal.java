@@ -14,7 +14,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.maelstrom.armech.ArMechMain;
 import com.maelstrom.armech.common.Reference;
-import com.maelstrom.armech.common.blocks.BlockDustOre;
 
 public class ItemDustCrystal extends Item
 {

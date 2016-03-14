@@ -1,5 +1,7 @@
 package com.maelstrom.armech.common;
 
+import net.minecraft.util.DamageSource;
+
 
 public class Reference
 {
@@ -36,4 +38,11 @@ public class Reference
     		center of multiblock super battery
     		
     */
+    public static class CustomDamageTypes
+    {
+    	public static final DamageSource electrocute = new DamageSource("electrocute").setDamageBypassesArmor();
+    	public static final DamageSource shards = new DamageSource("shards");
+    }
+
+	public static ConfigurationArcaneMechina config;
 }

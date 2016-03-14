@@ -3,10 +3,10 @@ package com.maelstrom.armech.client.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import thaumcraft.client.lib.models.AdvancedModelLoader;
-import thaumcraft.client.lib.models.IModelCustom;
 
 import com.maelstrom.armech.common.Reference;
+import com.maelstrom.snowcone.modelloader.AdvancedModelLoader;
+import com.maelstrom.snowcone.modelloader.IModelCustom;
 
 public class ModelCrystal extends ModelBase
 {

@@ -2,10 +2,7 @@ package com.maelstrom.armech.common.blocks;
 
 import java.util.Random;
 
-import org.fusesource.jansi.Ansi.Color;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -13,6 +10,8 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,8 +27,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.maelstrom.armech.ArMechMain;
-import com.maelstrom.armech.common.tileentity.TileEntityCrystal;
+import com.maelstrom.armech.common.tileentity.OLD_TileEntityCrystal;
 
+@SuppressWarnings("all")
 public class BlockPowerStorageCrystal extends Block implements ITileEntityProvider
 {
 
@@ -38,19 +38,52 @@ public class BlockPowerStorageCrystal extends Block implements ITileEntityProvid
 	public BlockPowerStorageCrystal()
 	{
 		super(Material.glass);
-		this.setUnlocalizedName("multiblock.powercrystal");
-		this.setCreativeTab(ArMechMain.tab_armech);
+		setUnlocalizedName("multiblock.powercrystal");
+		setCreativeTab(ArMechMain.tab_armech);
 		setHardness(1f);
 		setResistance(1f);
-	    setHarvestLevel("pickaxe", 1);
-		this.setBlockBounds(.2f, .2f, .2f, .8f, .8f, .8f);
-		this.setDefaultState(blockState.getBaseState().withProperty(TYPE, MetaBlock.Main));
-		this.setLightLevel(1f);
+//	    setHarvestLevel("pickaxe", 1); //re-enable later maybe
+		setBlockBounds(.2f, 0f, .2f, .8f, 1f, .8f);
+		setDefaultState(blockState.getBaseState().withProperty(TYPE, MetaBlock.Main));
+	}
+
+	public boolean canBeReplacedByLeaves(IBlockAccess world, BlockPos pos)
+	{
+		return false;
+	}
+
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing face, float x, float y, float z)
+	{
+		OLD_TileEntityCrystal tile = ((OLD_TileEntityCrystal) world.getTileEntity(pos));
+		if(!world.isRemote)
+		if(tile != null)
+		{
+			if(player.getHeldItem() != null && player.getHeldItem().getItem() == Items.diamond)
+				tile.setEnergy(Integer.MAX_VALUE);
+			else if(player.getHeldItem() != null && player.getHeldItem().getItem() == Items.iron_ingot)
+				tile.setEnergy(0);
+			else
+				System.out.println(tile.getEnergy());
+			return true;
+		}
+		else
+		{
+			if(((OLD_TileEntityCrystal) world.getTileEntity(pos.up())) != null)
+			{
+				onBlockActivated(world, pos.up(), state, player, face, x, y, z);
+				return true;
+			}
+			else if(((OLD_TileEntityCrystal) world.getTileEntity(pos.down())) != null)
+			{
+				this.onBlockActivated(world, pos.down(), state, player, face, x, y, z);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		this.setLightLevel(0f);
 		if(world.isAirBlock(pos.up()) && world.isAirBlock(pos.up().up()))
 			return true;
 		return false;
@@ -59,7 +92,7 @@ public class BlockPowerStorageCrystal extends Block implements ITileEntityProvid
 	@Override
 	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing face, float xf, float yf, float zf, int meta, EntityLivingBase entityPlacer)
 	{
-		world.setBlockState(pos.up().up(), getStateFromMeta(2));
+		world.setBlockState(pos.up().up(), getStateFromMeta(0));
 		world.setBlockState(pos.up(), getStateFromMeta(1));
 		return getStateFromMeta(0);
 	}
@@ -68,57 +101,42 @@ public class BlockPowerStorageCrystal extends Block implements ITileEntityProvid
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		if(getMetaFromState(state) == 0)
 		{
-			world.destroyBlock(pos.up(), false);
-			world.destroyBlock(pos.up().up(), false);
+			if(world.getBlockState(pos.up()).getBlock() == this && this.getMetaFromState(world.getBlockState(pos.up())) == 1)
+			{
+				world.setBlockToAir(pos.up());
+				world.setBlockToAir(pos.up().up());
+			}
+			else if(world.getBlockState(pos.down()).getBlock() == this && this.getMetaFromState(world.getBlockState(pos.down())) == 1)
+			{
+				world.setBlockToAir(pos.down().down());
+				world.setBlockToAir(pos.down());
+			}
 		}
 		else if(getMetaFromState(state) == 1)
 		{
-			world.destroyBlock(pos.down(), false);
-			world.destroyBlock(pos.up(), false);
-		}
-		else if(getMetaFromState(state) == 2)
-		{
-			world.destroyBlock(pos.down(), false);
-			world.destroyBlock(pos.down().down(), false);
+			world.setBlockToAir(pos.up());
+			world.setBlockToAir(pos.down());
 		}
 		
 	}
-	
-	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
-	{
-		if(this.getMetaFromState(world.getBlockState(pos)) == 0)
-		{
-			this.setBlockBounds(.2f, .2f, .2f, .8f, 1f, .8f);
-		}
-		else if(this.getMetaFromState(world.getBlockState(pos)) == 1)
-		{
-			this.setBlockBounds(.2f, 0f, .2f, .8f, 1f, .8f);
-		}
-		else if(this.getMetaFromState(world.getBlockState(pos)) == 2)
-		{
-			this.setBlockBounds(.2f, 0f, .2f, .8f, .8f, .8f);
-		}
-	}
-
 	  
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBox( World world, BlockPos pos) {
 
 		if(this.getMetaFromState(world.getBlockState(pos)) == 0)
 		{
-			return AxisAlignedBB.fromBounds(pos.getX() + .2f, pos.getY() + .2f, pos.getZ() + .2f, pos.getX() + .8f, pos.getY() + 2.8f, pos.getZ() + .8f);
+			if(world.getBlockState(pos.up()).getBlock() == this && this.getMetaFromState(world.getBlockState(pos.up())) == 1)
+				return AxisAlignedBB.fromBounds(pos.getX() + .2f, pos.getY() + .005f, pos.getZ() + .2f, pos.getX() + .8f, pos.getY() + 2.995f, pos.getZ() + .8f);
+			else
+				return AxisAlignedBB.fromBounds(pos.getX() + .2f, pos.getY() - 1.995f, pos.getZ() + .2f, pos.getX() + .8f, pos.getY() + .995f, pos.getZ() + .8f);
 		}
 		else if(this.getMetaFromState(world.getBlockState(pos)) == 1)
 		{
-			return AxisAlignedBB.fromBounds(pos.getX() + .2f, pos.getY() - .8f, pos.getZ() + .2f, pos.getX() + .8f, pos.getY() + 1.8f, pos.getZ() + .8f);
-		}
-		else if(this.getMetaFromState(world.getBlockState(pos)) == 2)
-		{
-			return AxisAlignedBB.fromBounds(pos.getX() + .2f, pos.getY() - 1.8f, pos.getZ() + .2f, pos.getX() + .8f, pos.getY() + .8f, pos.getZ() + .8f);
+			return AxisAlignedBB.fromBounds(pos.getX() + .2f, pos.getY() - .995f, pos.getZ() + .2f, pos.getX() + .8f, pos.getY() + 1.995f, pos.getZ() + .8f);
 		}
 		return super.getSelectedBoundingBox(world, pos);
 	}
+	
 	@Override
 	public boolean isFullCube()
 	{
@@ -176,16 +194,13 @@ public class BlockPowerStorageCrystal extends Block implements ITileEntityProvid
 	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass)
 	{
-		if(getMetaFromState(world.getBlockState(pos)) == 1)
-			return Color.BLUE.hashCode();
-		return Color.WHITE.hashCode();
+		return 0x7DF9FF;
 	}
 	
 	public static enum MetaBlock implements IStringSerializable
 	{
 		Sub1(0, "sub1"),
-		Main(1,"main"),
-		Sub2(2, "sub2");
+		Main(1,"main");
 		
 		private int id;
 		private String name;
@@ -219,6 +234,6 @@ public class BlockPowerStorageCrystal extends Block implements ITileEntityProvid
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
-		return meta == 1 ? new TileEntityCrystal() : null;
+		return meta == 1 ? new OLD_TileEntityCrystal() : null;
 	}
 }

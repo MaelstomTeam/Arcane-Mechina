@@ -4,10 +4,6 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Random;
 
-import com.maelstrom.armech.ArMechMain;
-import com.maelstrom.armech.common.Reference;
-import com.maelstrom.armech.common.blocks.BlockDustOre;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -15,6 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.maelstrom.armech.ArMechMain;
+import com.maelstrom.armech.common.Reference;
 
 public class ItemDustDust extends Item {
 
