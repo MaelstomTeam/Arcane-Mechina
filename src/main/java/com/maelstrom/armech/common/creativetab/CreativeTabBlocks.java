@@ -1,6 +1,6 @@
 package com.maelstrom.armech.common.creativetab;
 
-import com.maelstrom.armech.common.Blocks;
+import com.maelstrom.armech.common.reference.ModBlocks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -14,7 +14,7 @@ public class CreativeTabBlocks extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return Item.getItemFromBlock(Blocks.dustOre);
+		return Item.getItemFromBlock(ModBlocks.dustOre);
 	}
 
 }

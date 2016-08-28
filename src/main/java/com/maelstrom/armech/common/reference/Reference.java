@@ -1,4 +1,4 @@
-package com.maelstrom.armech.common;
+package com.maelstrom.armech.common.reference;
 
 import com.maelstrom.armech.common.creativetab.CreativeTabBlocks;
 import com.maelstrom.armech.common.creativetab.CreativeTabItems;

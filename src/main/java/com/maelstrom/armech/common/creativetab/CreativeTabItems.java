@@ -1,6 +1,6 @@
 package com.maelstrom.armech.common.creativetab;
 
-import com.maelstrom.armech.common.ModItems;
+import com.maelstrom.armech.common.reference.ModItems;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

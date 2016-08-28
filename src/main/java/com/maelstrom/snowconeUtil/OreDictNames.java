@@ -1,4 +1,4 @@
-package com.maelstrom.armech;
+package com.maelstrom.snowconeUtil;
 
 /**
  * Class is work in progress

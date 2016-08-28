@@ -1,6 +1,9 @@
 package com.maelstrom.armech.common;
 
-import com.maelstrom.armech.OreDictNames;
+import com.maelstrom.armech.common.reference.ModBlocks;
+import com.maelstrom.armech.common.reference.ModItems;
+import com.maelstrom.armech.common.reference.Reference;
+import com.maelstrom.snowconeUtil.OreDictNames;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -16,8 +19,8 @@ import net.minecraftforge.oredict.OreDictionary;
 public class Registry
 {
 	public static void preInit() {
-		registerBlock(Blocks.dustOre, Reference.dustOreName);
-		registerOreDictionaryBlock(Blocks.copperOre, Reference.copperOreName, OreDictNames.CopperOre);
+		registerBlock(ModBlocks.dustOre, Reference.dustOreName);
+		registerOreDictionaryBlock(ModBlocks.copperOre, Reference.copperOreName, OreDictNames.CopperOre);
 		registerItem(ModItems.armechBook, Reference.armechBookName);
 		registerItem(ModItems.dustCrystal, Reference.dustCrystalName);
 	}
