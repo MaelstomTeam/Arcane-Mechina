@@ -1,25 +1,29 @@
-#################
-## Eclipse
-#################
-
-*.pydevproject
-.project
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
-.gradle
-.settings
+# eclipse
 bin
-build
 *.launch
-fmlversion
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+
+*.xcf
+*.txt
+build.gradle
 gradle
-src - Copy
+gradlew
+gradlew.bat
