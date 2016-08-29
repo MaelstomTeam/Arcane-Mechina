@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "type=main": { "model":"armech:multiblock.powercrystal" },
-        "type=sub1": { "model":"armech:multiblock.powercrystal" },
-        "type=sub2": { "model":"armech:multiblock.powercrystal" }
-    }
-}

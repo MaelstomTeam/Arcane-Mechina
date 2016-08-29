@@ -1,5 +1,0 @@
-{
-    "crystal.zap": { "category": "ambient", "sounds": [ "effects/zap1", "effects/zap2" ] },
-    "chalk": { "category": "ambient", "sounds": [ "effects/chalk-01", "effects/chalk-02", "effects/chalk-03" ] },
-    "page": { "category": "ambient", "sounds": [ "effects/page-01", "effects/page-02" ] }
-}
