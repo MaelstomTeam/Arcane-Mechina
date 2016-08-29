@@ -1,3 +1,8 @@
+0.0.11 -- 29/8/2016
+```
+dust crystal nbt setup
+commented on most of the code [needs to be done better]
+```
 0.0.1 -- 23/8/2016
 ```
 Git created

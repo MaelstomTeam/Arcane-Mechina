@@ -24,6 +24,7 @@ public class ArcaneMechina {
 	public void init(FMLInitializationEvent event)
 	{
 		Registry.init();
+		//register world generation with a weight of 5
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 5);
 	}
 	
