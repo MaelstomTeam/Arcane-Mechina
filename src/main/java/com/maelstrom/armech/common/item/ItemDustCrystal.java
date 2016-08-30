@@ -19,7 +19,7 @@ public class ItemDustCrystal extends Item {
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
     	//if f3+h advanced mode is on and player is in creative mode
-    	if(advanced && playerIn.isCreative())
+    	if(advanced && (playerIn.isCreative() || Item.class.getCanonicalName() == "net.minecraft.item.Item"))
     	{
     		//create a Crystal Details from item stack
     		CrystalDetails details = CrystalDetails.readDetails(stack);

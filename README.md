@@ -20,6 +20,13 @@ Refer to these for licensing
 
 
 
+0.0.12
+```
+dust ore now drops dust crystals [crystals with nbt]
+copper can now be smelted into copper ingots
+ores now have harvest levels
+added copper ingot
+```
 0.0.11 -- 29/8/2016
 ```
 dust crystal nbt setup

@@ -22,11 +22,14 @@ public class Registry
 	//pre initialization
 	public static void preInit() {
 		registerBlock(ModBlocks.dustOre.setCreativeTab(Reference.tabDust), Reference.dustOreName);
+		ModBlocks.dustOre.setHarvestLevel("pickaxe", 2);
 		registerOreDictionaryBlock(ModBlocks.copperOre, Reference.copperOreName, OreDictNames.CopperOre);
+		ModBlocks.copperOre.setHarvestLevel("pickaxe", 1);
+			//due to an unexplainable error the icon for tabBlocks cannot be set until after the block has be initialised
+			Reference.tabBlocks.setCreativeTabIcon(Item.getItemFromBlock(ModBlocks.copperOre));
+		registerOreDictionaryItem(ModItems.ingotCopper, Reference.copperIngotName, OreDictNames.CopperIngot);
 		registerItem(ModItems.armechBook, Reference.armechBookName);
 		registerItem(ModItems.dustCrystal.setCreativeTab(Reference.tabDust), Reference.dustCrystalName);
-		//due to an unexplainable error the icon for tabBlocks cannot be set until after the block has be initialised
-		Reference.tabBlocks.setCreativeTabIcon(Item.getItemFromBlock(ModBlocks.copperOre));
 	}
 
 	//initialization
@@ -37,6 +40,8 @@ public class Registry
 	public static void postInit() {
 		//add shappless recipe for armech book
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.armechBook), Items.BOOK, ModItems.dustCrystal);
+		//add smelting recipe for copper
+		GameRegistry.addSmelting(ModBlocks.copperOre, new ItemStack(ModItems.ingotCopper), 0.7f);
 	}
 	//register item function
 	private static void registerItem(Item item, String itemID){

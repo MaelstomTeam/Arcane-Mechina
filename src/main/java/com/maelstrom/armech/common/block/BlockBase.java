@@ -7,6 +7,7 @@ public abstract class BlockBase extends Block {
 
 	public BlockBase(Material materialIn) {
 		super(materialIn);
+		this.setHardness(3f);
 	}
 
 }

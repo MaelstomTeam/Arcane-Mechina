@@ -8,4 +8,5 @@ import net.minecraft.item.Item;
 public class ModItems {
 	public static Item dustCrystal = new ItemDustCrystal();
 	public static Item armechBook = new ItemBook();
+	public static Item ingotCopper = new Item();
 }

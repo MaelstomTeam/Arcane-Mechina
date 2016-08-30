@@ -5,4 +5,5 @@ tile.armech.dustOre.name=Dust Ore
 tile.armech.copperOre.name=Copper Ore
 item.armech.dustCrystal.name=Dust Crystal
 item.armech.armechBook.name=§bArcane Book
-item.armech.armechBook.description=Guide to all things §bArcane Mechina
+item.armechBook.description=Guide to all things §bArcane Mechina
+item.armech.ingotCopper.name=Copper Ingot

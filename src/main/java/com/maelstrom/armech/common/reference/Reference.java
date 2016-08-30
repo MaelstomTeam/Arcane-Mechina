@@ -17,6 +17,7 @@ public class Reference {
 	
 	public static final String dustOreName = "dustOre";
 	public static final String copperOreName = "copperOre";
+	public static final String copperIngotName = "ingotCopper";
 	public static final String armechBookName = "armechBook";
 	public static final String dustCrystalName = "dustCrystal";
 }
