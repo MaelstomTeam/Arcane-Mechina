@@ -4,7 +4,7 @@
 |<div Title="The names Spor or SNR are also used">SporNightReloaded</div>|
 |Brizzle|
 
-Refer to these for licensing
+Refer to these for licensing (May need updating)
 
 | License | site |
 |------|-----|
