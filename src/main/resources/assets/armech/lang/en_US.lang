@@ -7,3 +7,11 @@ item.armech.dustCrystal.name=Dust Crystal
 item.armech.armechBook.name=§bArcane Book
 item.armechBook.description=Guide to all things §bArcane Mechina
 item.armech.ingotCopper.name=Copper Ingot
+
+
+
+
+
+
+
+armech.text.nbtexception=unknown error accord while reading NBTData. pelase destroy this item!

@@ -6,8 +6,11 @@ import com.maelstrom.armech.common.reference.Reference;
 import com.maelstrom.snowconeUtil.OreDictNames;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -42,6 +45,7 @@ public class Registry
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.armechBook), Items.BOOK, ModItems.dustCrystal);
 		//add smelting recipe for copper
 		GameRegistry.addSmelting(ModBlocks.copperOre, new ItemStack(ModItems.ingotCopper), 0.7f);
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)ModItems.dustCrystal, ModItems.dustCrystal);
 	}
 	//register item function
 	private static void registerItem(Item item, String itemID){

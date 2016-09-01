@@ -89,9 +89,10 @@ public class CrystalDetails
 			return itemStack;
     	ArrayList<ElementalType> list = new ArrayList();
 		int randomNumber = rand.nextInt(ElementalType.ELEMENT_TYPES.values().length) + 1;
+		float percentage = (rand.nextFloat() / 2) + .5f;
 		for(int i = 0; i < randomNumber; i++)
 		{
-			ElementalType newElement = new ElementalType(ELEMENT_TYPES.values()[rand.nextInt(ElementalType.ELEMENT_TYPES.values().length)], 1f / randomNumber);
+			ElementalType newElement = new ElementalType(ELEMENT_TYPES.values()[rand.nextInt(ElementalType.ELEMENT_TYPES.values().length)], ((rand.nextFloat() / 2) + .5f) / randomNumber);
 			for(ElementalType e : list)
 			{
 				if(e.type == newElement.type)
