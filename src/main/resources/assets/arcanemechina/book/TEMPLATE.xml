@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Page>
+	<title></title>
+	<id></id>
+	<prev>index</prev>
+	<next></next>
+	<text></text>
+	<Image>
+		<source>.png</source>
+		<height>256</height>
+		<width>256</width>
+		<x></x>
+		<y></y>
+		<scale></scale>
+	</Image>
+</Page>

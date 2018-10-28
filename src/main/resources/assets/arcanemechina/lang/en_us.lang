@@ -1,0 +1,73 @@
+item.arcanemechina.helpbook.basic.name=The Book of Arcane
+item.arcanemechina.helpbook.intermediate.name=The Guide of Arcane Machines
+item.arcanemechina.helpbook.advanced.name=Eldritch Guide to Archaic Apparatuses
+item.arcanemechina.helpbook.cheat.name=The Cheaty book of Crafts
+
+item.arcanemechina.gem.Sapphire.name=Sapphire
+item.arcanemechina.gem.Ruby.name=Ruby
+item.arcanemechina.gem.Amethyst.name=Amethyst
+item.arcanemechina.gem.WDiamond.name=White Diamond
+item.arcanemechina.gem.PDiamond.name=Pink Diamond
+item.arcanemechina.gem.YDiamond.name=Yellow Diamond
+item.arcanemechina.gem.Quartz.name=Quartz
+
+item.arcanemechina.ingot.Copper.name=Copper Ingot
+item.arcanemechina.ingot.Lead.name=Lead Ingot
+item.arcanemechina.ingot.Silver.name=Silver Ingot
+
+item.arcanemechina.drop.Pearl.name=Pearl
+item.arcanemechina.drop.Bark.name=Paper Bark
+
+item.arcanemechina.crystal.Fire.name=Crystal Fire
+item.arcanemechina.crystal.Water.name=Crystal Water
+item.arcanemechina.crystal.Earth.name=Crystal Earth
+item.arcanemechina.crystal.Air.name=Crystal Air
+item.arcanemechina.crystal.Dark.name=Crystal Dark
+item.arcanemechina.crystal.Light.name=Crystal Light
+
+item.arcanemechina.dust.Fire.name=Dust Fire
+item.arcanemechina.dust.Water.name=Dust Water
+item.arcanemechina.dust.Earth.name=Dust Earth
+item.arcanemechina.dust.Air.name=Dust Air
+item.arcanemechina.dust.Dark.name=Dust Dark
+item.arcanemechina.dust.Light.name=Dust Light
+
+
+item.arcanemechina.chalk.Runic.name=Runic Chalk
+item.arcanemechina.chalk.Valor.name=Valor Chalk
+item.arcanemechina.chalk.Ethereal.name=Ethereal Chalk
+item.arcanemechina.chalk.Deadric.name=Oblivious Chalk
+
+itemGroup.AM.name=Arcane Mechina
+itemGroup.AM.RUNIC.name=Runic [AM]
+itemGroup.AM.PLANT.name=Vegetation [AM]
+itemGroup.AM.MECH.name=Machines [AM]
+
+tile.arcanemechina.ore.Copper.name=Copper Ore
+tile.arcanemechina.ore.Lead.name=Lead Ore
+tile.arcanemechina.ore.Silver.name=Silver Ore
+tile.arcanemechina.ore.Sapphire.name=Sapphire Ore
+tile.arcanemechina.ore.Ruby.name=Ruby Ore
+tile.arcanemechina.ore.Amethyst.name=Amethyst Ore
+tile.arcanemechina.ore.WDiamond.name=Diamond Ore
+tile.arcanemechina.ore.PDiamond.name=Diamond Ore
+tile.arcanemechina.ore.YDiamond.name=Diamond Ore
+tile.arcanemechina.ore.Quartz.name=Quartz Ore
+
+tile.arcanemechina.paperbark_log.name=Paperbark Log
+tile.arcanemechina.bare_paperbark_log.name=Paperbark Log
+
+tile.arcanemechina.crystalore.Fire.name=Dust Ore
+tile.arcanemechina.crystalore.Water.name=Dust Ore
+tile.arcanemechina.crystalore.Earth.name=Dust Ore
+tile.arcanemechina.crystalore.Air.name=Dust Ore
+tile.arcanemechina.crystalore.Dark.name=Dust Ore
+tile.arcanemechina.crystalore.Light.name=Dust Ore
+
+
+book.index=Index
+book.home_page=Home Page
+book.dust_lore=Dust
+book.intro=Introduction to the Arcane
+book.item_chalk=Uses of Chalk
+book.array=List of Arrays and their uses

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Page>
+	<title>Array of Alchemy</title>
+	<id>array.alchemy</id>
+	<prev>array.crafting</prev>
+	<next>array.infusion</next>
+	<text>Text</text>
+</Page>

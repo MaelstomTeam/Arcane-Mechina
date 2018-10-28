@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Page>
+	<title>Crystal of Power</title>
+	<id>array.power_crystal</id>
+	<prev>array.infusion</prev>
+	<next>array.barrier</next>
+	<text>using chalk, a redstone block, four item frames (containing §4fire, §1water, §6air §rand §7light §rdust crystals)</text>
+	<text>place a redstone block in the center then proceed to draw four arrows each being a 3x3 in size in formation of image to right. once done place an item frame on each side of the redstone block containing one crystal of each type descrubed above, this should complete the array.</text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text>§4Side Note§r: apparently this array can only be activated by crouching and using a drawing chalk on it. This is a very strange way of activation but seems to be the only way to make this work.</text>
+	<Image>
+		<source>powercrystalcrafting.hq.png</source>
+		<height>256</height>
+		<width>256</width>
+		<x>270</x>
+		<y>80</y>
+		<scale>.8</scale>
+	</Image>
+</Page>

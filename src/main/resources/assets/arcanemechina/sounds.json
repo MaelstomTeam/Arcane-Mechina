@@ -1,0 +1,24 @@
+{
+    "sfx.crystal.zap": {
+		"category": "ambient",
+		"subtitle":"arcanemechina.subtitile.zap",
+		"sounds": [ 
+			"arcanemechina:effects/zap1",
+			"arcanemechina:effects/zap2" ]
+	},
+    "sfx.chalk": { 
+		"category": "ambient",
+		"subtitle":"arcanemechina.subtitile.chalk",
+		"sounds": [ 
+			"arcanemechina:effects/chalk-01",
+			"arcanemechina:effects/chalk-02",
+			"arcanemechina:effects/chalk-03" ]
+	},
+    "sfx.page": { 
+		"category": "ambient",
+		"subtitle":"arcanemechina.subtitile.page",
+		"sounds": [ 
+			"arcanemechina:effects/page-01",
+			"arcanemechina:effects/page-02" ]
+	}
+}

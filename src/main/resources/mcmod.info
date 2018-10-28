@@ -1,0 +1,30 @@
+[
+{
+  "modid": "snowcone",
+  "name": "Snowcone Utilities",
+  "description": "Maelstrom base for all team mods. for now this mod is packed with Arcane Mechina as its the only mod to use it",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["NadirRift"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+},
+{
+  "modid": "arcanemechina",
+  "name": "Arcane Mechina",
+  "description": "description of armech",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["NadirRift"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["required-after:snowcone@[lemmon]"]
+}
+]

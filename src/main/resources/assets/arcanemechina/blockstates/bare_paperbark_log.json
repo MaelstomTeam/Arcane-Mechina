@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "axis=y":  { "model": "arcanemechina:bare_paperbark_log" },
+        "axis=z":   { "model": "arcanemechina:bare_paperbark_log", "x": 90 },
+        "axis=x":   { "model": "arcanemechina:bare_paperbark_log", "x": 90, "y": 90 },
+        "axis=none": { "model": "arcanemechina:bare_paperbark_log" }
+    }
+}

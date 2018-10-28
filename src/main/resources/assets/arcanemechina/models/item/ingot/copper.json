@@ -1,0 +1,8 @@
+{
+    "forge_marker": 1,
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "arcanemechina:items/ingot/copper_oxide",
+        "layer1": "arcanemechina:items/ingot/copper"
+    }
+}

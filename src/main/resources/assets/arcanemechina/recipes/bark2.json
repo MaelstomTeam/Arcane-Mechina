@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "arcanemechina:drop",
+            "data": 1
+        },
+        {
+            "item": "arcanemechina:drop",
+            "data": 1
+        },
+        {
+            "item": "arcanemechina:drop",
+            "data": 1
+        },
+        {
+            "item": "arcanemechina:drop",
+            "data": 1
+        }
+    ],
+    "result": {
+        "item": "minecraft:paper",
+        "count": 2
+    },
+    "group": "stuff"
+}

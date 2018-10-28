@@ -1,0 +1,94 @@
+<Array>
+	<ID>barrier</ID>
+	
+	<data>
+		<META>2</META>
+		<X>0</X>
+		<Z>0</Z>
+	</data>
+
+	<data>
+		<META>0</META>
+		<X>2</X>
+		<Z>-1</Z>
+	</data>
+	<data>
+		<META>0</META>
+		<X>2</X>
+		<Z>0</Z>
+	</data>
+	<data>
+		<META>0</META>
+		<X>2</X>
+		<Z>1</Z>
+	</data>
+	
+	<data>
+		<META>0</META>
+		<X>-2</X>
+		<Z>-1</Z>
+	</data>
+	<data>
+		<META>0</META>
+		<X>-2</X>
+		<Z>0</Z>
+	</data>
+	<data>
+		<META>0</META>
+		<X>-2</X>
+		<Z>1</Z>
+	</data>
+	
+	<data>
+		<META>0</META>
+		<X>-1</X>
+		<Z>2</Z>
+	</data>
+	<data>
+		<META>0</META>
+		<X>0</X>
+		<Z>2</Z>
+	</data>
+	<data>
+		<META>0</META>
+		<X>1</X>
+		<Z>2</Z>
+	</data>
+	
+	<data>
+		<META>0</META>
+		<X>-1</X>
+		<Z>-2</Z>
+	</data>
+	<data>
+		<META>0</META>
+		<X>0</X>
+		<Z>-2</Z>
+	</data>
+	<data>
+		<META>0</META>
+		<X>1</X>
+		<Z>-2</Z>
+	</data>
+	
+	<data>
+		<META>1</META>
+		<X>0</X>
+		<Z>-1</Z>
+	</data>
+	<data>
+		<META>1</META>
+		<X>0</X>
+		<Z>1</Z>
+	</data>
+	<data>
+		<META>1</META>
+		<X>-1</X>
+		<Z>0</Z>
+	</data>
+	<data>
+		<META>1</META>
+		<X>1</X>
+		<Z>0</Z>
+	</data>
+</Array>

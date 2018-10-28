@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Page>
+	<title>Home</title>
+	<titleRender>false</titleRender>
+	<id>home_page</id>
+	<next>index</next>
+	<pageBackground>help_book_main3.png</pageBackground>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text></text>
+	<text>Thank you for using §o§lArcane Mechina§r!</text>
+	<text>In advance we would like to apologize for the §nvery little documentation§r we have on what things do as we are still figuring out how it all works together.</text>
+	<text>- §oMaelstrom Mod Team</text>
+	<Image>
+		<source>logo.png</source>
+		<height>256</height>
+		<width>256</width>
+		<x>27</x>
+		<y>30</y>
+		<scale>.85</scale>
+	</Image>
+	<Image>
+		<source>alchemy-bw.png</source>
+		<height>256</height>
+		<width>256</width>
+		<x>75</x>
+		<y>165</y>
+		<scale>.5</scale>
+	</Image>
+	<Image>
+		<source>navigation.png</source>
+		<height>256</height>
+		<width>256</width>
+		<x>280</x>
+		<y>230</y>
+		<scale>1.2</scale>
+	</Image>
+</Page>

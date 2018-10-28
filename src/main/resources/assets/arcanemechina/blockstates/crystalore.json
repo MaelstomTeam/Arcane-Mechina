@@ -1,0 +1,11 @@
+{
+    "forge_marker": 1,
+    "variants": {
+           "meta=0":  {  "model": "arcanemechina:crystalore/fire" },
+           "meta=1":  {  "model": "arcanemechina:crystalore/earth" },
+           "meta=2":  {  "model": "arcanemechina:crystalore/air" },
+           "meta=3":  {  "model": "arcanemechina:crystalore/water" },
+           "meta=4":  {  "model": "arcanemechina:crystalore/light" },
+           "meta=5":  {  "model": "arcanemechina:crystalore/dark" }
+        } 
+}

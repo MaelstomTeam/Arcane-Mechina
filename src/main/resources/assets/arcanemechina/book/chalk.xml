@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Page>
+	<title>chalk</title>
+	<id>item_chalk</id>
+	<prev>index</prev>
+	<next></next>
+	<text>Crafting Pattern</text>
+	<Image>
+		<source>chalk.png</source>
+		<height>256</height>
+		<width>256</width>
+		<x>0</x>
+		<y>0</y>
+		<scale>1</scale>
+	</Image>
+	<text>This object is the most basic item to get started in the works of Arcane.</text>
+	<text>Chalks use varies from simply marking a location, to creating fantastic Arrays for Arcane use</text>
+	<text>need more to write!!</text>
+</Page>
