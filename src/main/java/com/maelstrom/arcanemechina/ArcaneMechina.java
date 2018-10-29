@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.maelstrom.arcanemechina.common.creativetab.CreativeTab_AM;
 import com.maelstrom.arcanemechina.common.registry.Registry;
+import com.maelstrom.snowcone.SnowCone;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
@@ -22,7 +23,7 @@ public class ArcaneMechina
 	public static final String MODID = "arcanemechina";
 	public static final String NAME = "Arcane Mechina";
 	public static final String VERSION = "1.0.0";
-	public static final String DEPENDENCEIS = "required-after:snowcone@[lemmon]";
+	public static final String DEPENDENCEIS = "required-after:snowcone@["+SnowCone.VERSION+"]";
 	
     public static Logger LOGGER;
 	public static CreativeTabs MainTab;

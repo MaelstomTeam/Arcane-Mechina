@@ -15,6 +15,7 @@ def V
 def Mj
 def Mi
 def B
+def snow
 
 if(versionFile.canRead()) {
 	def Properties versionProps = new Properties()
@@ -24,12 +25,13 @@ if(versionFile.canRead()) {
 	Mj = versionProps['MAJOR'].toInteger()
 	Mi = versionProps['MINOR'].toInteger()
 	B = versionProps['BUILD'].toInteger() + 1
-	
+	snow = versionProps['SNOW']
 	versionProps["BUILD"]=B.toString()
 	versionProps.store(versionFile.newWriter(), null)
 }
 
 version = V+"."+Mj+"."+Mi+"."+B
+def version_snowcone=snow
 group = "com.maelstrom.arcanemechina" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "arcanemechina"
 
@@ -85,7 +87,7 @@ processResources {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':project.version, 'mcversion':project.minecraft.version, 'version_snowcone':version_snowcone
     }
         
     // copy everything else except the mcmod.info

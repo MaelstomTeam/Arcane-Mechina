@@ -13,7 +13,7 @@ public class SnowCone
 {
 	public static final String MODID = "snowcone";
 	public static final String NAME = "Snowcone Util";
-	public static final String VERSION = "lemmon";
+	public static final String VERSION = "lemon";
 	
     private static Logger logger;
 

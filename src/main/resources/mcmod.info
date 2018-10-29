@@ -3,7 +3,7 @@
   "modid": "snowcone",
   "name": "Snowcone Utilities",
   "description": "Maelstrom base for all team mods. for now this mod is packed with Arcane Mechina as its the only mod to use it",
-  "version": "${version}",
+  "version": "${version_snowcone}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
@@ -25,6 +25,6 @@
   "credits": "",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": ["required-after:snowcone@[lemmon]"]
+  "dependencies": ["required-after:snowcone@[${version_snowcone}]"]
 }
 ]
