@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.client.gui.book;
+package com.maelstrom.arcanemechina.api.book;
 
 public class Image
 {

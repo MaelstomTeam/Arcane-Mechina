@@ -13,6 +13,7 @@ import com.maelstrom.snowcone.util.Development;
 import com.maelstrom.snowcone.util.IHasName;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +43,7 @@ public class ItemChalk extends Item implements IHasName
     	{
 			Array array = new Array();
 			array.data = new ArrayList<BlockData>();
-			array.ID = "";
+			array.ID = "NAME_HERE";
     		for(int x = -32; x < 32; x++)
     		{
     			for(int z = -32; z < 32; z++)

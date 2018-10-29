@@ -6,7 +6,8 @@ import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
-import com.maelstrom.arcanemechina.client.gui.book.Page;
+import com.maelstrom.arcanemechina.api.book.Library;
+import com.maelstrom.arcanemechina.api.book.Page;
 import com.maelstrom.snowcone.util.Development;
 
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class GuiBookIndex extends GuiScreen {
@@ -37,14 +40,14 @@ public class GuiBookIndex extends GuiScreen {
 		posY = ((height - 256) / 2) + 68;
 		if(Development.isDevEnviroment())
 			buttonList.add(reset = new GuiButton(1, width / 2 - 55, 0, 110, 20, "RELOAD PAGE INIT()"));
-		buttonList.add(new GuiButtonLinking(2, posX, posY + getPosYForButton(), I18n.translateToLocal("book."+PageAll.pages.get("intro").id), PageAll.pages.get("intro")));
-		for(Page p : PageAll.pages.values())
+		buttonList.add(new GuiButtonLinking(2, posX, posY + getPosYForButton(), I18n.translateToLocal("book."+GuiBook.book.getPages().get("intro").id), GuiBook.book.getPages().get("intro")));
+		for(Page p : GuiBook.book.getPages().values())
 		{
-			if(p.prev != null && !p.id.equals("intro") && p.prev.equals(PageAll.index.id) && !p.id.equals(PageAll.homePage.id))
+			if(p.prev != null && !p.id.equals("intro") && p.prev.equals(GuiBook.book.index.id) && !p.id.equals(GuiBook.book.homePage.id))
 				buttonList.add(new GuiButtonLinking(2, amount >= 22 ? (posX + 118) : posX, posY + getPosYForButton(), I18n.translateToLocal("book."+p.id), p));
 		}
 	}
-	public int getPosYForButton()
+	private int getPosYForButton()
 	{
 		return (amount++ % 22) * 6;
 	}
@@ -53,13 +56,19 @@ public class GuiBookIndex extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
 	{
 		drawDefaultBackground();
+
     	if(Development.isDevEnviroment())
     	{
+    		//PageAll.init();
     		GL11.glPushMatrix();
     		GL11.glScaled(.5, .5, .5);
-    		drawString(Minecraft.getMinecraft().fontRenderer, "MINECRAFT DECOMPILED WORKSPACE!" , 2, 2, Color.DARK_GRAY.hashCode());
+    		drawString(Minecraft.getMinecraft().fontRenderer, "MINECRAFT DECOMPILED WORKSPACE!", this.width-174/2, 2, Color.WHITE.hashCode());
+    		drawString(Minecraft.getMinecraft().fontRenderer, "   MC_VERSION: " + MinecraftForge.MC_VERSION, 8, 2, Color.WHITE.hashCode());
+    		drawString(Minecraft.getMinecraft().fontRenderer, "FORGE_VERSION: " + ForgeVersion.getVersion(), 2, 12, Color.WHITE.hashCode());
+    		//drawString(Minecraft.getMinecraft().fontRenderer, mouseX+"", mouseX * 2, 22, Color.YELLOW.hashCode());
+    		//drawString(Minecraft.getMinecraft().fontRenderer, mouseY+"", 22, mouseY*2, Color.YELLOW.hashCode());
     		GL11.glPopMatrix();
-			this.reset.visible = isShiftKeyDown() && Development.isDevEnviroment();
+			this.reset.visible = isShiftKeyDown();
 			this.reset.displayString = isCtrlKeyDown() ? "RELOAD GUI INIT()" : "RELOAD PAGE INIT()";
     	}
 		drawBaseBackground();
@@ -82,10 +91,10 @@ public class GuiBookIndex extends GuiScreen {
 			if(isCtrlKeyDown())
 				this.initGui();
 			else
-				PageAll.init();
+				Library.init();
 		else if(button instanceof GuiButtonLinking)
 		{
-			GuiBook.page = ((GuiButtonLinking) button).getPage();
+			GuiBook.book.page = ((GuiButtonLinking) button).getPage();
 			FMLCommonHandler.instance().showGuiScreen(GuiBook.INSTANCE);
 		}
 	}
@@ -94,7 +103,7 @@ public class GuiBookIndex extends GuiScreen {
 	{
 		if(mouseButton == 1)
 		{
-			GuiBook.page = PageAll.homePage;
+			GuiBook.book.page = GuiBook.book.homePage;
 			FMLCommonHandler.instance().showGuiScreen(GuiBook.INSTANCE);
 			Minecraft.getMinecraft().player.playSound(GuiBook.event, 1f, 1f);
 			return;
@@ -115,7 +124,7 @@ public class GuiBookIndex extends GuiScreen {
 		int posy = (height - 256) / 2 + 50;
 		
 		//bind texture
-		this.mc.renderEngine.bindTexture(new ResourceLocation(ArcaneMechina.MODID + ":textures/gui/help_book_main"+GuiBook.defaultBackground+".png"));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(ArcaneMechina.MODID + ":textures/gui/help_book_main1.png"));
 		
 		//draws book background
 		drawTexturedModalRect(posx, posy,0,0,256,256);

@@ -34,10 +34,11 @@ public class RuneRegistry
 	public static void Initialize()
 	{
 		try {
-			LOGGER.info("Loading array's from file");
+			LOGGER.info("Loading array's patterns from file");
 			LoadArray("assets/arcanemechina/array/basic.xml").setActivity(new BasicActivity());
 			LoadArray("assets/arcanemechina/array/barrier.xml").setActivity(new BarrierActivity());
 			LoadArray("assets/arcanemechina/array/dimensional_gate.xml").setActivity(new BasicActivity());
+			LoadArray("assets/arcanemechina/array/shrink.xml").setActivity(new BasicActivity());
 		} catch (Exception e) {
 			LOGGER.info("Something Went Wrong!");
 			e.printStackTrace();

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Page>
-	<title>Array of Infusion</title>
+	<title>Barrier Array</title>
 	<id>array.barrier</id>
 	<prev>array.power_crystal</prev>
-	<next></next>
+	<next>array.shrink</next>
 	<text>creating an Etheric rune with a basic circle with valiant markers in each of the 4 cardinal directions seems to have created a barrier against all entities</text>
 	<text>although one had to sacrifice a §4shield§r, 2 §4Etheric Crystals§r and an §4Ender Pearl§r to get this desired effect, but nothing an decent alchemist can't handle</text>
 	<text>note: it appears adding an inventory above the circle changes the effected entities</text>

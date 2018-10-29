@@ -2,7 +2,6 @@ package com.maelstrom.arcanemechina.client;
 
 import com.maelstrom.arcanemechina.client.gui.GuiBook;
 import com.maelstrom.arcanemechina.client.gui.GuiBookIndex;
-import com.maelstrom.arcanemechina.client.gui.PageAll;
 import com.maelstrom.arcanemechina.common.CommonProxy;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +35,6 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit() {
 		// TODO Auto-generated method stub
-		PageAll.init();
 		
 	}
 

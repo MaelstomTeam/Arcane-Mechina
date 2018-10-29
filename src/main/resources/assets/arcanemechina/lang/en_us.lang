@@ -1,8 +1,3 @@
-item.arcanemechina.helpbook.basic.name=The Book of Arcane
-item.arcanemechina.helpbook.intermediate.name=The Guide of Arcane Machines
-item.arcanemechina.helpbook.advanced.name=Eldritch Guide to Archaic Apparatuses
-item.arcanemechina.helpbook.cheat.name=The Cheaty book of Crafts
-
 item.arcanemechina.gem.Sapphire.name=Sapphire
 item.arcanemechina.gem.Ruby.name=Ruby
 item.arcanemechina.gem.Amethyst.name=Amethyst
@@ -64,6 +59,10 @@ tile.arcanemechina.crystalore.Air.name=Dust Ore
 tile.arcanemechina.crystalore.Dark.name=Dust Ore
 tile.arcanemechina.crystalore.Light.name=Dust Ore
 
+
+item.arcanemechina.helpbook.arcane.name=The Book of the Arcane
+item.arcanemechina.helpbook.mecha.name=The Guide to Machines
+item.arcanemechina.helpbook.adv.name=Eldritch Guide to Archaic Apparatuses
 
 book.index=Index
 book.home_page=Home Page

@@ -105,10 +105,19 @@ public class EventHandler
 						double x = event.getRunePosition().getX() + (Math.random() * 32 - 16);
 						double y = event.getRunePosition().getY() + (Math.random() * 32 - 16);
 						double z = event.getRunePosition().getZ() + (Math.random() * 32 - 16);
-						//just incase it tries to teleport you into the ground?
+						//find closest block to the ground otherwise freak the heck out we don't know where to put the player
+						while(w.isAirBlock(new BlockPos(x,y,z)))
+							if(y <= 0)
+								break;
+							else
+								y--;
 						while(!w.isAirBlock(new BlockPos(x,y,z)))
-							y+=1d;
-						entity.attemptTeleport(x,y,z);
+							if(y >= 255)
+								break;
+							else
+								y++;
+						if(y <= 255)
+							entity.attemptTeleport(x,y,z);
 					}
 				}
 			}

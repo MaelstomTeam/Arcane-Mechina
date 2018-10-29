@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
+import com.maelstrom.arcanemechina.api.book.Library;
 import com.maelstrom.arcanemechina.common.CommonProxy;
 import com.maelstrom.arcanemechina.common.block.BlockList;
 import com.maelstrom.arcanemechina.common.items.ItemList;
@@ -51,6 +52,8 @@ public class Registry extends ERegistry {
 	@Override
 	public void preInitialization() {
 
+		Library.init();
+		
 		LOGGER.info("running sided proxy");
 		proxy.preInit();
 		

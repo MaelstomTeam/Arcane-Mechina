@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.maelstrom.arcanemechina.api.book.Book;
+import com.maelstrom.arcanemechina.api.book.Library;
 import com.maelstrom.arcanemechina.client.gui.GuiBook;
 import com.maelstrom.arcanemechina.client.gui.GuiBookIndex;
 import com.maelstrom.snowcone.util.IHasName;
@@ -26,7 +28,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemHelpBook extends Item implements IHasName {
 
-    public String[] nameList = {"basic", "intermediate", "advanced", "cheat"};
 	public ItemHelpBook()
 	{
 		this.setMaxDamage(0);
@@ -50,9 +51,26 @@ public class ItemHelpBook extends Item implements IHasName {
 		if (!playerIn.isSneaking())
 		{
 			if(worldIn.isRemote) {
-				FMLCommonHandler.instance().showGuiScreen(GuiBookIndex.INSTANCE);
-				//playerIn.openGui(ArcaneMechina.INSTANCE, 0, worldIn, 0, 0, 0);
-				GuiBook.defaultBackground = 1;
+				Book book = Library.getLibrary()[playerIn.getHeldItem(handIn).getItemDamage()];
+				if(GuiBook.book == book)
+				{
+					if(GuiBook.book.firstTimeOpening)
+					{
+						GuiBook.book.firstTimeOpening = false;
+						GuiBook.book.page = GuiBook.book.homePage;
+					}
+					FMLCommonHandler.instance().showGuiScreen(GuiBook.INSTANCE);
+				}
+				else
+				{
+					GuiBook.book = book;
+					if(GuiBook.book.firstTimeOpening)
+					{
+						GuiBook.book.firstTimeOpening = false;
+						GuiBook.book.page = GuiBook.book.homePage;
+					}
+					FMLCommonHandler.instance().showGuiScreen(GuiBook.INSTANCE);
+				}
 			}
 		}
         return super.onItemRightClick(worldIn, playerIn, handIn);
@@ -74,9 +92,9 @@ public class ItemHelpBook extends Item implements IHasName {
     {
         if (this.isInCreativeTab(tab))
         {
-            for (int i = 0; i < nameList.length; ++i)
+            for (int i = Library.getLibrary().length; i > 0; --i)
             {
-                items.add(new ItemStack(this, 1, i));
+                items.add(new ItemStack(this, 1, i-1));
             }
         }
     }
@@ -85,13 +103,13 @@ public class ItemHelpBook extends Item implements IHasName {
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack)
     {
-        return stack.getItemDamage() == 3 || super.hasEffect(stack);
+        return super.hasEffect(stack);
     }
     
     
 	@Override
 	public String getNameFromMeta(int meta) {
-		return nameList[meta];
+		return Library.getLibrary()[meta].title;
 	}
 
 }
