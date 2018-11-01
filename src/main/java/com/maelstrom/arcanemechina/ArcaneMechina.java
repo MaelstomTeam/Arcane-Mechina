@@ -30,6 +30,7 @@ public class ArcaneMechina
 	public static CreativeTabs Runic;
 	public static CreativeTabs Vegitation;
 	public static CreativeTabs Mechanical;
+	public static CreativeTabs Library;
 	
 	public static Registry MODREGISTRY = new Registry();
 	
@@ -39,11 +40,13 @@ public class ArcaneMechina
     	
     	//Page.init();
         LOGGER = event.getModLog();
+        
         LOGGER.info("ARCANE MECHINA PRE INIT");
         MainTab = new CreativeTab_AM();
         Runic = new CreativeTab_AM.Runic();
         Vegitation = new CreativeTab_AM.Vegetation();
         Mechanical = new CreativeTab_AM.Mechanical();
+        Library = new CreativeTab_AM.LIBRARY();
         
         MODREGISTRY.preInitialization();
     }

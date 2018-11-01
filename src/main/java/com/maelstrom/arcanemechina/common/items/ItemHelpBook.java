@@ -7,14 +7,14 @@ import javax.annotation.Nullable;
 import com.maelstrom.arcanemechina.api.book.Book;
 import com.maelstrom.arcanemechina.api.book.Library;
 import com.maelstrom.arcanemechina.client.gui.GuiBook;
-import com.maelstrom.arcanemechina.client.gui.GuiBookIndex;
-import com.maelstrom.snowcone.util.IHasName;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -26,12 +26,11 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemHelpBook extends Item implements IHasName {
+public class ItemHelpBook extends Item{
 
 	public ItemHelpBook()
 	{
 		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
 		this.setMaxStackSize(1);
 	}
 	
@@ -50,8 +49,14 @@ public class ItemHelpBook extends Item implements IHasName {
     {
 		if (!playerIn.isSneaking())
 		{
+			String bookName = playerIn.getHeldItem(handIn).getTagCompound().getString("book_id");
 			if(worldIn.isRemote) {
-				Book book = Library.getLibrary()[playerIn.getHeldItem(handIn).getItemDamage()];
+				Book book = Library.getBook(bookName);
+				if(book == null)
+				{
+					playerIn.setHeldItem(handIn, new ItemStack(Items.BOOK));
+					return super.onItemRightClick(worldIn, playerIn, handIn);
+				}
 				if(GuiBook.book == book)
 				{
 					if(GuiBook.book.firstTimeOpening)
@@ -84,7 +89,9 @@ public class ItemHelpBook extends Item implements IHasName {
 
     public String getUnlocalizedName(ItemStack stack)
     {
-        return super.getUnlocalizedName() + "." + getNameFromMeta(stack.getItemDamage());
+    	if(stack.getTagCompound() == null)
+    		return super.getUnlocalizedName() + ".unknown";
+        return super.getUnlocalizedName() + "." + stack.getTagCompound().getString("book_id");
     }
     
 
@@ -94,7 +101,11 @@ public class ItemHelpBook extends Item implements IHasName {
         {
             for (int i = Library.getLibrary().length; i > 0; --i)
             {
-                items.add(new ItemStack(this, 1, i-1));
+            	ItemStack is = new ItemStack(this, 1);
+            	NBTTagCompound nbt = new NBTTagCompound();
+            	nbt.setString("book_id", Library.getLibrary()[i-1].title);
+            	is.setTagCompound(nbt);
+                items.add(is);
             }
         }
     }
@@ -105,11 +116,5 @@ public class ItemHelpBook extends Item implements IHasName {
     {
         return super.hasEffect(stack);
     }
-    
-    
-	@Override
-	public String getNameFromMeta(int meta) {
-		return Library.getLibrary()[meta].title;
-	}
 
 }

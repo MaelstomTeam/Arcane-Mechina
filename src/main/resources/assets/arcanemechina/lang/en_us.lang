@@ -37,6 +37,7 @@ itemGroup.AM.name=Arcane Mechina
 itemGroup.AM.RUNIC.name=Runic [AM]
 itemGroup.AM.PLANT.name=Vegetation [AM]
 itemGroup.AM.MECH.name=Machines [AM]
+itemGroup.AM.LIBRARY.name=Library
 
 tile.arcanemechina.ore.Copper.name=Copper Ore
 tile.arcanemechina.ore.Lead.name=Lead Ore

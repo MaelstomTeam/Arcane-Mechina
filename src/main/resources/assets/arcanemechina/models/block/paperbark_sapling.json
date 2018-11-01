@@ -1,0 +1,6 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "arcanemechina:blocks/paperbark_sapling"
+    }
+}

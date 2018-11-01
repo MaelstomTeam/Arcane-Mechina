@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 
 public class ItemList
 {
-	public static MetaItem Crystal = new MetaItemWithNames(ElementTypes.AllNames());
-	public static MetaItem Dust = new MetaItemWithNames(ElementTypes.AllNames());
+	public static ItemColoredMeta Crystal = new ItemColoredMeta(ElementTypes.AllNames());
+	public static ItemColoredMeta Dust = new ItemColoredMeta(ElementTypes.AllNames());
 	public static Item HelpBook = new ItemHelpBook();
 	/*
 	 * should be a list of Ingots

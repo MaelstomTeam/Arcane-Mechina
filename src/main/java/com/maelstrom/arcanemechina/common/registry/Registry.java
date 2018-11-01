@@ -16,6 +16,11 @@ import com.maelstrom.snowcone.util.ERegistry;
 import com.maelstrom.snowcone.util.IHasName;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -58,7 +63,7 @@ public class Registry extends ERegistry {
 		proxy.preInit();
 		
 		LOGGER.info("Registering Items");
-		registerItem(ItemList.HelpBook, "helpbook");
+		registerItem(ItemList.HelpBook, "helpbook",ArcaneMechina.Library);
 		registerItem(ItemList.Ingots, "ingot");
 		registerItem(ItemList.Gems, "gem");
 		registerItem(ItemList.Drops, "drop");
@@ -69,16 +74,31 @@ public class Registry extends ERegistry {
 		LOGGER.info("Registering Blocks");
 		registerBlock(BlockList.Ore, "ore");
 		registerBlock(BlockList.CrystalOre, "crystalore");
-		registerBlock(BlockList.Rune, "rune", ArcaneMechina.Runic);
+		registerBlock(BlockList.Rune, "rune", null);
 		registerBlock(BlockList.paperLog, "paperbark_log", ArcaneMechina.Vegitation);
 		registerBlock(BlockList.paperLogDebarked, "bare_paperbark_log", null);
 		registerBlock(BlockList.paperLeaves, "paperbark_leaf", ArcaneMechina.Vegitation);
+		registerBlock(BlockList.paperBarkSapling, "paperbark_sapling", ArcaneMechina.Vegitation);
 		
 		LOGGER.info("Registering Arrays");
 		RuneRegistry.Initialize();
 		
 		LOGGER.info("Registring TileEntities");
 		TileEntity.register(ArcaneMechina.MODID+".barrier", TileEntityBarrier.class);
+		
+		LOGGER.info("Registring Custom shapeless recipe");
+		/*GameRegistry.addShapelessRecipe(new ResourceLocation("string"), new ResourceLocation("recipes"), stack(new ItemStack(ItemList.HelpBook, 1),"book_id",Library.getLibrary()[0].title), Ingredient.fromItem(Items.BOOK), Ingredient.fromItem(ItemList.Crystal));
+		for(int i = 0; i > Library.getLibrary().length; ++i)
+		{
+        	int i2 = i == Library.getLibrary().length ? 0 : i + 1;
+			GameRegistry.addShapelessRecipe(new ResourceLocation("string"), new ResourceLocation("recipes"), stack(new ItemStack(ItemList.HelpBook,1),"book_id",Library.getLibrary()[i].title), Ingredient.fromStacks(stack(new ItemStack(ItemList.HelpBook,1),"book_id",Library.getLibrary()[i2].title)));
+		}*/
+	}
+	public static ItemStack stack(ItemStack stack, String key, String value)
+	{
+		stack.serializeNBT();
+		stack.getTagCompound().setString(key, value);
+		return stack;
 	}
 
 	@Override
@@ -153,13 +173,29 @@ public class Registry extends ERegistry {
 	public static void onModelEvent(final ModelRegistryEvent event) {
 		LOGGER.info("EVENT Registering Models");
 		for(Item i : itemList)
-		{
 			registerItemModel(i);
-		}
 		for(Block i : blockList)
-		{
 			registerItemModel(Item.getItemFromBlock(i));
+		final BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
+		final ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
+		try {
+		registerItemColourHandlers(blockColors, itemColors);
+		}catch(Exception e)
+		{
+			
 		}
+	}
+	
+	public static void registerItemColourHandlers(final BlockColors blockColors, final ItemColors itemColors)
+	{
+		final IItemColor itemBlockColourHandler = (stack, tintIndex) -> {
+			@SuppressWarnings("deprecation")
+			final IBlockState state = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
+			return blockColors.colorMultiplier(state, null, null, tintIndex);
+		};
+
+		itemColors.registerItemColorHandler(itemBlockColourHandler, ItemList.Dust);
+		itemColors.registerItemColorHandler(itemBlockColourHandler, ItemList.Crystal);
 	}
 
 	@Override

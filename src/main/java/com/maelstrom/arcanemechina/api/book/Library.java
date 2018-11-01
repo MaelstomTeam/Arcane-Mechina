@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -20,17 +19,6 @@ public class Library {
 	public static Logger LOGGER = LogManager.getLogger("arcanemechina] [Page");
 	private static List<Book> allBooks = new ArrayList<Book>();
 	private static Map<String, Book> books = new HashMap<String, Book>();
-
-	static String getEmpty(String string) {
-
-		char[] array = new char[string.length()];
-		int pos = 0;
-		while (pos < string.length()) {
-			array[pos] = ' ';
-			pos++;
-		}
-		return String.valueOf(array);
-	}
 
 	public static void init() {
 
@@ -46,7 +34,13 @@ public class Library {
 				LOGGER.info(book_folder.toUpperCase());
 				for (String curr_page : getFilesInFolder(book_folder)) {
 					page_file = curr_page;
-					book.getPageFromFile(page_file);
+					try {
+						book.getPageFromFile(page_file);
+					} catch (Exception e) {
+						e.printStackTrace();
+						LOGGER.error(book_folder + "/" + page_file + " Could not be loaded");
+						return;
+					}
 				}
 			}
 
@@ -56,7 +50,7 @@ public class Library {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOGGER.error(book_folder + "/" + page_file + " Could not be loaded");
+			LOGGER.error(book_folder + " Could not be loaded");
 			return;
 		}
 	}
@@ -70,8 +64,8 @@ public class Library {
 		book.initialize();
 	}
 
-	public static Book getBook(String page_id) {
-		return books.get(page_id);
+	public static Book getBook(String book_id) {
+		return books.get(book_id);
 	}
 
 	public static Book[] getLibrary() {
