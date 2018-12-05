@@ -2,8 +2,10 @@ package com.maelstrom.arcanemechina.common.block;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -12,9 +14,22 @@ import net.minecraft.world.World;
 
 public class BlockCustomSapling extends BlockBush implements IGrowable
 {
-	public BlockCustomSapling()
+	private Block woodBlock;
+	private Block leafBlock;
+	private int treeHeight;
+	private int randHeight;
+	private int leafHeight;
+	private int leafDist;
+	public BlockCustomSapling(Block wood, Block leaf, int minHeight, int maxHeight, int leafHeight, int leafDistance)
     {
         super(Material.GRASS);
+        setSoundType(SoundType.PLANT);
+        woodBlock = wood;
+        leafBlock = leaf;
+        treeHeight = minHeight;
+        randHeight = maxHeight - minHeight;
+        leafDist = leafDistance;
+        this.leafHeight = leafHeight;
     }
     public void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
@@ -37,7 +52,8 @@ public class BlockCustomSapling extends BlockBush implements IGrowable
             if (!worldIn.isAreaLoaded(pos, 1)) return;
             if (worldIn.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(7) == 0)
             {
-                this.grow(worldIn, rand, pos, state);
+            	if(canUseBonemeal(worldIn,rand,pos,state) && rand.nextInt(Byte.MAX_VALUE) == 0)
+            		this.grow(worldIn, rand, pos, state);
             }
         }
     }
@@ -57,9 +73,10 @@ public class BlockCustomSapling extends BlockBush implements IGrowable
 	//totally stolen from tree generation
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-    	IBlockState metaWood = BlockList.paperLog.getDefaultState();
-    	IBlockState metaLeaves = BlockList.paperLeaves.getDefaultState();
-        int i = rand.nextInt(13) + 15;
+    	IBlockState metaWood = woodBlock.getDefaultState();
+    	IBlockState metaLeaves = leafBlock.getDefaultState();
+        //int i = rand.nextInt(5) + 20;
+        int i = rand.nextInt(randHeight) + treeHeight;
         boolean flag = true;
 
         if (position.getY() >= 1 && position.getY() + i - 1 <= worldIn.getHeight())
@@ -73,9 +90,9 @@ public class BlockCustomSapling extends BlockBush implements IGrowable
                     j = 0;
                 }
 
-                if (y >= position.getY() + 1 + i - 2)
+                if (y >= position.getY() + (leafDist/2) + i - leafDist)
                 {
-                    j = 5;
+                    j = leafHeight;
                 }
 
                 for (int x = position.getX() - j; x <= position.getX() + j && flag; ++x)
@@ -109,10 +126,10 @@ public class BlockCustomSapling extends BlockBush implements IGrowable
                 {
                     state.getBlock().onPlantGrow(state, worldIn, position.down(), position);
 
-                    for (int y = position.getY() - 5 + i; y <= position.getY() + i; ++y)
+                    for (int y = position.getY() - leafHeight + i; y <= position.getY() + i; ++y)
                     {
                         int i4 = y - (position.getY() + i);
-                        int j1 = 1;
+                        int j1 = leafDist;
 
                         for (int x = position.getX() - j1; x <= position.getX() + j1; ++x)
                         {
@@ -127,7 +144,7 @@ public class BlockCustomSapling extends BlockBush implements IGrowable
                                     BlockPos blockpos = new BlockPos(x, y, z);
                                     state = worldIn.getBlockState(blockpos);
 
-                                    if (state.getBlock().isAir(state, worldIn, blockpos) || state.getBlock().isLeaves(state, worldIn, blockpos) || state.getMaterial() == Material.VINE || state.getBlock() == this)
+                                    if (state.getBlock().isAir(state, worldIn, blockpos) || state.getBlock().isLeaves(state, worldIn, blockpos) || state.getMaterial() == Material.VINE )
                                     {
                                         worldIn.setBlockState(blockpos, metaLeaves);
                                     }

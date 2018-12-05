@@ -13,7 +13,6 @@ import com.maelstrom.snowcone.util.Development;
 import com.maelstrom.snowcone.util.IHasName;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -147,8 +146,8 @@ public class ItemChalk extends Item implements IHasName
 		{
 		case 0: return "Runic";
 		case 1: return "Valor";
-		case 2: return "Ethereal";
-		case 3: return "Deadric";
+		case 2: return "Etheral";
+		case 3: return "Daedric";
 		default: return "nil";
 		}
 	}

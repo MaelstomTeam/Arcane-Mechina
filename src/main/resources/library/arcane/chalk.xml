@@ -6,14 +6,22 @@
 	<next></next>
 	<text>Crafting Pattern</text>
 	<Image>
+		<source>chalk_crafting.png</source>
+		<height>256</height>
+		<width>256</width>
+		<x>275</x>
+		<y>120</y>
+		<scale>0.4</scale>
+	</Image>
+	<Image>
 		<source>chalk.png</source>
 		<height>256</height>
 		<width>256</width>
-		<x>0</x>
-		<y>0</y>
-		<scale>1</scale>
+		<x>275</x>
+		<y>60</y>
+		<scale>0.8</scale>
 	</Image>
-	<text>This object is the most basic item to get started in the works of Arcane.</text>
+	<text>This object is the most basic item to get started in the works of the Arcane.</text>
 	<text>Chalks use varies from simply marking a location, to creating fantastic Arrays for Arcane use</text>
 	<text>need more to write!!</text>
 </Page>

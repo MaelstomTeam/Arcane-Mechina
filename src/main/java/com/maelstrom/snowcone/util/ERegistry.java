@@ -2,10 +2,17 @@ package com.maelstrom.snowcone.util;
 
 import java.util.ArrayList;
 
+import com.maelstrom.arcanemechina.common.block.BlockColoredMeta;
+import com.maelstrom.arcanemechina.common.items.ItemColoredMeta;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
@@ -21,7 +28,7 @@ public abstract class ERegistry
 	
 	//Initialization
 	public abstract void Initialization();
-
+	
 	//post Initialization
 	public abstract void postInitialization();
 	public abstract ArrayList<Item> itemList();
@@ -87,6 +94,31 @@ public abstract class ERegistry
 			else
 				ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 	}
+	public static void registerIItemColor(ItemColoredMeta item)
+	{
+		IItemColor itemColor = item.getColorHandler();
+		if(itemColor != null && item != null)
+		{
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(itemColor, item);
+		}
+	}
+
+	public static void registerIItemColor(BlockColoredMeta block)
+	{
+		IItemColor blockColor = block.getColorHandler();
+		if(blockColor != null && block != null)
+		{
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(blockColor, ItemBlock.getItemFromBlock(block));
+		}
+	}
+
+	public static void registerIBlockColor(BlockColoredMeta block) {
+		IBlockColor blockColor = block;
+		if(blockColor != null && block != null)
+		{
+			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(blockColor, block);
+		}
+	}
 	
 	public abstract void registerOreDictionaryEntries();
 
@@ -118,15 +150,58 @@ public abstract class ERegistry
 	 * 
 	 *need better way to make a class with static variables for ore dictionary names
 	 */
-	@Deprecated
-	static class OreDictionaryNames
+	public static class OreDictionaryNames
 	{
-		public static String ingotCopper;
-		public static String ingotLead;
-		public static String ingotSilver;
-		public static String gemSapphire;
-		public static String gemRuby;
-		public static String gemAmethyst;
-		public static String gemQuartz;
+		public static final String paper = "paper";
+		public static class Ingot{
+			public static final String Copper = "ingotCopper";
+			public static final String Lead = "ingotLead";
+			public static final String Silver = "ingotSilver";
+		}
+		public static class Gem
+		{
+			public static final String Sapphire = "gemSapphire";
+			public static final String Ruby = "gemRuby";
+			public static final String Amethyst = "gemAmethyst";
+			public static final String Quartz = "gemQuartz";
+			public static final String Diamond = "gemDiamond";
+		}
+		public static class Ore
+		{
+			public static final String Coal = "oreCoal";
+			public static final String Iron = "oreIron";
+			public static final String Gold = "oreGold";
+			public static final String Diamond = "oreDiamond";
+			public static final String Emerald = "oreEmerald";
+			public static final String Quartz = "oreQuratz";
+			public static final String Lapis = "oreLapis";
+			public static final String Redstone = "oreRedstone";
+			//
+			public static final String gemSapphire = "oreSapphire";
+			public static final String gemRuby = "oreRuby";
+			public static final String gemAmethyst = "oreAmethyst";
+			public static final String Copper = "oreCopper";
+			public static final String Lead = "oreLead";
+			public static final String Silver = "oreSilver";
+		}
+		public static class BlockOf
+		{
+
+			public static final String Coal = "blockCoal";
+			public static final String Iron = "blockIron";
+			public static final String Gold = "blockGold";
+			public static final String Diamond = "blockDiamond";
+			public static final String Emerald = "blockEmerald";
+			public static final String Quartz = "blockQuratz";
+			public static final String Lapis = "blockLapis";
+			public static final String Redstone = "blockRedstone";
+			//
+			public static final String gemSapphire = "blockSapphire";
+			public static final String gemRuby = "blockRuby";
+			public static final String gemAmethyst = "blockAmethyst";
+			public static final String Copper = "blockCopper";
+			public static final String Lead = "blockLead";
+			public static final String Silver = "blockSilver";
+		}
 	}
 }

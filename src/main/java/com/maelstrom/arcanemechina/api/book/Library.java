@@ -103,6 +103,7 @@ public class Library {
 						continue;
 					result.add(entry);
 				}
+				jar.close();
 				return result.toArray(new String[result.size()]);
 			} else {
 				path = "../../../../../library";
@@ -141,6 +142,7 @@ public class Library {
 						continue;
 					result.add(book + "/" + entry);
 				}
+				jar.close();
 				return result.toArray(new String[result.size()]);
 			}
 			path = "../../../../../library/" + book;

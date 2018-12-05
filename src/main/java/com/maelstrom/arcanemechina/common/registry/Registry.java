@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.api.book.Library;
 import com.maelstrom.arcanemechina.common.CommonProxy;
+import com.maelstrom.arcanemechina.common.block.BlockColoredMeta;
+import com.maelstrom.arcanemechina.common.block.BlockCustomLeaf;
 import com.maelstrom.arcanemechina.common.block.BlockList;
 import com.maelstrom.arcanemechina.common.items.ItemList;
 import com.maelstrom.arcanemechina.common.items.MetaItemBlock;
@@ -16,17 +18,14 @@ import com.maelstrom.snowcone.util.ERegistry;
 import com.maelstrom.snowcone.util.IHasName;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -76,8 +75,9 @@ public class Registry extends ERegistry {
 		registerBlock(BlockList.CrystalOre, "crystalore");
 		registerBlock(BlockList.Rune, "rune", null);
 		registerBlock(BlockList.paperLog, "paperbark_log", ArcaneMechina.Vegitation);
+		registerBlock(BlockList.planks, "planks", ArcaneMechina.Vegitation);
 		registerBlock(BlockList.paperLogDebarked, "bare_paperbark_log", null);
-		registerBlock(BlockList.paperLeaves, "paperbark_leaf", ArcaneMechina.Vegitation);
+		registerBlock(BlockList.leaves, "paperbark_leaf", ArcaneMechina.Vegitation);
 		registerBlock(BlockList.paperBarkSapling, "paperbark_sapling", ArcaneMechina.Vegitation);
 		
 		LOGGER.info("Registering Arrays");
@@ -121,21 +121,20 @@ public class Registry extends ERegistry {
 	@Override
 	public void registerOreDictionaryEntries()
 	{
-		registerOreDictionaryValue("ingotCopper", new ItemStack(ItemList.Ingots, 1, 0));
-		registerOreDictionaryValue("ingotLead",   new ItemStack(ItemList.Ingots, 1, 1));
-		registerOreDictionaryValue("ingotSilver", new ItemStack(ItemList.Ingots, 1, 2));
+		registerOreDictionaryValue(OreDictionaryNames.Ingot.Copper, new ItemStack(ItemList.Ingots, 1, 0));
+		registerOreDictionaryValue(OreDictionaryNames.Ingot.Lead,   new ItemStack(ItemList.Ingots, 1, 1));
+		registerOreDictionaryValue(OreDictionaryNames.Ingot.Silver, new ItemStack(ItemList.Ingots, 1, 2));
 		
-		registerOreDictionaryValue("gemSapphire",new ItemStack(ItemList.Gems, 1, 0));
-		registerOreDictionaryValue("gemRuby",    new ItemStack(ItemList.Gems, 1, 1));
-		registerOreDictionaryValue("gemAmethyst",new ItemStack(ItemList.Gems, 1, 2));
-		registerOreDictionaryValue("gemDiamond", new ItemStack(ItemList.Gems, 1, 3));
-		registerOreDictionaryValue("gemDiamond", new ItemStack(ItemList.Gems, 1, 4));
-		registerOreDictionaryValue("gemDiamond", new ItemStack(ItemList.Gems, 1, 5));
-		registerOreDictionaryValue("gemQuartz",  new ItemStack(ItemList.Gems, 1, 6));
+		registerOreDictionaryValue(OreDictionaryNames.Gem.Sapphire,new ItemStack(ItemList.Gems, 1, 0));
+		registerOreDictionaryValue(OreDictionaryNames.Gem.Ruby,    new ItemStack(ItemList.Gems, 1, 1));
+		registerOreDictionaryValue(OreDictionaryNames.Gem.Amethyst,new ItemStack(ItemList.Gems, 1, 2));
+		registerOreDictionaryValue(OreDictionaryNames.Gem.Diamond, new ItemStack(ItemList.Gems, 1, 3));
+		registerOreDictionaryValue(OreDictionaryNames.Gem.Diamond, new ItemStack(ItemList.Gems, 1, 4));
+		registerOreDictionaryValue(OreDictionaryNames.Gem.Diamond, new ItemStack(ItemList.Gems, 1, 5));
+		registerOreDictionaryValue(OreDictionaryNames.Gem.Quartz,  new ItemStack(ItemList.Gems, 1, 6));
 
 		registerOreDictionaryValue("pearl",  new ItemStack(ItemList.Drops, 1, 0));
-		registerOreDictionaryValue("paper",  new ItemStack(ItemList.Drops, 1, 1));
-		
+		registerOreDictionaryValue(OreDictionaryNames.paper,  new ItemStack(ItemList.Drops, 1, 1));
 	}
 	
 	@SubscribeEvent
@@ -173,29 +172,16 @@ public class Registry extends ERegistry {
 	public static void onModelEvent(final ModelRegistryEvent event) {
 		LOGGER.info("EVENT Registering Models");
 		for(Item i : itemList)
-			registerItemModel(i);
-		for(Block i : blockList)
-			registerItemModel(Item.getItemFromBlock(i));
-		final BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
-		final ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
-		try {
-		registerItemColourHandlers(blockColors, itemColors);
-		}catch(Exception e)
 		{
-			
+			registerItemModel(i);
 		}
-	}
-	
-	public static void registerItemColourHandlers(final BlockColors blockColors, final ItemColors itemColors)
-	{
-		final IItemColor itemBlockColourHandler = (stack, tintIndex) -> {
-			@SuppressWarnings("deprecation")
-			final IBlockState state = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
-			return blockColors.colorMultiplier(state, null, null, tintIndex);
-		};
-
-		itemColors.registerItemColorHandler(itemBlockColourHandler, ItemList.Dust);
-		itemColors.registerItemColorHandler(itemBlockColourHandler, ItemList.Crystal);
+		for(Block i : blockList)
+		{
+			if(i == BlockList.leaves)
+				ModelLoader.setCustomStateMapper(BlockList.leaves, new StateMap.Builder().ignore(BlockCustomLeaf.DECAYABLE).ignore(BlockCustomLeaf.CHECK_DECAY).build());
+			else
+				registerItemModel(Item.getItemFromBlock(i));
+		}
 	}
 
 	@Override
@@ -207,47 +193,4 @@ public class Registry extends ERegistry {
 	public ArrayList<Block> listBlock() {
 		return blockList;
 	}
-/*
-	not currently working
-	@SubscribeEvent
-	public void onItemUse(final net.minecraftforge.event.entity.living.LivingEntityUseItemEvent event)
-	{
-		Console.println("test");
-		ItemStack stack = event.getItem();
-		if(stack.getItem() == ItemList.Drops || stack.getItem() == Items.PAPER)
-		{
-			RayTraceResult result = event.getEntity().rayTrace(4, 0f);
-			if(result.getBlockPos() != null)
-			{
-				World world = event.getEntity().getEntityWorld();
-				List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(result.getBlockPos()).expand(3, 3, 3).offset(-1, -1, -1));
-				boolean complete = true;
-				boolean[] found = new boolean[] {false,false,false,false,false,false};
-				List<EntityItem> listToKill = new ArrayList();
-				for(EntityItem item : list)
-				{
-					if(item.getItem().getItem() == ItemList.Dust && item.getItem().getCount() == 1)
-					{
-						if(!found[item.getItem().getItemDamage()])
-						{
-							found[item.getItem().getItemDamage()] = true;
-							listToKill.add(item);
-						}
-					}
-				}
-				for(boolean check : found)
-					if(!check)
-						complete = false;
-				if(complete)
-				{
-					for(EntityItem i : listToKill)
-					{
-						i.setInfinitePickupDelay();
-						i.setDead();
-					}
-					world.spawnEntity(new EntityItem(world, result.getBlockPos().getX() + 0.5, result.getBlockPos().getY() + 1.5, result.getBlockPos().getZ(), new ItemStack(ItemList.Chalk)));
-				}
-			}
-		}
-	}*/
 }

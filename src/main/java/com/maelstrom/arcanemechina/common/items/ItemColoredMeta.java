@@ -1,23 +1,20 @@
 package com.maelstrom.arcanemechina.common.items;
 
-import com.maelstrom.arcanemechina.api.ElementTypes;
-import com.maelstrom.snowcone.item.MetaItem;
+import com.maelstrom.arcanemechina.client.BasicDustColorHandler;
+import com.maelstrom.snowcone.block.IItemColored;
+import com.maelstrom.snowcone.client.BasicColorHandler;
 import com.maelstrom.snowcone.item.MetaItem.MetaItemWithNames;
 
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.ItemStack;
-
-public class ItemColoredMeta extends MetaItemWithNames implements IItemColor
+public class ItemColoredMeta extends MetaItemWithNames implements IItemColored
 {
 	public ItemColoredMeta(String[] list) {
 		super(list);
 	}
-
-
-	@Override
-	public int colorMultiplier(ItemStack stack, int tintIndex) {
-		
-		return ElementTypes.values()[stack.getItemDamage()].clr.hashCode();
+	
+	public BasicColorHandler getColorHandler()
+	{
+		return new BasicDustColorHandler();
 	}
+	
 
 }

@@ -10,10 +10,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 
 /**
  * something is wrong with meta when placing in world, needs fixing
@@ -67,11 +64,6 @@ public class MetaBlock extends Block implements IHasName {
 				items.add(new ItemStack(this, 1, i));
 	}
 
-    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, net.minecraftforge.common.IPlantable plantable)
-    {
-    	return getMetaFromState(state) == 1;
-    }
-
 	//fix this
     protected BlockStateContainer createBlockState()
     {
@@ -86,7 +78,7 @@ public class MetaBlock extends Block implements IHasName {
 	@Override
 	public String getNameFromMeta(int meta)
 	{
-		if(meta <= subBlocks - 1)
+		if(meta < subBlocks && meta >= 0)
 			return nameList[meta];
 		else
 			return "error";

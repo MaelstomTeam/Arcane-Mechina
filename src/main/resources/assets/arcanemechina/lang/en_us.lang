@@ -19,6 +19,8 @@ item.arcanemechina.crystal.Earth.name=Crystal Earth
 item.arcanemechina.crystal.Air.name=Crystal Air
 item.arcanemechina.crystal.Dark.name=Crystal Dark
 item.arcanemechina.crystal.Light.name=Crystal Light
+item.arcanemechina.crystal.Etheral.name=Crystal Etheral
+item.arcanemechina.crystal.Daedric.name=Crystal Oblivious
 
 item.arcanemechina.dust.Fire.name=Dust Fire
 item.arcanemechina.dust.Water.name=Dust Water
@@ -26,12 +28,14 @@ item.arcanemechina.dust.Earth.name=Dust Earth
 item.arcanemechina.dust.Air.name=Dust Air
 item.arcanemechina.dust.Dark.name=Dust Dark
 item.arcanemechina.dust.Light.name=Dust Light
+item.arcanemechina.dust.Etheral.name=Dust Etheral
+item.arcanemechina.dust.Daedric.name=Dust Oblivious
 
 
 item.arcanemechina.chalk.Runic.name=Runic Chalk
 item.arcanemechina.chalk.Valor.name=Valor Chalk
-item.arcanemechina.chalk.Ethereal.name=Ethereal Chalk
-item.arcanemechina.chalk.Deadric.name=Oblivious Chalk
+item.arcanemechina.chalk.Etheral.name=Ethereal Chalk
+item.arcanemechina.chalk.Daedric.name=Oblivious Chalk
 
 itemGroup.AM.name=Arcane Mechina
 itemGroup.AM.RUNIC.name=Runic [AM]
@@ -52,6 +56,8 @@ tile.arcanemechina.ore.Quartz.name=Quartz Ore
 
 tile.arcanemechina.paperbark_log.name=Paperbark Log
 tile.arcanemechina.bare_paperbark_log.name=Paperbark Log
+tile.arcanemechina.paperbark_leaf.name=Paperbark Leaves
+tile.arcanemechina.paperbark_sapling.name=Paperbark Sapling
 
 tile.arcanemechina.crystalore.Fire.name=Dust Ore
 tile.arcanemechina.crystalore.Water.name=Dust Ore
@@ -59,6 +65,8 @@ tile.arcanemechina.crystalore.Earth.name=Dust Ore
 tile.arcanemechina.crystalore.Air.name=Dust Ore
 tile.arcanemechina.crystalore.Dark.name=Dust Ore
 tile.arcanemechina.crystalore.Light.name=Dust Ore
+tile.arcanemechina.crystalore.Etheral.name=Dust Ore
+tile.arcanemechina.crystalore.Daedric.name=Dust Ore
 
 
 item.arcanemechina.helpbook.arcane.name=The Book of the Arcane

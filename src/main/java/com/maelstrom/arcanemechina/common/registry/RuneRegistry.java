@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,7 +19,6 @@ import com.maelstrom.arcanemechina.common.arrays.BarrierActivity;
 import com.maelstrom.arcanemechina.common.arrays.BasicActivity;
 import com.maelstrom.arcanemechina.common.block.BlockList;
 import com.maelstrom.arcanemechina.common.event.EventRuneActivation;
-import com.maelstrom.arcanemechina.common.registry.RuneRegistry.Array;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

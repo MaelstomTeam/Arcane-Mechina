@@ -39,6 +39,8 @@ public class MetaItem extends Item {
 
 		@Override
 		public String getNameFromMeta(int meta) {
+			if(meta > nameList.length - 1 || meta < 0)
+				return "ERROR";
 			return nameList[meta];
 		}
 

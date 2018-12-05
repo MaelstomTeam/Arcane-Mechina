@@ -12,11 +12,11 @@ public enum ElementTypes {
 	ETHERIC		(Color.MAGENTA, 		"Etheral"),
 	OBLIVIOUS	(new Color(128,0,128),	"Daedric");
 	
-	public Color clr = Color.WHITE;
+	public Color color = Color.WHITE;
 	public String name;
 	private ElementTypes(Color color, String name)
 	{
-		clr = color;
+		this.color = color;
 		this.name = name;
 	}
 	private static String[] names;

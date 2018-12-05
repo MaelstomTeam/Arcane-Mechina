@@ -10,7 +10,6 @@ import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.api.book.Book;
 import com.maelstrom.arcanemechina.api.book.Image;
 import com.maelstrom.arcanemechina.api.book.Library;
-import com.maelstrom.arcanemechina.api.book.Page;
 import com.maelstrom.snowcone.util.Development;
 
 import net.minecraft.client.Minecraft;

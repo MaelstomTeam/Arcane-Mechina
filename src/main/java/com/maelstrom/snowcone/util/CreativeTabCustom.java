@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CreativeTab_ extends CreativeTabs {
+public class CreativeTabCustom extends CreativeTabs {
 	private ItemStack icon;
 	
-	public CreativeTab_(String lablel, ItemStack tabIcon) {
+	public CreativeTabCustom(String lablel, ItemStack tabIcon) {
 		super(lablel);
 		icon = tabIcon;
 	}

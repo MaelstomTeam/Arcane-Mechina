@@ -9,12 +9,13 @@ import net.minecraft.block.material.Material;
 
 public class BlockList
 {
-	public static Block CrystalOre = new BlockOre(Material.ROCK, ElementTypes.AllNames());
-	public static Block Ore = new BlockOre(Material.ROCK, ItemList.Ingots.subItemCount + ItemList.Gems.subItemCount, new String[] {"Copper", "Lead","Silver","Sapphire","Ruby", "Amethyst","WDiamond", "PDiamond", "YDiamond","Quartz"});
+	public static BlockColoredMeta CrystalOre = new BlockColoredMeta(Material.ROCK, ElementTypes.AllNames());
+	public static Block Ore = new BlockCustomOre(Material.ROCK, ItemList.Ingots.subItemCount + ItemList.Gems.subItemCount, new String[] {"Copper", "Lead","Silver","Sapphire","Ruby", "Amethyst","WDiamond", "PDiamond", "YDiamond","Quartz"});
 	public static BlockRune Rune = new BlockRune(RuneTypes.AllNames());
-	public static BlockLog paperLog = new BlockLog();
-	public static BlockLog paperLogDebarked = new BlockLog();
-	public static Block paperLeaves = new BlockLeaf();
-	public static BlockCustomSapling paperBarkSapling = new BlockCustomSapling();
+	public static BlockCustomLog paperLog = new BlockCustomLog();
+	public static BlockCustomLog paperLogDebarked = new BlockCustomLog();
+	public static Block leaves = new BlockCustomLeaf();
+	public static Block planks = new BlockCustomPlanks();
+	public static BlockCustomSapling paperBarkSapling = new BlockCustomSapling(paperLog, leaves, 20, 25, 5, 1);
 	
 }

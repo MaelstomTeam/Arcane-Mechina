@@ -15,13 +15,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockOre extends MetaBlock {
+public class BlockCustomOre extends MetaBlock {
 
-	public BlockOre(Material material, int subs, String[] list) {
+	public BlockCustomOre(Material material, int subs, String[] list) {
 		super(material, subs, list);
 	}
 
-	public BlockOre(Material material, String[] list) {
+	public BlockCustomOre(Material material, String[] list) {
 		super(material, list.length, list);
 	}
 	
@@ -32,10 +32,7 @@ public class BlockOre extends MetaBlock {
 
         int count = quantityDropped(state, fortune, rand);
         
-        if(this == BlockList.CrystalOre) {
-        	drops.add(new ItemStack(ItemList.Crystal, count, this.getMetaFromState(state)));
-        }
-        else if(this == BlockList.Ore) {
+        if(this == BlockList.Ore) {
         	if(this.getMetaFromState(state) > 2)
         		drops.add(new ItemStack(ItemList.Gems, count, this.getMetaFromState(state)-3));
         	else
@@ -61,9 +58,7 @@ public class BlockOre extends MetaBlock {
     public int quantityDropped(IBlockState state, int fortune, Random rand)
     {
     	int i = fortune > 0 ? rand.nextInt(fortune + 2) - 1 : 1;
-    	if(this == BlockList.CrystalOre)
-    		return i;
-    	else if(this == BlockList.Ore && this.getMetaFromState(state) > 2)
+    	if(this == BlockList.Ore && this.getMetaFromState(state) > 2)
     		return i;
     	return 1;
     }

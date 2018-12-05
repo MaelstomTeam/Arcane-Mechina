@@ -9,6 +9,7 @@
            "meta=6":  {  "model": "arcanemechina:ore/wdiamond" },
            "meta=7":  {  "model": "arcanemechina:ore/pdiamond" },
            "meta=8":  {  "model": "arcanemechina:ore/ydiamond" },
-           "meta=9":  {  "model": "arcanemechina:ore/quartz" }
+           "meta=9":  {  "model": "arcanemechina:ore/quartz" },
+           "meta=15":  {  "model": "stone" }
         } 
 }
