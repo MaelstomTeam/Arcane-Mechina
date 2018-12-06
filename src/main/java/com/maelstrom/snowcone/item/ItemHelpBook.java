@@ -1,12 +1,13 @@
-package com.maelstrom.arcanemechina.common.items;
+package com.maelstrom.snowcone.item;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.maelstrom.arcanemechina.api.book.Book;
-import com.maelstrom.arcanemechina.api.book.Library;
-import com.maelstrom.arcanemechina.client.gui.GuiBook;
+import com.maelstrom.snowcone.SC_Registry;
+import com.maelstrom.snowcone.client.book.GuiBook;
+import com.maelstrom.snowcone.libraryAPI.Book;
+import com.maelstrom.snowcone.libraryAPI.Library;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemHelpBook extends Item{
+public class ItemHelpBook extends Item {
 
 	public ItemHelpBook()
 	{
@@ -97,17 +98,16 @@ public class ItemHelpBook extends Item{
 
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (this.isInCreativeTab(tab))
+    	if(this.isInCreativeTab(tab))
+        for (int i = Library.getLibrary().length; i > 0; --i)
         {
-            for (int i = Library.getLibrary().length; i > 0; --i)
-            {
-            	ItemStack is = new ItemStack(this, 1);
-            	NBTTagCompound nbt = new NBTTagCompound();
-            	nbt.setString("book_id", Library.getLibrary()[i-1].title);
-            	is.setTagCompound(nbt);
-                items.add(is);
-            }
+        	ItemStack is = new ItemStack(this, 1);
+        	NBTTagCompound nbt = new NBTTagCompound();
+        	nbt.setString("book_id", Library.getLibrary()[i-1].title);
+        	is.setTagCompound(nbt);
+            items.add(is);
         }
+ 
     }
     
 

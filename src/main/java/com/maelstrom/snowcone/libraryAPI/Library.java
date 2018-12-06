@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.api.book;
+package com.maelstrom.snowcone.libraryAPI;
 
 import java.io.File;
 import java.net.URL;
@@ -15,8 +15,10 @@ import java.util.jar.JarFile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.maelstrom.snowcone.SnowCone;
+
 public class Library {
-	public static Logger LOGGER = LogManager.getLogger("arcanemechina] [Page");
+	public static Logger LOGGER = LogManager.getLogger(SnowCone.MODID+"] [Page");
 	private static List<Book> allBooks = new ArrayList<Book>();
 	private static Map<String, Book> books = new HashMap<String, Book>();
 
@@ -106,7 +108,7 @@ public class Library {
 				jar.close();
 				return result.toArray(new String[result.size()]);
 			} else {
-				path = "../../../../../library";
+				path = "../../../../library";
 				url = Library.class.getResource(path);
 				File dir = new File(url.toURI());
 				for (String file : dir.list()) {
@@ -145,7 +147,7 @@ public class Library {
 				jar.close();
 				return result.toArray(new String[result.size()]);
 			}
-			path = "../../../../../library/" + book;
+			path = "../../../../library/" + book;
 			url = Library.class.getResource(path);
 			File dir = new File(url.toURI());
 			for (String file : dir.list()) {

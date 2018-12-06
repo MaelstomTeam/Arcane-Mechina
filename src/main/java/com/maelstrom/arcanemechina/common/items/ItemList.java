@@ -10,7 +10,6 @@ public class ItemList
 {
 	public static ItemColoredMeta Crystal = new ItemColoredMeta(ElementTypes.AllNames());
 	public static ItemColoredMeta Dust = new ItemColoredMeta(ElementTypes.AllNames());
-	public static Item HelpBook = new ItemHelpBook();
 	/*
 	 * should be a list of Ingots
 	 * Copper

@@ -80,13 +80,15 @@ public class BlockCustomLog extends BlockLog {
         return new BlockStateContainer(this, new IProperty[] {LOG_AXIS});
     }
 
-
-    public boolean isOpaqueCube(IBlockState state)
+    
+    @SuppressWarnings("deprecation")
+	public boolean isOpaqueCube(IBlockState state)
     {
     	if(this == BlockList.paperLogDebarked)
     		return false;
         return super.isOpaqueCube(state);
     }
+    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state)
     {
     	if(this == BlockList.paperLogDebarked)

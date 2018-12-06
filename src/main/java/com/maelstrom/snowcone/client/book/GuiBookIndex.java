@@ -1,13 +1,13 @@
-package com.maelstrom.arcanemechina.client.gui;
+package com.maelstrom.snowcone.client.book;
 
 import java.awt.Color;
 import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
-import com.maelstrom.arcanemechina.api.book.Library;
-import com.maelstrom.arcanemechina.api.book.Page;
+import com.maelstrom.snowcone.SnowCone;
+import com.maelstrom.snowcone.libraryAPI.Library;
+import com.maelstrom.snowcone.libraryAPI.Page;
 import com.maelstrom.snowcone.util.Development;
 
 import net.minecraft.client.Minecraft;
@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class GuiBookIndex extends GuiScreen {
 	private GuiButton reset;
 	public static GuiBookIndex INSTANCE = new GuiBookIndex();
+	private static ResourceLocation bg = new ResourceLocation(SnowCone.MODID + ":textures/gui/help_book_main1.png");
 	public boolean doesGuiPauseGame(){return false;}
 	public GuiBookIndex()
 	{
@@ -124,7 +125,7 @@ public class GuiBookIndex extends GuiScreen {
 		int posy = (height - 256) / 2 + 50;
 		
 		//bind texture
-		this.mc.renderEngine.bindTexture(new ResourceLocation(ArcaneMechina.MODID + ":textures/gui/help_book_main1.png"));
+		this.mc.renderEngine.bindTexture(bg);
 		
 		//draws book background
 		drawTexturedModalRect(posx, posy,0,0,256,256);

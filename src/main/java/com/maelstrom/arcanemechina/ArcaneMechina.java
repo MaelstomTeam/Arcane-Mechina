@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.maelstrom.arcanemechina.common.creativetab.CreativeTab_AM;
 import com.maelstrom.arcanemechina.common.registry.Registry;
+import com.maelstrom.snowcone.SC_Registry;
 import com.maelstrom.snowcone.SnowCone;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,7 +47,6 @@ public class ArcaneMechina
         Runic = new CreativeTab_AM.Runic();
         Vegitation = new CreativeTab_AM.Vegetation();
         Mechanical = new CreativeTab_AM.Mechanical();
-        Library = new CreativeTab_AM.LIBRARY();
         
         MODREGISTRY.preInitialization();
     }

@@ -1,0 +1,9 @@
+{
+    "sfx.page": { 
+		"category": "ambient",
+		"subtitle":"snowcone.subtitile.page",
+		"sounds": [ 
+			"snowcone:effects/page-01",
+			"snowcone:effects/page-02" ]
+	}
+}

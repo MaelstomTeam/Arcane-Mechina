@@ -1,0 +1,14 @@
+itemGroup.SC.LIBRARY.name=Library
+
+item.snowcone.helpbook.arcane.name=The Book of the Arcane
+item.snowcone.helpbook.mecha.name=The Guide to Machines
+item.snowcone.helpbook.adv.name=Eldritch Guide to Archaic Apparatuses
+item.snowcone.helpbook.sonicmultitool.name=The SnowCone Guide: Sub Sonic Screwdriver
+
+book.index=Index
+book.home_page=Home Page
+book.dust_lore=Dust
+book.intro=Introduction to the Arcane
+book.item_chalk=Uses of Chalk
+book.array=List of Arrays and their uses
+book.help_sonic=Help

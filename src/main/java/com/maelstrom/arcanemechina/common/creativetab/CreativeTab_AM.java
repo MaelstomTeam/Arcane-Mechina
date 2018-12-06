@@ -30,10 +30,4 @@ public class CreativeTab_AM extends CreativeTabCustom{
 			super("AM.MECH", null);
 		}
 	}
-	public static class LIBRARY extends CreativeTabCustom
-	{
-		public LIBRARY() {
-			super("AM.LIBRARY", new ItemStack(ItemList.HelpBook));
-		}
-	}
 }

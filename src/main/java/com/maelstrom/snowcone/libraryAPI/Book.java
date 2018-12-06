@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.api.book;
+package com.maelstrom.snowcone.libraryAPI;
 
 import java.util.ArrayList;
 import java.util.HashMap;

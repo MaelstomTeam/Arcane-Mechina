@@ -1,8 +1,6 @@
 package com.maelstrom.arcanemechina.client;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
-import com.maelstrom.arcanemechina.client.gui.GuiBook;
-import com.maelstrom.arcanemechina.client.gui.GuiBookIndex;
 import com.maelstrom.arcanemechina.common.CommonProxy;
 import com.maelstrom.arcanemechina.common.block.BlockColoredMeta;
 import com.maelstrom.arcanemechina.common.items.ItemColoredMeta;
@@ -40,8 +38,6 @@ public class ClientProxy extends CommonProxy {
 			//TileEntity tileEntity = world.getTileEntity(new BlockPos(x,y,z));
 			switch(ID)
 			{
-			case 0:{return new GuiBook();}
-			case 1:{return new GuiBookIndex();}
 			default: return null;
 			}
 		}

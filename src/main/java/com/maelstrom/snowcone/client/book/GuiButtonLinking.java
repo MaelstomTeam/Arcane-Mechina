@@ -1,10 +1,10 @@
-package com.maelstrom.arcanemechina.client.gui;
+package com.maelstrom.snowcone.client.book;
 
 import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
-import com.maelstrom.arcanemechina.api.book.Page;
+import com.maelstrom.snowcone.libraryAPI.Page;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;

@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.client.gui;
+package com.maelstrom.snowcone.client.book;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
-import com.maelstrom.arcanemechina.api.book.Book;
-import com.maelstrom.arcanemechina.api.book.Image;
-import com.maelstrom.arcanemechina.api.book.Library;
+import com.maelstrom.snowcone.SnowCone;
+import com.maelstrom.snowcone.libraryAPI.Book;
+import com.maelstrom.snowcone.libraryAPI.Image;
+import com.maelstrom.snowcone.libraryAPI.Library;
 import com.maelstrom.snowcone.util.Development;
 
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ import scala.actors.Debug;
 public class GuiBook extends GuiScreen {
 	
 	public static GuiBook INSTANCE = new GuiBook();
-	public static ResourceLocation location = new ResourceLocation(ArcaneMechina.MODID,"sfx.page");
+	public static ResourceLocation location = new ResourceLocation(SnowCone.MODID,"sfx.page");
 	public static SoundEvent event = new SoundEvent(location);
 	public GuiBook()
 	{
@@ -122,7 +122,7 @@ public class GuiBook extends GuiScreen {
 					GL11.glColor3f(1f,1f,1f);
 			    	GL11.glEnable(GL11.GL_BLEND);
 			    	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-					ResourceLocation image = new ResourceLocation(ArcaneMechina.MODID,"textures/gui/pages/"+img.source);
+			    	ResourceLocation image = img.getImage();
 					GL11.glTranslated(img.x,img.y, 0d);
 					GL11.glScaled(img.scale, img.scale, img.scale);
 					
@@ -170,7 +170,7 @@ public class GuiBook extends GuiScreen {
 		int posy = (height - 256) / 2 + 50;
 		
 		//bind texture
-		this.mc.renderEngine.bindTexture(new ResourceLocation(ArcaneMechina.MODID,"textures/gui/"+book.page.pageBackground));
+		this.mc.renderEngine.bindTexture(book.page.getBackground());
 		
 		//draws book background
 		drawTexturedModalRect(posx, posy,0,0,256,256);

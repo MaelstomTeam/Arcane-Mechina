@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.api.book;
+package com.maelstrom.snowcone.libraryAPI;
 
 import java.io.InputStream;
 import java.util.List;
@@ -8,6 +8,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.maelstrom.snowcone.SnowCone;
+
+import net.minecraft.util.ResourceLocation;
 
 @XmlRootElement(name = "Page")
 public class Page
@@ -66,5 +70,15 @@ public class Page
 	public Page setPrev(String previous) {
 		this.prev = previous;
 		return this;
+	}
+	private ResourceLocation bg_image;
+	public ResourceLocation getBackground()
+	{
+    	if(bg_image == null)
+	    	if(pageBackground.contains(":"))
+	    		bg_image = new ResourceLocation(pageBackground);
+	    	else
+	    		bg_image = new ResourceLocation(SnowCone.MODID, "textures/gui/"+pageBackground);
+    	return bg_image;
 	}
 }

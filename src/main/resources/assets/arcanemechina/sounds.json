@@ -13,12 +13,5 @@
 			"arcanemechina:effects/chalk-01",
 			"arcanemechina:effects/chalk-02",
 			"arcanemechina:effects/chalk-03" ]
-	},
-    "sfx.page": { 
-		"category": "ambient",
-		"subtitle":"arcanemechina.subtitile.page",
-		"sounds": [ 
-			"arcanemechina:effects/page-01",
-			"arcanemechina:effects/page-02" ]
 	}
 }

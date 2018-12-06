@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Page>
+	<title>Instructions of Use</title>
+	<id>help_sonic2</id>
+	<prev>help_sonic1</prev>
+	<next>help_sonic2</next>
+	<text>Sonic multitool temp text 2</text>
+</Page>
