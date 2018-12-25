@@ -15,7 +15,7 @@ public class CreativeTabCustom extends CreativeTabs {
 	}
 
 	@Override
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
     	if(icon !=null)
     		return icon;
     	else

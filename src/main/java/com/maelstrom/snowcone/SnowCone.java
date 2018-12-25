@@ -1,5 +1,7 @@
 package com.maelstrom.snowcone;
 
+import java.util.Random;
+
 import org.apache.logging.log4j.Logger;
 
 import com.maelstrom.snowcone.libraryAPI.Library;
@@ -10,19 +12,30 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = SnowCone.MODID, name = SnowCone.NAME, version = SnowCone.VERSION)
+@Mod(modid = SnowCone.MODID, name = SnowCone.NAME, version = SnowCone.VERSION, dependencies = SnowCone.DEPENDENCIES)
 public class SnowCone
 {
 	public static final String MODID = "snowcone";
 	public static final String NAME = "Snowcone Util";
 	public static final String VERSION = "lemon";
+	public static final String DEPENDENCIES = "after:mcjtylib_ng;after:enderio;after:cofhcore;after:draconicevolution;";
 	private static SC_Registry registry = new SC_Registry();
 	
     public static Logger logger;
+	public static Random random;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+    	random = new Random();
+    	random.setSeed(847269687967847982L);
+    	
+    	//Config.RegisterKeybinds();
+    	
+    	//temp
+    	//MinecraftForge.EVENT_BUS.register(new Config());
+    	
+    	
         logger = event.getModLog();
         logger.info("SNOWCONE PRE INIT");
 		Library.init();

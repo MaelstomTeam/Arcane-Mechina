@@ -2,14 +2,12 @@ package com.maelstrom.snowcone.util;
 
 import java.util.ArrayList;
 
-import com.maelstrom.arcanemechina.common.block.BlockColoredMeta;
-import com.maelstrom.arcanemechina.common.items.ItemColoredMeta;
+import com.maelstrom.snowcone.block.IItemColored;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -41,7 +39,7 @@ public abstract class ERegistry
 	
 	public void registerItem(Item item, String name, CreativeTabs tab)
 	{
-		item.setUnlocalizedName(getMODID() + "." + name);
+		item.setTranslationKey(getMODID() + "." + name);
 		item.setRegistryName(getMODID(), name);
 		if(item.getCreativeTab() == null)
 			item.setCreativeTab(tab);
@@ -72,7 +70,7 @@ public abstract class ERegistry
 	
 	public void registerBlock(Block block, String name, CreativeTabs tab)
 	{
-		block.setUnlocalizedName(getMODID() + "." + name);
+		block.setTranslationKey(getMODID() + "." + name);
 		block.setRegistryName(getMODID(), name);
 		block.setCreativeTab(tab);
 		
@@ -94,29 +92,22 @@ public abstract class ERegistry
 			else
 				ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 	}
-	public static void registerIItemColor(ItemColoredMeta item)
+	public <T extends IItemColored> void registerIItemColor(IItemColored item)
 	{
-		IItemColor itemColor = item.getColorHandler();
-		if(itemColor != null && item != null)
+		if(item != null && item instanceof Item)
 		{
-			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(itemColor, item);
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(item.getColorHandler(), (Item)item);
+		}
+		else if(item != null && item instanceof Block)
+		{
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(item.getColorHandler(), ItemBlock.getItemFromBlock((Block)item));
 		}
 	}
 
-	public static void registerIItemColor(BlockColoredMeta block)
-	{
-		IItemColor blockColor = block.getColorHandler();
-		if(blockColor != null && block != null)
+	public void registerIBlockColor(IBlockColor block) {
+		if(block != null && block instanceof Block)
 		{
-			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(blockColor, ItemBlock.getItemFromBlock(block));
-		}
-	}
-
-	public static void registerIBlockColor(BlockColoredMeta block) {
-		IBlockColor blockColor = block;
-		if(blockColor != null && block != null)
-		{
-			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(blockColor, block);
+			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(block, (Block)block);
 		}
 	}
 	

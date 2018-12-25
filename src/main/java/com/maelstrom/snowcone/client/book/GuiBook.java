@@ -20,7 +20,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import scala.actors.Debug;
 
 public class GuiBook extends GuiScreen {
 	
@@ -116,7 +115,6 @@ public class GuiBook extends GuiScreen {
 			if(book.page.image != null)
 				for(Image img : book.page.image)
 				{
-					Debug.info(img.source);
 					GL11.glPushMatrix();
 					matrixStarted++;
 					GL11.glColor3f(1f,1f,1f);

@@ -4,11 +4,11 @@
            "meta=1":  { "model": "arcanemechina:rune/valiant" },
            "meta=2":  { "model": "arcanemechina:rune/ethereal" },
            "meta=3":  { "model": "arcanemechina:rune/daedric" },
-           "meta=4":  { "model": "arcanemechina:rune" },
-           "meta=5":  { "model": "arcanemechina:rune" },
-           "meta=6":  { "model": "arcanemechina:rune" },
-           "meta=7":  { "model": "arcanemechina:rune" },
-           "meta=8":  { "model": "arcanemechina:rune" },
-           "meta=9":  { "model": "arcanemechina:rune" }
+           "meta=4":  { "model": "arcanemechina:rune/rune" },
+           "meta=5":  { "model": "arcanemechina:rune/rune" },
+           "meta=6":  { "model": "arcanemechina:rune/rune" },
+           "meta=7":  { "model": "arcanemechina:rune/rune" },
+           "meta=8":  { "model": "arcanemechina:rune/rune" },
+           "meta=9":  { "model": "arcanemechina:rune/rune" }
     }
 }

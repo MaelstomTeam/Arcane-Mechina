@@ -14,11 +14,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
+//used only on client,
+//          if the forge team has a better way to do this let me know!
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+@SuppressWarnings("deprecation")
 public class GuiBookIndex extends GuiScreen {
 	private GuiButton reset;
 	public static GuiBookIndex INSTANCE = new GuiBookIndex();
@@ -32,7 +35,6 @@ public class GuiBookIndex extends GuiScreen {
 	int posY;
 	int amount = 0;
 	
-	@SuppressWarnings("deprecation")
 	public void initGui()
 	{
 		this.buttonList.clear();

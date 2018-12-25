@@ -2,7 +2,11 @@ package com.maelstrom.snowcone;
 
 import java.util.ArrayList;
 
+import com.maelstrom.snowcone.block.IItemColored;
 import com.maelstrom.snowcone.item.ItemHelpBook;
+import com.maelstrom.snowcone.item.ItemSonic;
+import com.maelstrom.snowcone.item.sonic.SonicPacketProcessor;
+import com.maelstrom.snowcone.network.PacketHandler;
 import com.maelstrom.snowcone.util.CreativeTabCustom;
 import com.maelstrom.snowcone.util.ERegistry;
 
@@ -21,7 +25,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 @Mod.EventBusSubscriber(modid=SnowCone.MODID)
 public class SC_Registry extends ERegistry{
 	public static Item HelpBook = new ItemHelpBook();
-	public static Item SonicScrewdriver = new Item();
+	public static ItemSonic SonicScrewdriver = new ItemSonic();
+	
+	
 	public static CreativeTabs tab = new LIBRARY();
 	private static ArrayList<Item> items = new ArrayList<Item>();
 
@@ -45,7 +51,14 @@ public class SC_Registry extends ERegistry{
 	@Override
 	public void Initialization() {
 		// TODO Auto-generated method stub
-		
+		registerRenderer();
+		PacketHandler.INSTANCE.registerMessage(PacketHandler.class, SonicPacketProcessor.class, 0, Side.SERVER);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void registerRenderer()
+	{
+		registerIItemColor((IItemColored) SonicScrewdriver);
 	}
 
 	@Override

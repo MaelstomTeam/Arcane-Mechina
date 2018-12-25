@@ -3,7 +3,7 @@
     "textures": {
         "particle": "arcanemechina:blocks/daedric",
         "line": "arcanemechina:blocks/daedric",
-        "overlay": "arcanemechina:blocks/rune_overlay"
+        "overlay": "arcanemechina:blocks/daedric"
     },
     "elements": [
         {   "from": [ 0, 0.25, 0 ],

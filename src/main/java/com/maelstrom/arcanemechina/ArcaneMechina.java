@@ -4,7 +4,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.maelstrom.arcanemechina.common.creativetab.CreativeTab_AM;
 import com.maelstrom.arcanemechina.common.registry.Registry;
-import com.maelstrom.snowcone.SC_Registry;
 import com.maelstrom.snowcone.SnowCone;
 
 import net.minecraft.creativetab.CreativeTabs;

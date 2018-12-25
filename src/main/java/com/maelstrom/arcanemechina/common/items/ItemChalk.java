@@ -122,17 +122,17 @@ public class ItemChalk extends Item implements IHasName
     {
 		switch(stack.getItemDamage())
 		{
-			case 0: tooltip.add("§6Runic"); break;
-			case 1: tooltip.add("§cValor"); break;
-			case 2: tooltip.add("§9Ethereal"); break;
-			case 3: tooltip.add("§5Oblivious"); break;
+			case 0: tooltip.add((char)167+"6Runic"); break;
+			case 1: tooltip.add((char)167+"cValor"); break;
+			case 2: tooltip.add((char)167+"9Ethereal"); break;
+			case 3: tooltip.add((char)167+"5Oblivious"); break;
 		}
     }
 
 
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
-        return super.getUnlocalizedName() + "." + getNameFromMeta(stack.getItemDamage());
+        return super.getTranslationKey(stack) + "." + getNameFromMeta(stack.getItemDamage());
     }
 	
     public boolean showDurabilityBar(ItemStack stack)

@@ -15,8 +15,8 @@ public class MetaItem extends Item {
 		subItemCount = subCount;
 	}
 
-	public String getUnlocalizedName(ItemStack stack) {
-		return super.getUnlocalizedName() + "." + stack.getItemDamage();
+	public String getTranslationKey(ItemStack stack) {
+		return super.getTranslationKey() + "." + stack.getItemDamage();
 	}
 
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
@@ -44,8 +44,8 @@ public class MetaItem extends Item {
 			return nameList[meta];
 		}
 
-		public String getUnlocalizedName(ItemStack stack) {
-			return super.getUnlocalizedName() + "." + getNameFromMeta(stack.getItemDamage());
+		public String getTranslationKey(ItemStack stack) {
+			return super.getTranslationKey() + "." + getNameFromMeta(stack.getItemDamage());
 		}
 		
 	}

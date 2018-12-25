@@ -1,4 +1,6 @@
-itemGroup.SC.LIBRARY.name=Library
+item.snowcone.sonic.name=Subsonic Screwdriver
+
+itemGroup.SC.LIBRARY=Library
 
 item.snowcone.helpbook.arcane.name=The Book of the Arcane
 item.snowcone.helpbook.mecha.name=The Guide to Machines

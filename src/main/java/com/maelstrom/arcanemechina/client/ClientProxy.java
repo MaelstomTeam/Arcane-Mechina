@@ -4,9 +4,10 @@ import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.CommonProxy;
 import com.maelstrom.arcanemechina.common.block.BlockColoredMeta;
 import com.maelstrom.arcanemechina.common.items.ItemColoredMeta;
-import com.maelstrom.arcanemechina.common.registry.Registry;
+import com.maelstrom.snowcone.block.IItemColored;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -17,12 +18,12 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderers() {
 		for(Item item : ArcaneMechina.MODREGISTRY.itemList())
 			if(item instanceof ItemColoredMeta)
-				Registry.registerIItemColor((ItemColoredMeta)item);
+				ArcaneMechina.MODREGISTRY.registerIItemColor((IItemColored)item);
 		for(Block block: ArcaneMechina.MODREGISTRY.listBlock())
 			if(block instanceof BlockColoredMeta)
 			{
-				Registry.registerIItemColor((BlockColoredMeta)block);
-				Registry.registerIBlockColor((BlockColoredMeta)block);
+				ArcaneMechina.MODREGISTRY.registerIItemColor((IItemColored)block);
+				ArcaneMechina.MODREGISTRY.registerIBlockColor((IBlockColor)block);
 			}
 	}
 

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.maelstrom.snowcone.SC_Registry;
 import com.maelstrom.snowcone.client.book.GuiBook;
 import com.maelstrom.snowcone.libraryAPI.Book;
 import com.maelstrom.snowcone.libraryAPI.Library;
@@ -38,7 +37,7 @@ public class ItemHelpBook extends Item {
 	@Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-		tooltip.add("by Maelstrom");
+		//tooltip.add("by Maelstrom");
     }
 	
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -88,11 +87,11 @@ public class ItemHelpBook extends Item {
     	//register owner
     }
 
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
     	if(stack.getTagCompound() == null)
-    		return super.getUnlocalizedName() + ".unknown";
-        return super.getUnlocalizedName() + "." + stack.getTagCompound().getString("book_id");
+    		return super.getTranslationKey() + ".unknown";
+        return super.getTranslationKey() + "." + stack.getTagCompound().getString("book_id");
     }
     
 

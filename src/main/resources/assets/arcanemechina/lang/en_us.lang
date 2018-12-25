@@ -32,16 +32,16 @@ item.arcanemechina.dust.Etheral.name=Dust Etheral
 item.arcanemechina.dust.Daedric.name=Dust Oblivious
 
 
-item.arcanemechina.chalk.Runic.name=Runic Chalk
-item.arcanemechina.chalk.Valor.name=Valor Chalk
-item.arcanemechina.chalk.Etheral.name=Ethereal Chalk
-item.arcanemechina.chalk.Daedric.name=Oblivious Chalk
+item.arcanemechina.chalk.Runic.name=§6Runic Chalk
+item.arcanemechina.chalk.Valor.name=§cValor Chalk
+item.arcanemechina.chalk.Etheral.name=§9Ethereal Chalk
+item.arcanemechina.chalk.Daedric.name=§5Oblivious Chalk
 
-itemGroup.AM.name=Arcane Mechina
-itemGroup.AM.RUNIC.name=Runic [AM]
-itemGroup.AM.PLANT.name=Vegetation [AM]
-itemGroup.AM.MECH.name=Machines [AM]
-itemGroup.AM.LIBRARY.name=Library
+itemGroup.AM=Arcane Mechina
+itemGroup.AM.RUNIC=Runic [AM]
+itemGroup.AM.PLANT=Vegetation [AM]
+itemGroup.AM.MECH=Machines [AM]
+itemGroup.AM.LIBRARY=Library
 
 tile.arcanemechina.ore.Copper.name=Copper Ore
 tile.arcanemechina.ore.Lead.name=Lead Ore

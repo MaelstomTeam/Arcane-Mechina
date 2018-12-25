@@ -1,7 +1,5 @@
 package com.maelstrom.arcanemechina.common.items;
 
-import org.jline.utils.Log;
-
 import com.maelstrom.snowcone.util.IHasName;
 
 import net.minecraft.block.Block;
@@ -20,13 +18,13 @@ public class MetaItemBlock extends ItemBlock {
 		this.hasSubtypes = true;
 	}
 
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
-        return this.block.getUnlocalizedName() + "." + stack.getMetadata();
+        return this.block.getTranslationKey() + "." + stack.getMetadata();
     }
     
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState){
-    	newState = block.getStateFromMeta(stack.getItemDamage());
+    	newState = block.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, stack.getMetadata(), player, player.getActiveHand());//.getStateFromMeta(stack.getItemDamage());
     	return super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
     }
     
@@ -48,9 +46,9 @@ public class MetaItemBlock extends ItemBlock {
 		}
 
 
-	    public String getUnlocalizedName(ItemStack stack)
+	    public String getTranslationKey(ItemStack stack)
 	    {
-	        return this.block.getUnlocalizedName() + "." + ref.getNameFromMeta(stack.getItemDamage());
+	        return this.block.getTranslationKey() + "." + ref.getNameFromMeta(stack.getItemDamage());
 	    }
     	
     }
