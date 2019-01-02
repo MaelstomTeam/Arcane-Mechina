@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["NadirRift"],
   "credits": "",
-  "logoFile": "",
+  "logoFile": "assets/snowcone/logo.png",
   "screenshots": [],
   "dependencies": []
 },
@@ -23,7 +23,7 @@
   "updateUrl": "",
   "authorList": ["NadirRift"],
   "credits": "",
-  "logoFile": "",
+  "logoFile": "assets/arcanemechina/logo.png",
   "screenshots": [],
   "dependencies": ["required-after:snowcone@[lemon]"]
 }

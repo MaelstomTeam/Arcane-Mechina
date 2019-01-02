@@ -1,8 +1,15 @@
 package com.maelstrom.arcanemechina.common.block;
 
-import com.maelstrom.snowcone.block.MetaBlock;
+import java.util.Random;
 
+import com.maelstrom.arcanemechina.api.RuneTypes;
+import com.maelstrom.snowcone.util.IHasName;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
@@ -15,15 +22,22 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockRune extends MetaBlock {
+public class BlockRune extends Block implements IHasName {
+	
+	public static PropertyEnum<RuneTypes> property_enum = PropertyEnum.create("rune_type", RuneTypes.class);
 
+	int subBlocks = 1;
+	String[] nameList;
+	
     public BlockRune(String[] list) {
-		super(Material.CLOTH, list.length, list);
+		super(Material.CLOTH);//, list.length, list
 		setLightOpacity(0);
+		setDefaultState(blockState.getBaseState().withProperty(property_enum, RuneTypes.RUNIC));
+		nameList = list;
 	}
     
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }
@@ -65,4 +79,47 @@ public class BlockRune extends MetaBlock {
     		worldIn.removeTileEntity(pos);
     	}
     }
+    public int quantityDropped(Random random)
+    {
+        return 0;
+    }
+	
+    ///////////////////////////////////////
+    
+     
+    public int getMetaFromState(IBlockState state)
+    {
+        if (state.getPropertyKeys().isEmpty())
+        {
+            return 0;
+        }
+        else
+        {
+            return state.getValue(property_enum).getIndex();
+        }
+    }
+	
+    public IBlockState getStateFromMeta(int value)
+    {
+    	if(value < RuneTypes.values().length)
+    		return this.getDefaultState().withProperty(property_enum, RuneTypes.values()[value]);
+    	return this.getDefaultState().withProperty(property_enum, RuneTypes.RUNIC);
+    }
+    
+    public int damageDropped(IBlockState state)
+    {
+    	return state.getValue(property_enum).getIndex();
+    }
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[] {property_enum});
+    }
+	@Override
+	public String getNameFromMeta(int meta)
+	{
+		if(meta < subBlocks && meta >= 0)
+			return nameList[meta];
+		else
+			return "error";
+	}
 }

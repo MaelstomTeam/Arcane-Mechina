@@ -21,7 +21,7 @@ public class CreativeTab_AM extends CreativeTabCustom{
 	public static class Vegetation extends CreativeTabCustom
 	{
 		public Vegetation() {
-			super("AM.PLANT", new ItemStack(Item.getItemFromBlock(BlockList.paperBarkSapling)));
+			super("AM.PLANT", new ItemStack(BlockList.paperLog));
 		}
 	}
 	public static class Mechanical extends CreativeTabCustom

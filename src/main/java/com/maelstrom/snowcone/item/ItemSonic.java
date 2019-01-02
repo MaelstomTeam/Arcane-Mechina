@@ -47,7 +47,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 	@Interface(iface = "mcjty.lib.api.smartwrench.SmartWrench", modid = "mcjtylib_ng"),
 	@Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "enderio"),
 	@Interface(iface = "cofh.api.item.IToolHammer", modid = "cofhcore"),
-	@Interface(iface = "cofh.api.item.IToolHammer", modid = "draconicevolution"),
+	@Interface(iface = "cofh.api.item.ICrystalBinder", modid = "draconicevolution"),
 
 
 })
@@ -82,7 +82,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     		player.setHeldItem(hand, itemBackup);
     		return result;
     	}
-        return EnumActionResult.FAIL;
+        return EnumActionResult.PASS;
     }
     public boolean onBlockStartBreak( ItemStack itemstack, BlockPos pos, EntityPlayer player) {
     	SonicInventory inventory = SonicInventory.getInventory(itemstack);
@@ -113,7 +113,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     		player.setHeldItem(hand, itemBackup);
     		return result;
     	}
-        return EnumActionResult.FAIL;
+        return EnumActionResult.PASS;
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)

@@ -40,13 +40,12 @@ public class ArcaneMechina
     	
     	//Page.init();
         LOGGER = event.getModLog();
-        
-        LOGGER.info("ARCANE MECHINA PRE INIT");
         MainTab = new CreativeTab_AM();
         Runic = new CreativeTab_AM.Runic();
         Vegitation = new CreativeTab_AM.Vegetation();
         Mechanical = new CreativeTab_AM.Mechanical();
         
+        LOGGER.info("ARCANE MECHINA PRE INIT");
         MODREGISTRY.preInitialization();
     }
 

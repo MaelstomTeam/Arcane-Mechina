@@ -65,6 +65,7 @@ public class Registry extends ERegistry {
 		registerItem(ItemList.Crystal, "crystal");
 		registerItem(ItemList.Dust, "dust");
 		registerItem(ItemList.Chalk, "chalk", ArcaneMechina.Runic);
+		registerItem(ItemList.ActivationDust, "activation_dust");
 
 		LOGGER.info("Registering Blocks");
 		registerBlock(BlockList.Ore, "ore");
@@ -175,8 +176,7 @@ public class Registry extends ERegistry {
 		{
 			if(i == BlockList.leaves)
 				ModelLoader.setCustomStateMapper(BlockList.leaves, new StateMap.Builder().ignore(BlockCustomLeaf.DECAYABLE).ignore(BlockCustomLeaf.CHECK_DECAY).build());
-			else
-				registerItemModel(Item.getItemFromBlock(i));
+			registerItemModel(Item.getItemFromBlock(i));
 		}
 	}
 

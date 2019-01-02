@@ -1,13 +1,15 @@
 {
     "forge_marker": 1,
     "variants": {
-           "meta=0":  {  "model": "arcanemechina:crystalore/ore" },
-           "meta=1":  {  "model": "arcanemechina:crystalore/ore" },
-           "meta=2":  {  "model": "arcanemechina:crystalore/ore" },
-           "meta=3":  {  "model": "arcanemechina:crystalore/ore" },
-           "meta=4":  {  "model": "arcanemechina:crystalore/ore" },
-           "meta=5":  {  "model": "arcanemechina:crystalore/ore" },
-           "meta=6":  {  "model": "arcanemechina:crystalore/ore" },
-           "meta=7":  {  "model": "arcanemechina:crystalore/ore" }
-        } 
+		"meta":{
+           0:  {  "model": "arcanemechina:crystalore/ore" },
+           1:  {  "model": "arcanemechina:crystalore/ore" },
+           2:  {  "model": "arcanemechina:crystalore/ore" },
+           3:  {  "model": "arcanemechina:crystalore/ore" },
+           4:  {  "model": "arcanemechina:crystalore/ore" },
+           5:  {  "model": "arcanemechina:crystalore/ore" },
+           6:  {  "model": "arcanemechina:crystalore/ore" },
+           7:  {  "model": "arcanemechina:crystalore/ore" }
+		}
+    } 
 }

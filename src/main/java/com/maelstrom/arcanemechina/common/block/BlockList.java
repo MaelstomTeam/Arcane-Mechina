@@ -10,7 +10,7 @@ import net.minecraft.block.material.Material;
 public class BlockList
 {
 	public static BlockColoredMeta CrystalOre = new BlockColoredMeta(Material.ROCK, ElementTypes.AllNames());
-	public static Block Ore = new BlockCustomOre(Material.ROCK, ItemList.Ingots.subItemCount + ItemList.Gems.subItemCount, new String[] {"Copper", "Lead","Silver","Sapphire","Ruby", "Amethyst","WDiamond", "PDiamond", "YDiamond","Quartz"});
+	public static Block Ore = new BlockCustomOre(Material.ROCK);
 	public static BlockRune Rune = new BlockRune(RuneTypes.AllNames());
 	public static BlockCustomLog paperLog = new BlockCustomLog();
 	public static BlockCustomLog paperLogDebarked = new BlockCustomLog();

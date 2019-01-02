@@ -10,6 +10,7 @@ import com.maelstrom.snowcone.client.BasicColorHandler;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -53,9 +54,18 @@ public class BlockColoredMeta extends MetaBlock  implements IItemColored, IBlock
 
 
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.TRANSLUCENT;
+    }
+
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
     }
     
 	public BasicColorHandler getColorHandler()

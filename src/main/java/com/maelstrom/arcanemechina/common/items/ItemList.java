@@ -39,4 +39,5 @@ public class ItemList
 	
 	
 	public static Item Chalk = new ItemChalk();
+	public static Item ActivationDust = new Item();
 }

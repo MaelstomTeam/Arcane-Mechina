@@ -14,8 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod.EventBusSubscriber(modid=SnowCone.MODID)
 public class ToolTickHandler {
@@ -35,7 +38,7 @@ public class ToolTickHandler {
 			event.setCanceled(true);
 		}
 	}
-
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void onRenderExperienceBar(RenderGameOverlayEvent.Post event)
 	{
@@ -62,6 +65,7 @@ public class ToolTickHandler {
 		}
 			
 	}
+	
 	private static void render(ItemStack is)
 	{
 		//write info on screen
