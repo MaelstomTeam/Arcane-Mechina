@@ -10,7 +10,7 @@ public class SonicColorHandler extends BasicColorHandler {
 	public int colorMultiplier(ItemStack stack, int tintIndex) {
 		SonicInventory s;
 		try {
-			s = SonicInventory.getInventory(stack);
+			s = SonicInventory.getInventory(stack,null);
 	    	if(tintIndex > s.getColors().length)
 	    		return 0xFFFFFF;
 			return s.getColors()[tintIndex];

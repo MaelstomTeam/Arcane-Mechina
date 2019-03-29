@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +46,7 @@ public class ToolTickHandler {
 			ItemStack stack = Minecraft.getMinecraft().player.getHeldItem(EnumHand.MAIN_HAND);
 			if(stack.getItem() instanceof ItemSonic)
 			{
-				SonicInventory sonic = SonicInventory.getInventory(stack);
+				SonicInventory sonic = SonicInventory.getInventory(stack,Minecraft.getMinecraft().player);
 				if(sonic.getCurrentItem() != null)
 					render(sonic.getCurrentItem());
 			}
@@ -58,7 +57,7 @@ public class ToolTickHandler {
 			ItemStack stack = Minecraft.getMinecraft().player.getHeldItem(EnumHand.OFF_HAND);
 			if(stack.getItem() instanceof ItemSonic)
 			{
-				SonicInventory sonic = SonicInventory.getInventory(stack);
+				SonicInventory sonic = SonicInventory.getInventory(stack,Minecraft.getMinecraft().player);
 				if(sonic.getCurrentItem() != null)
 					render(sonic.getCurrentItem());
 			}

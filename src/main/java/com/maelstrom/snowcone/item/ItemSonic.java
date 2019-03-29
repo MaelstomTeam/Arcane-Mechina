@@ -2,15 +2,17 @@ package com.maelstrom.snowcone.item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.brandon3055.draconicevolution.api.ICrystalBinder;
-import com.maelstrom.snowcone.SC_Registry;
 import com.maelstrom.snowcone.block.IItemColored;
 import com.maelstrom.snowcone.client.BasicColorHandler;
 import com.maelstrom.snowcone.client.SonicColorHandler;
 import com.maelstrom.snowcone.item.sonic.SonicInventory;
+import com.maelstrom.snowcone.item.sonic.SonicPacketProcessor;
+import com.maelstrom.snowcone.network.PacketHandler;
 import com.maelstrom.snowcone.util.Development;
 
 import cofh.api.item.IToolHammer;
@@ -27,14 +29,12 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -47,16 +47,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 	@Interface(iface = "mcjty.lib.api.smartwrench.SmartWrench", modid = "mcjtylib_ng"),
 	@Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "enderio"),
 	@Interface(iface = "cofh.api.item.IToolHammer", modid = "cofhcore"),
-	@Interface(iface = "cofh.api.item.ICrystalBinder", modid = "draconicevolution"),
-
-
+	@Interface(iface = "com.brandon3055.draconicevolution.api.ICrystalBinder", modid = "draconicevolution"),
 })
 public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool, IToolHammer, ICrystalBinder
 {
 	
 	public ItemSonic()
 	{
-		setMaxStackSize(0);
+		setMaxStackSize(1);
 		setMaxDamage(0);
 	}
 
@@ -78,11 +76,11 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     		player.setHeldItem(hand, item);
     		EnumActionResult result = item.onItemUseFirst(player, world, pos, hand, side, hitZ, hitZ, hitZ);
     		inventory.changeCurrentItem(item);
-    		itemBackup.getTagCompound().setTag("ItemInventory", inventory.getCompound());
+    		inventory.markDirty();
     		player.setHeldItem(hand, itemBackup);
     		return result;
     	}
-        return EnumActionResult.PASS;
+        return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand);
     }
     public boolean onBlockStartBreak( ItemStack itemstack, BlockPos pos, EntityPlayer player) {
     	SonicInventory inventory = SonicInventory.getInventory(itemstack);
@@ -109,11 +107,11 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     		player.setHeldItem(hand, item);
     		EnumActionResult result = item.onItemUse(player, worldIn, pos, hand, facing, hitZ, hitZ, hitZ);
     		inventory.changeCurrentItem(item);
-    		itemBackup.getTagCompound().setTag("ItemInventory", inventory.getCompound());
+    		inventory.markDirty();
     		player.setHeldItem(hand, itemBackup);
     		return result;
     	}
-        return EnumActionResult.PASS;
+        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
@@ -124,10 +122,9 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     	if(item != null && !worldIn.isRemote)
     	{
     		player.setHeldItem(hand, item);
-    		ActionResult<ItemStack> result = item.getItem().onItemRightClick(worldIn, player, hand);
-    		inventory.changeCurrentItem(item);
-    		inventory.writeData();
-    		itemBackup.setTagInfo("ItemInventory", inventory.getCompound());
+    		ActionResult<ItemStack> result = item.useItemRightClick(worldIn, player, hand);
+    		inventory.changeCurrentItem(result.getResult());
+    		inventory.markDirty();
     		player.setHeldItem(hand, itemBackup);
             return new ActionResult<ItemStack>(result.getType(), itemBackup);
     	}
@@ -139,20 +136,24 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     	ItemStack item = inventory.getCurrentItem();
     	if(item != null)
     		return item.getMaxItemUseDuration();
-        return 0;
+        return super.getMaxItemUseDuration(stack);
     }
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
-    	SonicInventory sonic;
-    	NBTTagCompound temp = new NBTTagCompound();
-    	temp.setString("Owner", player.getDisplayNameString());
-    	System.out.print(player.getDisplayNameString());
-    	stack.setTagInfo("ItemInventory", temp);
-    	
-		sonic = SonicInventory.getInventory(stack);
+    	if(world.isRemote)
+    		return;
+    	if(!(stack.getSubCompound("SonicInventory") != null && !stack.getSubCompound("SonicInventory").getString("UUID").isEmpty()))
+    	{
+    		NBTTagCompound tag = new NBTTagCompound();
+        	tag.setString("UUID", player.getUniqueID().toString());
+        	stack.setTagInfo("SonicInventory", tag);
+    	}
+    	SonicInventory sonic = SonicInventory.getInventory(stack,player);
+    	sonic.setOwner(player.getDisplayNameString());
     	
 		//special items added here
     	ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+    	if(sonic.getSizeInventory() < 2)
     	if(Development.isDevEnviroment())
     	{
     		SonicInventory.allItems(sonic, list);
@@ -165,21 +166,17 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     		for(ItemStack i : list)
     			sonic.setInventorySlotContents(sonic.getSizeInventory(),i);
     	}
-        sonic.setColors(0x8080FF, 0xAAAAAA);
-    	sonic.writeData();
-    	stack.setTagInfo("ItemInventory", sonic.getCompound());
-    	if(!player.getEntityData().getBoolean("recievedBook"))
+    	sonic.markDirty();
+    	return;
+    	/*
+    	if(!EventHandler.getRecieved(player.getUniqueID()))
     	{
+    		EventHandler.setRecieved(player.getUniqueID(), true);
         	//spawn handbook!
-    		player.getEntityData().setBoolean("recievedBook", true);
         	ItemStack book = new ItemStack(SC_Registry.HelpBook,1);
         	book.setTagInfo("book_id", new NBTTagString("sonicmultitool"));
-        	if(!player.inventory.addItemStackToInventory(book))
-        		player.entityDropItem(book, .5f);
-    	}
-    	//set players sonic uuid
-    	if(!player.getEntityData().hasKey("sonic_UUID"))
-    		player.getEntityData().setString("sonic_UUID", sonic.UUID);
+    		player.entityDropItem(book, .5f);
+    	}*/
     }
 
     public EnumAction getItemUseAction(ItemStack stack)
@@ -187,8 +184,10 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     	SonicInventory inventory = SonicInventory.getInventory(stack);
     	ItemStack item = inventory.getCurrentItem();
     	if(item != null)
+    	{
     		return item.getItemUseAction();
-        return EnumAction.NONE;
+    	}
+        return super.getItemUseAction(stack);
     }
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
     {
@@ -199,6 +198,13 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     }
     public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
     {
+    	if(player.world.isRemote)
+    	{
+    	SonicInventory inv = SonicInventory.getInventory(stack);
+    	if(inv.getSizeInventory() == 1)
+    		PacketHandler.INSTANCE.sendToServer(new SonicPacketProcessor(((EntityPlayer)player).inventory.currentItem, null));
+    		return;	
+    	}
     	SonicInventory inventory = SonicInventory.getInventory(stack);
     	ItemStack item = inventory.getCurrentItem();
     	if(item != null)
@@ -210,7 +216,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
 		ItemStack item = inventory.getCurrentItem();
 		if(item != null)
 			return item.getItem().onLeftClickEntity(item, player, entity);
-        return false;
+        return super.onLeftClickEntity(stack, player, entity);
     }
     public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
@@ -218,7 +224,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
 		ItemStack item = inventory.getCurrentItem();
 		if(item != null)
 			return item.doesSneakBypassUse(world, pos, player);
-        return false;
+        return super.doesSneakBypassUse(stack, world, pos, player);
     }
     public boolean showDurabilityBar(ItemStack stack)
     {
@@ -226,7 +232,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
 		ItemStack item = inventory.getCurrentItem();
 		if(item != null)
 			return item.getItem().showDurabilityBar(item);
-        return false;
+        return super.showDurabilityBar(stack);
     }
 
     public boolean isDamaged(ItemStack stack)
@@ -235,7 +241,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
 		ItemStack item = inventory.getCurrentItem();
 		if(item != null)
 			return item.getItem().isDamaged(item);
-        return false;
+        return super.isDamaged(stack);
     }
     public double getDurabilityForDisplay(ItemStack stack)
     {
@@ -243,7 +249,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
 		ItemStack item = inventory.getCurrentItem();
 		if(item != null)
 			return item.getItem().getDurabilityForDisplay(item);
-        return 0;
+        return super.getDurabilityForDisplay(stack);
     }
 
     public int getRGBDurabilityForDisplay(ItemStack stack)
@@ -252,7 +258,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
 		ItemStack item = inventory.getCurrentItem();
 		if(item != null)
 			return item.getItem().getRGBDurabilityForDisplay(item);
-        return MathHelper.hsvToRGB(Math.max(0.0F, (float) (1.0F - getDurabilityForDisplay(stack))) / 3.0F, 1.0F, 1.0F);
+        return super.getRGBDurabilityForDisplay(stack);
     }
     
     public boolean getShareTag()
@@ -266,11 +272,21 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
         {
         	ItemStack item = new ItemStack(this);
             {
-            	SonicInventory inventory = SonicInventory.getInventory("00000000-0000-0000-0000-000000000000");
+            	SonicInventory inventory = SonicInventory.createInventory(UUID.fromString("00000000-0000-0000-0000-000000000000"));
             	//inventory.receiveEnergy(Integer.MAX_VALUE / 2, false);
         		//special items added here
-            	inventory.writeData();
-            	item.setTagInfo("ItemInventory", inventory.getCompound());
+            	inventory.setOwner("Maelstrom");
+            	item.serializeNBT();
+            	NBTTagCompound temp = new NBTTagCompound();
+            	item.setTagInfo("SonicInventory", temp);
+            	((NBTTagCompound)item.getTagCompound().getTag("SonicInventory")).setString("UUID", "00000000-0000-0000-0000-000000000000");
+        		
+            	
+            	ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+            	inventory.clear();
+            	if(inventory.getSizeInventory() < 2)
+            		SonicInventory.allItems(inventory, list);
+        		inventory.markDirty();
         	}
             items.add(item);
         }
@@ -279,27 +295,30 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-    	SonicInventory inventory = new SonicInventory(stack);
-    	tooltip.add(inventory.getSizeInventory() - 1 + " Tools internalized!");
-    	tooltip.add(inventory.getOwner() + " Made this!");
-    	if(inventory.getCurrentItem() != null)
+    	if(stack.getTagCompound() != null && stack.getTagCompound().getCompoundTag("SonicInventory") != null && stack.getTagCompound().getCompoundTag("SonicInventory").getString("UUID") != "")
     	{
-    		tooltip.add("Currently Selected Tool: " + inventory.getCurrentItem().getDisplayName());
-	    	List<String> temp = new ArrayList<String>();
-	    	inventory.getCurrentItem().getItem().addInformation(inventory.getCurrentItem(), worldIn, temp, flagIn);
-	    	if(temp != null)
-	    		tooltip.addAll(temp);
-    	}
-    	
-    	if(flagIn.isAdvanced() && stack.getTagCompound() != null)
-    	{
-        	//tooltip.add(inventory.getEnergyStored() + " / " + inventory.getMaxEnergyStored() + "FE");
-    		tooltip.add((char)167+"4NBT DATA: ");
-			tooltip.add((char)167+"4"+stack.getTagCompound().toString());
-    	}
-    	else
-    	{
-        	//tooltip.add((inventory.getEnergyStored() / (float)Integer.MAX_VALUE * 100f) + "%");
+	    	SonicInventory inventory = SonicInventory.getInventory(stack);
+	    	tooltip.add(inventory.getSizeInventory() - 1 + " Tools internalized!");
+	    	tooltip.add(inventory.getOwner() + " Made this!");
+	    	if(inventory.getCurrentItem() != null)
+	    	{
+	    		tooltip.add("Currently Selected Tool: " + inventory.getCurrentItem().getDisplayName());
+		    	List<String> temp = new ArrayList<String>();
+		    	inventory.getCurrentItem().getItem().addInformation(inventory.getCurrentItem(), worldIn, temp, flagIn);
+		    	if(temp != null)
+		    		tooltip.addAll(temp);
+	    	}
+	    	
+	    	if(flagIn.isAdvanced() && stack.getTagCompound() != null)
+	    	{
+	        	//tooltip.add(inventory.getEnergyStored() + " / " + inventory.getMaxEnergyStored() + "FE");
+	    		tooltip.add((char)167+"4NBT DATA: ");
+				tooltip.add((char)167+"4"+stack.getTagCompound().toString());
+	    	}
+	    	else
+	    	{
+	        	//tooltip.add((inventory.getEnergyStored() / (float)Integer.MAX_VALUE * 100f) + "%");
+	    	}
     	}
     }
     
@@ -310,21 +329,17 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
 	
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
     {
-    	SonicInventory inv = new SonicInventory(stack);
+    	SonicInventory inv = SonicInventory.getInventory(stack);
     	for(int i = 0; i < inv.getSizeInventory() - 1; i++)
     	{
-			//test value
 			inv.getStackInSlot(i).getItem().onUpdate(inv.getStackInSlot(i), worldIn, entityIn, itemSlot, isSelected);
     	}
-    	inv.writeData();
-    	stack.setTagInfo("ItemInventory", inv.getCompound());
+    	inv.markDirty();
     }
 
     @Nullable
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-    	SonicInventory.getInventory(stack).writeData();
-    	stack.setTagInfo("ItemInventory",SonicInventory.getInventory(stack).getCompound());
         return SonicInventory.getInventory(stack);
     }
     
@@ -378,8 +393,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     		player.setHeldItem(hand, curr);
     		boolean bool = ((ITool)curr.getItem()).canUse(hand, player, pos);
     		sonic.changeCurrentItem(curr);
-    		sonic.writeData();
-    		sonicBackup.setTagInfo("ItemInventory", sonic.getCompound());
+    		sonic.markDirty();
     		player.setHeldItem(hand, sonicBackup);
     		return bool;
     	}
@@ -399,8 +413,7 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
     		player.setHeldItem(hand, curr);
     		((ITool)curr.getItem()).used(hand, player, pos);
     		sonic.changeCurrentItem(curr);
-    		sonic.writeData();
-    		sonicBackup.setTagInfo("ItemInventory", sonic.getCompound());
+    		sonic.markDirty();
     		player.setHeldItem(hand, sonicBackup);
     	}
 	}
@@ -436,6 +449,8 @@ public class ItemSonic extends Item implements IItemColored, SmartWrench, ITool,
 	public void toolUsed(ItemStack stack, EntityLivingBase user, BlockPos pos) {
     	SonicInventory sonic = SonicInventory.getInventory(stack);
     	ItemStack curr = sonic.getCurrentItem();
+    	if(curr == null)
+    		return;
     	if(curr.getItem() instanceof IToolHammer)
     		((IToolHammer)curr.getItem()).toolUsed(curr, user, pos);
 	}

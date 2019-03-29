@@ -61,7 +61,6 @@ public class ItemChalk extends Item implements IHasName
 			RuneRegistry.createArray(array);
     		return EnumActionResult.SUCCESS;
     	}
-    	int value = player.getHeldItem(hand).getItemDamage();
     	if(world.getBlockState(pos).getBlock() == BlockList.Rune)
     	{
     		Array array = RuneRegistry.checkRune(world, pos);
@@ -73,11 +72,11 @@ public class ItemChalk extends Item implements IHasName
     	}
     	if(BlockList.Rune.canPlaceBlockAt(world, pos.offset(facing, 1)))
     	{
-    		world.setBlockState(pos.offset(facing, 1), BlockList.Rune.getStateFromMeta(value));
+    		world.setBlockState(pos.offset(facing, 1), BlockList.Rune.getStateFromMeta(player.getHeldItem(hand).getItemDamage()));
     		return EnumActionResult.SUCCESS;
     	}
     	else
-    		return EnumActionResult.PASS;
+    		return EnumActionResult.FAIL;
     }
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
@@ -102,7 +101,7 @@ public class ItemChalk extends Item implements IHasName
     
     public EnumAction getItemUseAction(ItemStack stack)
     {
-        return EnumAction.BLOCK;
+        return EnumAction.NONE;
     }
     
 
@@ -144,11 +143,11 @@ public class ItemChalk extends Item implements IHasName
 	public String getNameFromMeta(int meta) {
 		switch(meta)
 		{
+		default:
 		case 0: return "Runic";
 		case 1: return "Valor";
 		case 2: return "Etheral";
 		case 3: return "Daedric";
-		default: return "nil";
 		}
 	}
 }

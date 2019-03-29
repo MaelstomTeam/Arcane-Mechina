@@ -1,10 +1,10 @@
 package com.maelstrom.snowcone.item.sonic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 
-import com.maelstrom.snowcone.SC_Registry;
+import com.maelstrom.snowcone.common.EventHandler;
+import com.maelstrom.snowcone.network.PacketHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -17,43 +17,116 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabilityProvider {
+public class SonicInventory implements IInventory, IEnergyStorage, ICapabilityProvider {
 
 	// TODO move to UUID system, change so nbt can be marked as dirty and saved
 	// TODO clear list at server join or world start
-	public static Map<String, SonicInventory> list = new HashMap<String, SonicInventory>();
+	//public static Map<String, SonicInventory> list = new HashMap<String, SonicInventory>();
 
-	public String UUID;
-	NBTTagCompound inventory;
+	public String uuid;
+	//NBTTagCompound inventory;
 	ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-	String username;
+	String username = "";
 	int selected = 0;
-	int crystalColor = -1;
-	int handleColor = -1;
-	// EnergyStorage energy = new EnergyStorage(Integer.MAX_VALUE,
-	// Integer.MAX_VALUE/100,Integer.MAX_VALUE/100,0);
+	int crystalColor = 0xA374E3;
+	int handleColor = 0xAAAAAA;
+	EnergyStorage energy = new EnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE,Integer.MAX_VALUE,0);
+	private SonicInventory() {}
+	public static SonicInventory createInventory(NBTTagCompound nbt, java.util.UUID uuid)
+	{
+		SonicInventory sonic = new SonicInventory();
+		
+		NBTTagList SubItemList = (NBTTagList) nbt.getTag("SubItems");
+		sonic.items.clear();
+		for(int i = 0; i < SubItemList.tagCount(); i++)
+		{
+			ItemStack stack = new ItemStack((NBTTagCompound) SubItemList.get(i));
+			sonic.items.add(stack);
+		}
 
-	public SonicInventory(ItemStack is) {
-		NBTTagCompound temp;
-		if (!is.hasTagCompound()) {
-			is.setTagInfo("ItemInventory", new NBTTagCompound());
+		{
+			NBTTagCompound colorList = nbt.getCompoundTag("Colors");
+			sonic.crystalColor = colorList.getInteger("crystal");
+			sonic.handleColor = colorList.getInteger("handle");
 		}
-		if (is.getTagCompound().getTag("ItemInventory") != null)
-			temp = is.getTagCompound().getCompoundTag("ItemInventory");
-		else {
-			temp = new NBTTagCompound();
+		sonic.selected = nbt.getInteger("Selection");
+		sonic.uuid = uuid.toString();
+		sonic.username = nbt.getString("Owner");
+		sonic.energy.receiveEnergy(nbt.getInteger("StoredEnergy"),false);
+		return sonic;
+	}
+	public static SonicInventory createInventory(UUID uuid)
+	{
+		if(!EventHandler.list.containsKey(uuid))
+		{
+			SonicInventory sonic = new SonicInventory();
+			sonic.uuid = uuid.toString();
+			EventHandler.list.put(uuid, sonic);
+			return sonic;
 		}
-		inventory = temp;
-		readData();
-		if (!list.containsKey(UUID)) {
-			list.put(UUID, this);
+		return EventHandler.list.get(uuid);
+	}
+	public static SonicInventory getInventory(ItemStack is)
+	{
+		return getInventory(is,null);
+	}
+	public static SonicInventory getInventory(UUID uuid)
+	{
+		return EventHandler.list.get(uuid);
+	}
+	public static SonicInventory getInventory(ItemStack is, EntityPlayer player)
+	{
+		SonicInventory sonic = null;
+		if(is != null && is.getSubCompound("SonicInventory") != null)
+		{
+			NBTTagCompound nbt = is.getTagCompound().getCompoundTag("SonicInventory");
+			UUID _uuid = UUID.fromString(nbt.getString("UUID"));
+			sonic = EventHandler.list.get(_uuid);
 		}
-		is.setTagInfo("ItemInventory", inventory);
+		if(sonic == null)
+		{
+			if(player != null)
+				sonic = SonicInventory.createInventory(player.getUniqueID());
+			else
+				sonic = SonicInventory.createInventory(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+		}
+		return sonic;
 	}
 
+	boolean dirty = false;
+	NBTTagCompound SonicTag;
+	public NBTTagCompound getTag()
+	{
+		if(dirty || SonicTag == null)
+		{
+			SonicTag = new NBTTagCompound();
+			{
+				NBTTagList nbtTagList = new NBTTagList();
+				if(!items.isEmpty())
+					for(ItemStack is : items)
+						nbtTagList.appendTag(is.serializeNBT());
+				SonicTag.setTag("SubItems", nbtTagList);
+			}
+			{
+				NBTTagCompound colors = new NBTTagCompound();
+				colors.setInteger("crystal", crystalColor);
+				colors.setInteger("handle", handleColor);
+				SonicTag.setTag("Colors", colors);
+			}
+			SonicTag.setInteger("Selection", selected);
+			SonicTag.setString("Owner", username);
+			SonicTag.setInteger("StoredEnergy", energy.getEnergyStored());
+			dirty = false;
+		}
+		return SonicTag;
+	}
+	/*
 	public void readData() {
 		if (inventory == null)
 			inventory = new NBTTagCompound();
@@ -62,7 +135,7 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 		 * if(inventory.getTag("FE") != null) { energy = new
 		 * EnergyStorage(Integer.MAX_VALUE,
 		 * Integer.MAX_VALUE,Integer.MAX_VALUE,inventory.getInteger("FE")); }
-		 */
+		 /
 
 		if (inventory.getTag("UUID") == null) {
 			inventory.setString("UUID", java.util.UUID.randomUUID().toString());
@@ -118,11 +191,11 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 		inventory.setInteger("selection", selected);
 		inventory.setTag("Tools", itemList);
 		list.replace(UUID, this);
-	}
+	}*/
 
-	public NBTTagCompound getCompound() {
-		return inventory;
-	}
+	//public NBTTagCompound getCompound() {
+	//	return inventory;
+	//}
 
 	public int[] getColors() {
 		return new int[] { crystalColor, handleColor };
@@ -134,6 +207,7 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 	}
 
 	public void setOwner(String name) {
+		dirty = true;
 		username = name;
 	}
 
@@ -149,6 +223,7 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 	}
 
 	public void setCurrentItem(int i) {
+		dirty = true;
 		selected = i;
 		if (selected > items.size() - 1)
 			selected = 0;
@@ -201,8 +276,10 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
+		dirty = true;
 		if (index == items.size() + 1) {
-			items.add(stack);
+			if(!items.contains(stack))
+				items.add(stack);
 		}
 	}
 
@@ -213,8 +290,9 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 
 	@Override
 	public void markDirty() {
+		dirty = true;
 		// do something
-		writeData();
+		//writeData();
 	}
 
 	@Override
@@ -225,14 +303,15 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 	@Override
 	public void openInventory(EntityPlayer player) {
 		// open inventory
-		readData();
+		//readData();
 	}
 
 	@Override
 	public void closeInventory(EntityPlayer player) {
+		dirty = true;
 		// drop any held items
 		// write nbt
-		writeData();
+		//writeData();
 
 	}
 
@@ -248,6 +327,7 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 
 	@Override
 	public void setField(int id, int value) {
+		dirty = true;
 	}
 
 	@Override
@@ -265,13 +345,15 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 	}
 
 	public void changeItem(ItemStack item, int index) {
+		dirty = true;
 		items.set(index, item);
 	}
 
 	public void changeCurrentItem(ItemStack item) {
+		dirty = true;
 		changeItem(item, selected);
 	}
-
+/*
 	public static SonicInventory getInventory(ItemStack stack) {
 		if (stack.hasTagCompound()) {
 			NBTTagCompound tag = (NBTTagCompound) stack.getTagCompound().getTag("ItemInventory");
@@ -300,7 +382,15 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 		}
 		return new SonicInventory(new ItemStack(SC_Registry.SonicScrewdriver));
 	}
-
+*/
+	public static void reset(SonicInventory sonic)
+	{
+		if(sonic != null)
+		{
+			sonic.clear();
+			allItems(sonic,new ArrayList<ItemStack>());
+		}
+	}
 	public static void allItems(SonicInventory sonic, ArrayList<ItemStack> list) {
 		list.add(new ItemStack(Items.BUCKET));
 		list.add(new ItemStack(Items.COMPASS));
@@ -341,47 +431,28 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 		for (ItemStack i : list)
 			sonic.setInventorySlotContents(sonic.getSizeInventory(), i);
 	}
-
-	// forge energy
-
-	// TODO fix energy snyc issue
-	// TODO fix energy recieve and extract
-	/*
-	 * @Override public int receiveEnergy(int maxReceive, boolean simulate) { int
-	 * temp = energy.receiveEnergy(maxReceive, simulate); writeData(); return temp;
-	 * }
-	 * 
-	 * @Override public int extractEnergy(int maxExtract, boolean simulate) { int
-	 * temp = energy.extractEnergy(maxExtract, simulate); writeData(); return temp;
-	 * }
-	 * 
-	 * @Override public int getEnergyStored() { return energy.getEnergyStored(); }
-	 * 
-	 * @Override public int getMaxEnergyStored() { return
-	 * energy.getMaxEnergyStored(); }
-	 * 
-	 * @Override public boolean canExtract() { return energy.canExtract(); }
-	 * 
-	 * @Override public boolean canReceive() { return energy.canReceive(); }
-	 */
+	
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-		if (capability == CapabilityEnergy.ENERGY)
-			return true;
-		else if (this.getCurrentItem() != null)
+		if (this.getCurrentItem() != null)
 			return this.getCurrentItem().hasCapability(capability, facing);
+		else if (capability == CapabilityEnergy.ENERGY)
+				return true;
 		return false;
 	}
 
 	// @SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		dirty = true;
 		// if(capability == CapabilityEnergy.ENERGY)
 		// return (T) energy;
 		// else
 		if (this.getCurrentItem() != null)
 			return this.getCurrentItem().getCapability(capability, facing);
+		else if (capability == CapabilityEnergy.ENERGY)
+			return (T) this;
 		return null;
 	}
 
@@ -396,6 +467,46 @@ public class SonicInventory implements IInventory, /* IEnergyStorage, */ ICapabi
 
 	public int getIndex() {
 		return selected;
+	}
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		if(!simulate)
+			markDirty();
+		if(hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP))
+			return getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP).receiveEnergy(maxReceive, simulate);
+		return energy.receiveEnergy(maxReceive, simulate);
+	}
+	@Override
+	public int extractEnergy(int maxExtract, boolean simulate) {
+		if(!simulate)
+			markDirty();
+		if(hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP))
+			return getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP).extractEnergy(maxExtract, simulate);
+		return energy.extractEnergy(maxExtract, simulate);
+	}
+	@Override
+	public int getEnergyStored() {
+		if(hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP))
+			return getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP).getEnergyStored();
+		return energy.getEnergyStored();
+	}
+	@Override
+	public int getMaxEnergyStored() {
+		if(hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP))
+			return getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP).getMaxEnergyStored();
+		return energy.getMaxEnergyStored();
+	}
+	@Override
+	public boolean canExtract() {
+		if(hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP))
+			return getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP).canExtract();
+		return energy.canExtract();
+	}
+	@Override
+	public boolean canReceive() {
+		if(hasCapability(CapabilityEnergy.ENERGY, EnumFacing.UP))
+			return getCapability(CapabilityEnergy.ENERGY, EnumFacing.UP).canReceive();
+		return energy.canReceive();
 	}
 
 }

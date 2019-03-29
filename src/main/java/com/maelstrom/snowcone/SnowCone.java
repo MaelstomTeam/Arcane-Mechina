@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 
+import com.maelstrom.snowcone.common.CommandSnowCone;
 import com.maelstrom.snowcone.libraryAPI.Library;
 
 import net.minecraftforge.fml.common.Mod;
@@ -11,6 +12,10 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = SnowCone.MODID, name = SnowCone.NAME, version = SnowCone.VERSION, dependencies = SnowCone.DEPENDENCIES)
 public class SnowCone
@@ -55,4 +60,11 @@ public class SnowCone
         logger.info("SNOWCONE POST INIT");
         registry.postInitialization();
     }
+	
+    @EventHandler
+	public void serverLoad(FMLServerStartingEvent event)
+	{
+		logger.info("Registering command");
+		event.registerServerCommand(new CommandSnowCone());
+	}
 }

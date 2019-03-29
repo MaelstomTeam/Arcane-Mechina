@@ -34,3 +34,4 @@ gradle.properties
 README.txt
 src - Copy
 src/api
+src/main/java/com/maelstrom/geneticist
