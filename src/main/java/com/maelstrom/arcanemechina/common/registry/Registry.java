@@ -6,12 +6,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
+import com.maelstrom.arcanemechina.client.TESR.TESR_Crystalizer;
+import com.maelstrom.arcanemechina.client.TESR.TESR_Mortar_Pestle;
 import com.maelstrom.arcanemechina.common.CommonProxy;
 import com.maelstrom.arcanemechina.common.block.BlockCustomLeaf;
 import com.maelstrom.arcanemechina.common.block.BlockList;
 import com.maelstrom.arcanemechina.common.items.ItemList;
 import com.maelstrom.arcanemechina.common.items.MetaItemBlock;
 import com.maelstrom.arcanemechina.common.tileentity.TileEntityBarrier;
+import com.maelstrom.arcanemechina.common.tileentity.TileEntityCrystalizer;
+import com.maelstrom.arcanemechina.common.tileentity.TileEntityMortar;
 import com.maelstrom.snowcone.util.ERegistry;
 import com.maelstrom.snowcone.util.IHasName;
 
@@ -25,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -64,8 +69,10 @@ public class Registry extends ERegistry {
 		registerItem(ItemList.Drops, "drop");
 		registerItem(ItemList.Crystal, "crystal");
 		registerItem(ItemList.Dust, "dust");
+		registerItem(ItemList.MetalDust, "metal_dust");
 		registerItem(ItemList.Chalk, "chalk", ArcaneMechina.Runic);
 		registerItem(ItemList.ActivationDust, "activation_dust");
+		registerItem(ItemList.pestle, "pestle", ArcaneMechina.Mechanical);
 
 		LOGGER.info("Registering Blocks");
 		registerBlock(BlockList.Ore, "ore");
@@ -76,12 +83,15 @@ public class Registry extends ERegistry {
 		registerBlock(BlockList.paperLogDebarked, "bare_paperbark_log", null);
 		registerBlock(BlockList.leaves, "paperbark_leaf", ArcaneMechina.Vegitation);
 		registerBlock(BlockList.paperBarkSapling, "paperbark_sapling", ArcaneMechina.Vegitation);
-		
+		registerBlock(BlockList.mortar, "mortar_pestle", ArcaneMechina.Mechanical);
+		registerBlock(BlockList.crystalizer, "crystalizer", ArcaneMechina.Mechanical);
 		LOGGER.info("Registering Arrays");
 		RuneRegistry.Initialize();
 		
 		LOGGER.info("Registring TileEntities");
 		TileEntity.register(ArcaneMechina.MODID+".barrier", TileEntityBarrier.class);
+		TileEntity.register(ArcaneMechina.MODID+".mortar", TileEntityMortar.class);
+		TileEntity.register(ArcaneMechina.MODID+".crystalizer", TileEntityCrystalizer.class);
 		
 		LOGGER.info("Registring Custom shapeless recipe");
 		/*GameRegistry.addShapelessRecipe(new ResourceLocation("string"), new ResourceLocation("recipes"), stack(new ItemStack(ItemList.HelpBook, 1),"book_id",Library.getLibrary()[0].title), Ingredient.fromItem(Items.BOOK), Ingredient.fromItem(ItemList.Crystal));
@@ -178,6 +188,8 @@ public class Registry extends ERegistry {
 				ModelLoader.setCustomStateMapper(BlockList.leaves, new StateMap.Builder().ignore(BlockCustomLeaf.DECAYABLE).ignore(BlockCustomLeaf.CHECK_DECAY).build());
 			registerItemModel(Item.getItemFromBlock(i));
 		}
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMortar.class, new TESR_Mortar_Pestle());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrystalizer.class, new TESR_Crystalizer());
 	}
 
 	@Override

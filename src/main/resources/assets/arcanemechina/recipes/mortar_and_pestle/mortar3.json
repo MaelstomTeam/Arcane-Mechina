@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    	"   ",
+        "AEA",
+        "AAA"
+    ],
+    "key": {
+        "A": {
+            "item": "minecraft:stone",
+            "data": 3
+        },
+        "E": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "arcanemechina:mortar_pestle",
+        "count": 1,
+        "data": 2
+    },
+    "group": "mortar"
+}

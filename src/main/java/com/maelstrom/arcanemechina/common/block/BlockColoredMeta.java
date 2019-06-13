@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockColoredMeta extends MetaBlock  implements IItemColored, IBlockColor{
+public class BlockColoredMeta extends MetaBlock  implements IItemColored, IBlockColor {
 
 	public BlockColoredMeta(Material material, int subs, String[] list) {
 		super(material, subs, list);

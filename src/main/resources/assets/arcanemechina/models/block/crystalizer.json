@@ -1,0 +1,244 @@
+{
+	"ambientocclusion": false,
+    "textures": {
+        "planks_spruce": "minecraft:blocks/planks_spruce",
+        "glass_white": "minecraft:blocks/glass_white"
+    },
+    "display": {
+        "gui": {
+            "rotation": [ 30, 45, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.625, 0.625, 0.625 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "head": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 315, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.4, 0.4, 0.4 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 75, 315, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        }
+    },
+    "elements": [
+        {
+            "name": "Chamber_outer",
+            "from": [ 6, 7, 6 ], 
+            "to": [ 12, 16, 12 ], 
+            "faces": {
+                "north": { "texture": "#glass_white", "uv": [ 5, 3, 11, 12 ] },
+                "east": { "texture": "#glass_white", "uv": [ 5, 3, 11, 12 ] },
+                "south": { "texture": "#glass_white", "uv": [ 5, 3, 11, 12 ] },
+                "west": { "texture": "#glass_white", "uv": [ 5, 3, 11, 12 ] },
+                "up": { "texture": "#glass_white", "uv": [ 5, 5, 11, 11 ] },
+                "down": { "texture": "#glass_white", "uv": [ 5, 5, 11, 11 ] }
+            }
+        },
+        {
+            "name": "Chamber_inner",
+            "from": [ 7, 8, 7 ], 
+            "to": [ 11, 15, 11 ], 
+            "faces": {
+                "north": { "texture": "#glass_white", "uv": [ 7, 4, 12, 12 ] },
+                "east": { "texture": "#glass_white", "uv": [ 7, 4, 11, 11 ] },
+                "south": { "texture": "#glass_white", "uv": [ 7, 4, 11, 11 ] },
+                "west": { "texture": "#glass_white", "uv": [ 7, 4, 11, 11 ] },
+                "up": { "texture": "#glass_white", "uv": [ 6, 6, 10, 10 ] },
+                "down": { "texture": "#glass_white", "uv": [ 6, 6, 10, 10 ] }
+            }
+        },
+        {
+            "name": "leg_1",
+            "from": [ 9.5, 0, 4.5 ], 
+            "to": [ 11.5, 5, 6.5 ], 
+            "faces": {
+                "north": { "texture": "#planks_spruce", "uv": [ 5, 4, 7, 9 ] },
+                "east": { "texture": "#planks_spruce", "uv": [ 5, 4, 7, 9 ] },
+                "south": { "texture": "#planks_spruce", "uv": [ 9, 4, 11, 9 ] },
+                "west": { "texture": "#planks_spruce", "uv": [ 10, 4, 12, 9 ] },
+                "up": { "texture": "#planks_spruce", "uv": [ 3, 8, 5, 10 ] },
+                "down": { "texture": "#planks_spruce", "uv": [ 8, 5, 10, 7 ] }
+            }
+        },
+        {
+            "name": "leg_2",
+            "from": [ 4.5, 0, 4.5 ], 
+            "to": [ 6.5, 5, 6.5 ], 
+            "faces": {
+                "north": { "texture": "#planks_spruce", "uv": [ 2, 5, 4, 10 ] },
+                "east": { "texture": "#planks_spruce", "uv": [ 2, 1, 4, 6 ] },
+                "south": { "texture": "#planks_spruce", "uv": [ 9, 9, 11, 14 ] },
+                "west": { "texture": "#planks_spruce", "uv": [ 5, 5, 7, 10 ] },
+                "up": { "texture": "#planks_spruce", "uv": [ 6, 4, 8, 6 ] },
+                "down": { "texture": "#planks_spruce", "uv": [ 10, 8, 12, 10 ] }
+            }
+        },
+        {
+            "name": "leg_3",
+            "from": [ 4.5, 0, 9.5 ], 
+            "to": [ 6.5, 5, 11.5 ], 
+            "faces": {
+                "north": { "texture": "#planks_spruce", "uv": [ 9, 4, 11, 9 ] },
+                "east": { "texture": "#planks_spruce", "uv": [ 14, 8, 16, 13 ] },
+                "south": { "texture": "#planks_spruce", "uv": [ 14, 0, 16, 5 ] },
+                "west": { "texture": "#planks_spruce", "uv": [ 3, 4, 5, 9 ] },
+                "up": { "texture": "#planks_spruce", "uv": [ 2, 5, 4, 7 ] },
+                "down": { "texture": "#planks_spruce", "uv": [ 2, 13, 4, 15 ] }
+            }
+        },
+        {
+            "name": "leg_4",
+            "from": [ 9.5, 0, 9.5 ], 
+            "to": [ 11.5, 5, 11.5 ], 
+            "faces": {
+                "north": { "texture": "#planks_spruce", "uv": [ 0, 11, 2, 16 ] },
+                "east": { "texture": "#planks_spruce", "uv": [ 10, 3, 12, 8 ] },
+                "south": { "texture": "#planks_spruce", "uv": [ 4, 7, 6, 12 ] },
+                "west": { "texture": "#planks_spruce", "uv": [ 14, 7, 16, 12 ] },
+                "up": { "texture": "#planks_spruce", "uv": [ 6, 5, 8, 7 ] },
+                "down": { "texture": "#planks_spruce", "uv": [ 5, 8, 7, 10 ] }
+            }
+        },
+        {
+            "name": "Table",
+            "from": [ 3, 5, 3 ], 
+            "to": [ 13, 7, 13 ], 
+            "faces": {
+                "north": { "texture": "#planks_spruce", "uv": [ 8, 2, 16, 4 ] },
+                "east": { "texture": "#planks_spruce", "uv": [ 4, 7, 14, 9 ] },
+                "south": { "texture": "#planks_spruce", "uv": [ 0, 11, 10, 13 ] },
+                "west": { "texture": "#planks_spruce", "uv": [ 3, 10, 13, 12 ] },
+                "up": { "texture": "#planks_spruce", "uv": [ 2, 7, 12, 16 ] },
+                "down": { "texture": "#planks_spruce", "uv": [ 8, 1, 16, 11 ] }
+            }
+        },
+        {
+            "name": "Quartz_Container_sides",
+            "from": [ 5, 8, 0 ], 
+            "to": [ 7, 13, 2 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "north": { "texture": "#glass_white", "uv": [ 7, 4, 12, 12 ] },
+                "east": { "texture": "#glass_white", "uv": [ 7, 4, 9, 9 ] },
+                "south": { "texture": "#glass_white", "uv": [ 7, 4, 9, 9 ] },
+                "west": { "texture": "#glass_white", "uv": [ 7, 4, 9, 9 ] }
+            }
+        },
+        {
+            "name": "TOP_1_4",
+            "from": [ 5, 13, 0 ], 
+            "to": [ 7, 13, 0.5 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "up": { "texture": "#glass_white", "uv": [ 6, 6, 8, 6.5 ] }
+            }
+        },
+        {
+            "name": "TOP_2_4",
+            "from": [ 5, 13, 1.5 ], 
+            "to": [ 7, 13, 2 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "up": { "texture": "#glass_white", "uv": [ 6, 6, 8, 6.5 ] }
+            }
+        },
+        {
+            "name": "TOP_3_4",
+            "from": [ 5, 13, 0.5 ], 
+            "to": [ 5.5, 13, 1.5 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "up": { "texture": "#glass_white", "uv": [ 6, 6, 6.5, 7 ] }
+            }
+        },
+        {
+            "name": "TOP_4_4",
+            "from": [ 6.5, 13, 0.5 ], 
+            "to": [ 7, 13, 1.5 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "up": { "texture": "#glass_white", "uv": [ 6, 6, 6.5, 7 ] }
+            }
+        },
+        {
+            "name": "QUARTZ_base",
+            "from": [ 3.5, 7, 3.5 ], 
+            "to": [ 5.5, 8, 5.5 ], 
+            "rotation": { "origin": [ 4.5, 8, 4.5 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "north": { "texture": "#planks_spruce", "uv": [ 10, 9, 12, 10 ] },
+                "east": { "texture": "#planks_spruce", "uv": [ 6, 4, 8, 5 ] },
+                "south": { "texture": "#planks_spruce", "uv": [ 10, 4, 12, 5 ] },
+                "west": { "texture": "#planks_spruce", "uv": [ 11, 6, 13, 7 ] },
+                "up": { "texture": "#planks_spruce", "uv": [ 3, 8, 5, 10 ] },
+                "down": { "texture": "#planks_spruce", "uv": [ 8, 5, 10, 7 ] }
+            }
+        },
+        {
+            "name": "Quartz_IN_1_5",
+            "from": [ 5.5, 9, 0.5 ], 
+            "to": [ 5.5, 13, 1.5 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "east": { "texture": "#glass_white", "uv": [ 7, 4, 8, 8 ] },
+                "west": { "texture": "#glass_white", "uv": [ 7, 4, 8, 8 ] }
+            }
+        },
+        {
+            "name": "Quartz_IN_2_5",
+            "from": [ 6.5, 9, 0.5 ], 
+            "to": [ 6.5, 13, 1.5 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "east": { "texture": "#glass_white", "uv": [ 7, 4, 8, 8 ] },
+                "west": { "texture": "#glass_white", "uv": [ 7, 4, 8, 8 ] }
+            }
+        },
+        {
+            "name": "Quartz_IN_3_5",
+            "from": [ 5.5, 9, 0.5 ], 
+            "to": [ 6.5, 13, 0.5 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "north": { "texture": "#glass_white", "uv": [ 7, 4, 12, 12 ] },
+                "south": { "texture": "#glass_white", "uv": [ 7, 4, 8, 8 ] }
+            }
+        },
+        {
+            "name": "Quartz_IN_4_5",
+            "from": [ 5.5, 9, 1.5 ], 
+            "to": [ 6.5, 13, 1.5 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "north": { "texture": "#glass_white", "uv": [ 7, 4, 12, 12 ] },
+                "south": { "texture": "#glass_white", "uv": [ 7, 4, 8, 8 ] }
+            }
+        },
+        {
+            "name": "Quartz_IN_5_5",
+            "from": [ 5.5, 9, 0.5 ], 
+            "to": [ 6.5, 9, 1.5 ], 
+            "rotation": { "origin": [ 1, 0, 1 ], "axis": "y", "angle": -45.0 },
+            "faces": {
+                "up": { "texture": "#glass_white", "uv": [ 6, 6, 7, 7 ] },
+                "down": { "texture": "#glass_white", "uv": [ 6, 6, 7, 7 ] }
+            }
+        }
+    ]
+}

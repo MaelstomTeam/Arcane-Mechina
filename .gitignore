@@ -35,3 +35,4 @@ README.txt
 src - Copy
 src/api
 src/main/java/com/maelstrom/geneticist
+src/main/java/net/minecraft/entity/player/EntityPlayer.java

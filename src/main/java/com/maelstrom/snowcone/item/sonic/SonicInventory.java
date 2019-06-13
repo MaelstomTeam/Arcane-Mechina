@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -434,11 +435,11 @@ public class SonicInventory implements IInventory, IEnergyStorage, ICapabilityPr
 	
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-
-		if (this.getCurrentItem() != null)
-			return this.getCurrentItem().hasCapability(capability, facing);
-		else if (capability == CapabilityEnergy.ENERGY)
-				return true;
+		if (capability == CapabilityEnergy.ENERGY)
+			return true;
+		else 
+			if (this.getCurrentItem() != null)
+				return this.getCurrentItem().hasCapability(capability, facing);
 		return false;
 	}
 
@@ -452,7 +453,7 @@ public class SonicInventory implements IInventory, IEnergyStorage, ICapabilityPr
 		if (this.getCurrentItem() != null)
 			return this.getCurrentItem().getCapability(capability, facing);
 		else if (capability == CapabilityEnergy.ENERGY)
-			return (T) this;
+			return (T)this;
 		return null;
 	}
 

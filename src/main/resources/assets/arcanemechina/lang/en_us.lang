@@ -67,7 +67,21 @@ tile.arcanemechina.crystalore.Dark.name=Dust Ore
 tile.arcanemechina.crystalore.Light.name=Dust Ore
 tile.arcanemechina.crystalore.Etheral.name=Dust Ore
 tile.arcanemechina.crystalore.Daedric.name=Dust Ore
+item.arcanemechina.activation_dust.name=Why is this still here?
 
+tile.arcanemechina.mortar_pestle.stone.name=Stone Mortar
+tile.arcanemechina.mortar_pestle.granite.name=Granite Mortar
+tile.arcanemechina.mortar_pestle.diorite.name=Diorite Mortar
+tile.arcanemechina.mortar_pestle.andesite.name=Anedesite Mortar
+tile.arcanemechina.mortar_pestle.marble.name=Marble Mortar
+item.arcanemechina.pestle.name=Pestle
+
+item.arcanemechina.metal_dust.Iron.name=Pile of Iron Grit
+item.arcanemechina.metal_dust.Gold.name=Pile of Gold Powder
+item.arcanemechina.metal_dust.Copper.name=Pile of Copper Powder
+item.arcanemechina.metal_dust.Lead.name=Pile of Lead Powder
+item.arcanemechina.metal_dust.Silver.name=Pile of Silver Powder
+item.arcanemechina.metal_dust.Quartz.name=Coarse Quartz Dust
 
 item.arcanemechina.helpbook.arcane.name=The Book of the Arcane
 item.arcanemechina.helpbook.mecha.name=The Guide to Machines

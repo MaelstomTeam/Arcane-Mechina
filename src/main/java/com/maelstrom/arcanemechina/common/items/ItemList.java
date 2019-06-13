@@ -17,7 +17,7 @@ public class ItemList
 	 * Silver
 	 */
 	public static MetaItem Ingots = new MetaItemWithNames(new String[] {"Copper","Lead","Silver"});
-
+	public static MetaItem MetalDust = new MetaItemWithNames(new String[] {"Iron","Gold","Copper","Lead","Silver", "Quartz"});
 	/*
 	 * should be a list of Gems
 	 * Sapphire
@@ -40,4 +40,5 @@ public class ItemList
 	
 	public static Item Chalk = new ItemChalk();
 	public static Item ActivationDust = new Item();
+	public static Item pestle = new Item().setMaxDamage(1000).setMaxStackSize(1);
 }

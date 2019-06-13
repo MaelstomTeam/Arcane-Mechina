@@ -2,7 +2,6 @@ package com.maelstrom.arcanemechina.common.block;
 
 import com.maelstrom.arcanemechina.api.ElementTypes;
 import com.maelstrom.arcanemechina.api.RuneTypes;
-import com.maelstrom.arcanemechina.common.items.ItemList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,5 +16,7 @@ public class BlockList
 	public static Block leaves = new BlockCustomLeaf();
 	public static Block planks = new BlockCustomPlanks();
 	public static BlockCustomSapling paperBarkSapling = new BlockCustomSapling(paperLog, leaves, 20, 25, 5, 1);
+	public static BlockMortar mortar = new BlockMortar();
+	public static BlockCrystalizer crystalizer = new BlockCrystalizer();
 	
 }

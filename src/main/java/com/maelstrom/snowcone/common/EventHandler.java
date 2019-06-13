@@ -13,14 +13,15 @@ import com.maelstrom.snowcone.item.sonic.SonicInventory;
 import com.maelstrom.snowcone.item.sonic.SonicPacketProcessor;
 import com.maelstrom.snowcone.network.PacketHandler;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -156,6 +157,13 @@ public class EventHandler {
 				SonicInventory inv = SonicInventory.getInventory(player.inventory.getStackInSlot(i));
 				PacketHandler.INSTANCE.sendTo(new SonicPacketProcessor(i,inv.getTag()), player);
 			}
+		}
+	}
+	@SubscribeEvent
+	public static void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<ItemStack> event) {
+		if(event.getObject().getItem() == SC_Registry.SonicScrewdriver)
+		{
+			event.addCapability(new ResourceLocation(SnowCone.MODID), SonicInventory.getInventory(event.getObject()));
 		}
 	}
 }

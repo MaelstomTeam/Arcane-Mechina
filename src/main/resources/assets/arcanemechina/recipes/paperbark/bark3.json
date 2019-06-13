@@ -24,19 +24,11 @@
         {
             "item": "arcanemechina:drop",
             "data": 1
-        },
-        {
-            "item": "arcanemechina:drop",
-            "data": 1
-        },
-        {
-            "item": "arcanemechina:drop",
-            "data": 1
         }
     ],
     "result": {
         "item": "minecraft:paper",
-        "count": 4
+        "count": 3
     },
-    "group": "stuff"
+    "group": "paper"
 }

@@ -1,0 +1,12 @@
+{
+    "forge_marker": 1,
+   	"variants": {
+		"stone_type":{
+        	0:  {  "model": "arcanemechina:mortar/stone" },
+        	1:  {  "model": "arcanemechina:mortar/granite" },
+           	2:  {  "model": "arcanemechina:mortar/diorite" },
+           	3:  {  "model": "arcanemechina:mortar/andesite" },
+           	4:  {  "model": "arcanemechina:mortar/marble" }
+		}
+	} 
+}
