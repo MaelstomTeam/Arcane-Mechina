@@ -1,8 +1,0 @@
-{
-    "forge_marker": 1,
-    "parent": "arcanemechina:block/mortar/base_mortar",
-    "textures": {
-        "particle": "minecraft:blocks/stone_diorite",
-        "default": "minecraft:blocks/stone_diorite"
-    }
-}

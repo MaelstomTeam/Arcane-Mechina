@@ -1,10 +1,10 @@
 # eclipse
 bin
 *.launch
-.settings
-.metadata
-.classpath
-.project
+*.settings
+*.metadata
+*.classpath
+*.project
 
 # idea
 out
@@ -15,24 +15,19 @@ out
 
 # gradle
 build
-.gradle
+*.gradle
 
 # other
 eclipse
 run
-gradlew
-gradlew.bat
-LICENSE-Paulscode IBXM Library.txt
-LICENSE-Paulscode SoundSystem CodecIBXM.txt
-LICENSE.txt
-mc_assets
+
+# Files from Forge MDK
+forge*changelog.txt
+
+# added by Brandon
+changelog.txt
 CREDITS.txt
-forge-1.12.2-14.23.4.2739-changelog.txt
-Setup.bat
-gradle
-gradle.properties
-README.txt
-src - Copy
-src/api
-src/main/java/com/maelstrom/geneticist
-src/main/java/net/minecraft/entity/player/EntityPlayer.java
+LICENSE.txt
+*.xcf
+gradle*
+build.gradle

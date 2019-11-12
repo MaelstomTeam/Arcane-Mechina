@@ -1,7 +1,0 @@
-{
-    "parent": "block/cube_column",
-    "textures": {
-        "end": "arcanemechina:blocks/log_paperbark_top",
-        "side": "arcanemechina:blocks/log_paperbark"
-    }
-}

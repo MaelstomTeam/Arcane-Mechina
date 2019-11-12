@@ -1,0 +1,11 @@
+modLoader="javafml" #mandatory
+loaderVersion="[28,)" #mandatory (28 is current forge version)
+[[mods]] #mandatory
+modId="arcanemechina" #mandatory
+version="0.1a" #mandatory
+displayName="Arcane Mechina" #mandatory
+logoFile="logo.png" #optional
+description='''
+a mod with a mix of arcane and mechanical features!
+''' #optional
+authors="on Twitter: @NadirRift and @SNReloaded" #optional

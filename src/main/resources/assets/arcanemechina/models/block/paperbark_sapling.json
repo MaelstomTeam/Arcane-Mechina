@@ -1,8 +1,0 @@
-{
-    "forge_marker": 1,
-    "parent": "block/cross",
-    "textures": {
-        "all": "arcanemechina:blocks/paperbark_sapling",
-        "cross":"arcanemechina:blocks/paperbark_sapling"
-    }
-}
