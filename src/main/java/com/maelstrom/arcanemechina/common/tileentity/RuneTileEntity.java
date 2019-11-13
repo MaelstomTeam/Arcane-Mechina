@@ -31,8 +31,8 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 		//net.minecraft.tileentity.BannerTileEntity
 		HOLD holder = new RuneList.HOLD();
 		TOGGLE toggler = new RuneList.TOGGLE();
-		VARIBLE tick_10_0 = new RuneList.VARIBLE(20);
-		VARIBLE tick_10_1 = new RuneList.VARIBLE(40);
+		VARIBLE tick_10_0 = new RuneList.VARIBLE(0);
+		VARIBLE tick_10_1 = new RuneList.VARIBLE(200);
 		rune.setChildren(holder, 0);
 		holder.setChildren(toggler, 0);
 		holder.setItem(new ItemStack(Items.DIAMOND_PICKAXE));
@@ -55,14 +55,14 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 		CompoundNBT nbt = (CompoundNBT) compound.get("RUNE");
 		if(!nbt.isEmpty())
 		{
-			rune.deserializeNBT(nbt);
+			rune.readFromNBT(nbt);
 		}
 		super.read(compound);
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
-		compound.put("RUNE", rune.serializeNBT());
+		compound.put("RUNE", rune.writeToNBT());
 		return super.write(compound);
 	}
 
@@ -79,7 +79,6 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
 		CompoundNBT tag = pkt.getNbtCompound();
 	    read(tag);
-	    //Handle your Data
 	}
 
 	@Override
@@ -94,9 +93,11 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 			for (int i = 0; i < r.getItemOutput().size(); i++) {
 				ItemStack item = r.removeItem(false, i, r.getItemOutput().get(i).getCount());
 				if (item.getCount() > 0)
-					world.addEntity(new ItemEntity(world, pos2.getX() + .5, pos2.getY(), pos2.getZ() + .5, item));// .setMotion(0,
-																													// 0,
-																													// 0)
+				{
+					ItemEntity item_entity = new ItemEntity(world, pos2.getX() + .5, pos2.getY()-.9, pos2.getZ() + .5, item);
+					item_entity.setMotion(0, 0, 0);
+					world.addEntity(item_entity);
+				}
 			}
 		}
 		//world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 2);

@@ -32,7 +32,7 @@ public class WorldUtilities
 		} else {
 			passedPlayer = FakePlayerFactory.get(world, gameProfile);
 		}
-
+		passedPlayer.setPosition(pos.getX(), pos.getY(), pos.getZ());
 		BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(world, pos, state, passedPlayer);
 		MinecraftForge.EVENT_BUS.post(breakEvent);
 

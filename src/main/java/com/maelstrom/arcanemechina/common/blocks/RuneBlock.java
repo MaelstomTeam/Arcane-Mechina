@@ -7,6 +7,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -27,7 +28,7 @@ public class RuneBlock extends ContainerBlock {
 		return BlockRenderType.MODEL;
 	}
 
-	private static final VoxelShape X_AXIS_AABB = Block.makeCuboidShape(1d, 1d, 1d, 15d, 15d, 15d);
+	private static final VoxelShape X_AXIS_AABB = Block.makeCuboidShape(0d, 0.1d, 0d, 16d, 1.1d, 16d);
 
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return X_AXIS_AABB;
@@ -35,7 +36,11 @@ public class RuneBlock extends ContainerBlock {
 
 	@Deprecated
 	public boolean isSolid(BlockState state) {
-		return true;
+		return false;
+	}
+
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
 }
