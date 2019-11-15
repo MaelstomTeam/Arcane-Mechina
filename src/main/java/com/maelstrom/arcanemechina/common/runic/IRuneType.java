@@ -11,15 +11,25 @@ import com.maelstrom.snowcone.common.WorldUtilities;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.IRecipeHelperPopulator;
+import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.FurnaceContainer;
 import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.ICraftingRecipe;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.RecipeItemHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -288,21 +298,25 @@ public abstract class IRuneType {
 				else
 					return null;
 				if (container == null)
-					container = new WorkbenchContainer(0, WorldUtilities
-							.getFakePlayer(world.getServer().getWorld(world.dimension.getType())).inventory);
+					container = new WorkbenchContainer(0, WorldUtilities.getFakePlayer(world.getServer().getWorld(world.dimension.getType())).inventory);
 				int counter = 0;
+				for(int i = 0; i < container.getSize(); i++)
+					container.putStackInSlot(i, ItemStack.EMPTY);
+				CraftingInventory c = new CraftingInventory(container, x, x);
 				for (int x1 = 0; x1 < 3; x1++) {
 					for (int y1 = 0; y1 < 3; y1++) {
 						if (x1 < x && y1 < x) {
-							container.putStackInSlot(x1 + y1 * 3, ((HOLD) children[counter]).heldItem);
+							c.setInventorySlotContents((x1 + y1 * 3), ((HOLD) children[counter]).heldItem);
+							//container.putStackInSlot((x1 + y1 * 3) + 1, ((HOLD) children[counter]).heldItem);
 							counter++;
 						}
 					}
 				}
 				Optional<ICraftingRecipe> s = world.getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING,
-						new CraftingInventory(container, x, x), world);
+						c, world);
 				if (s.isPresent())
 					return s.get();
+				//ArcaneMechina.LOGGER.info(s);
 				return null;
 
 			}
@@ -377,7 +391,7 @@ public abstract class IRuneType {
 			}
 
 			protected boolean state = false;
-			protected int counter = 0;
+			public int counter = 0;
 
 			public boolean getState() {
 				return state;
@@ -486,10 +500,17 @@ public abstract class IRuneType {
 			int progress;
 			private RuneContainer craftReference;
 
+			public void resetInteractions(RuneTileEntity entity)
+			{
+				ServerWorld world = (ServerWorld) entity.getWorld();
+				BlockPos pos = entity.getPos().offset(entity.offset());
+				world.sendBlockBreakProgress(subID, pos, -1);
+			}
+			
 			@Override
 			public void doAction(RuneTileEntity entity) {
 				if (hasItem() && hasToggle() && entity.getWorld() instanceof ServerWorld) {
-					if (heldItem.getItem() == Items.CRAFTING_TABLE && false) // temp disabled due to not being tested!
+					if (heldItem.getItem() == Items.CRAFTING_TABLE) // temp disabled due to not being tested!
 					{
 						// do crafting
 						if (isParentRuneContainer()) {
@@ -507,14 +528,16 @@ public abstract class IRuneType {
 									boolean canCraft = true;
 									ICraftingRecipe recipe = craftReference.getRecipe(entity.getWorld());
 									for (ItemStack i : craftReference.getCraftInventory()) {
-										if (i.getCount() <= 1 || i.hasContainerItem())
+										if (i != ItemStack.EMPTY && (i.getCount() <= 1 || i.hasContainerItem()))
 											canCraft = false;
 									}
 									if (canCraft && this.canAddItem(recipe.getRecipeOutput())) {
 										for (ItemStack i : craftReference.getCraftInventory()) {
-											i.shrink(1);
+											if (i != ItemStack.EMPTY)
+												i.shrink(1);
 										}
-										this.addItem(recipe.getRecipeOutput().copy());
+										ItemEntity itemEnt = new ItemEntity(entity.getWorld(), entity.getPos().getX()+.5, entity.getPos().getY(), entity.getPos().getZ()+.5, recipe.getRecipeOutput().copy());
+										entity.getWorld().addEntity(itemEnt);
 									}
 								}
 
@@ -524,19 +547,20 @@ public abstract class IRuneType {
 						ServerWorld world = (ServerWorld) entity.getWorld();
 						BlockPos pos = entity.getPos().offset(entity.offset());
 						BlockState state = world.getBlockState(pos);
-						FakePlayer player = WorldUtilities.getFakePlayer(world);
-						if (player.getHeldItemMainhand() != heldItem)
-							player.inventory.mainInventory.set(0, heldItem);
-						if (!world.isAirBlock(pos) && world.canMineBlockBody(player, pos)) {
+						FakePlayer fakePlayer = WorldUtilities.getFakePlayer(world);
+						if (fakePlayer.getHeldItemMainhand() != heldItem)
+							fakePlayer.inventory.mainInventory.set(0, heldItem);
+						if (!world.isAirBlock(pos) && world.canMineBlockBody(fakePlayer, pos)) {
 							if (getToggle().getState()) {
-								ArcaneMechina.LOGGER.info(state.getBlockHardness(world, pos)/heldItem.getDestroySpeed(state) * counter);
-								progress = (int) (state.getBlockHardness(world, pos)/heldItem.getDestroySpeed(state) * counter);
+								//find a more accurate way to do this!
+								progress = (int) ((state.getBlockHardness(world, pos)/(10f-heldItem.getDestroySpeed(state))) * counter);
 								world.sendBlockBreakProgress(subID, pos, progress - 1);
 								if (progress >= 10) {
-									List<ItemStack> items = WorldUtilities.BreakBlock(world, pos, player);
+									List<ItemStack> items = WorldUtilities.BreakBlock(world, pos, fakePlayer);
 									for (ItemStack item2 : items) {
 										if (item2 != null && !item2.isEmpty()) {
 											boolean found = false;
+											if(heldItem.canHarvestBlock(state))
 											for (int i = 0; i < outputItems.size(); i++) {
 												if (outputItems.get(i).isEmpty()) {
 													outputItems.set(i, item2);
@@ -546,6 +570,14 @@ public abstract class IRuneType {
 											if (found)
 												world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(),
 														pos.getZ(), item2));
+											if(heldItem.isDamageable())
+											{
+												if(heldItem.getDamage() >= heldItem.getMaxDamage())
+													heldItem = ItemStack.EMPTY;
+												else
+													heldItem.attemptDamageItem(1, entity.getWorld().getRandom(), fakePlayer);
+												world.notifyBlockUpdate(entity.getPos(), entity.getBlockState(), entity.getBlockState(), 2);
+											}
 										}
 									}
 									world.sendBlockBreakProgress(subID, pos, -1);
@@ -572,6 +604,7 @@ public abstract class IRuneType {
 			public CompoundNBT serializeNBT() {
 				CompoundNBT nbt = new CompoundNBT();
 				nbt.put("HELD_ITEM", heldItem.serializeNBT());
+				nbt.putInt("counter", counter);
 				ListNBT outputList = new ListNBT();
 				for (ItemStack i : this.outputItems) {
 					outputList.add(i.serializeNBT());
@@ -586,6 +619,7 @@ public abstract class IRuneType {
 			@Override
 			public void deserializeNBT(CompoundNBT nbt) {
 				outputItems.clear();
+				counter = nbt.getInt("counter");
 				heldItem = ItemStack.read(nbt.getCompound("HELD_ITEM"));
 				CompoundNBT list = nbt.getCompound("OUTPUT");
 				ItemStackHelper.loadAllItems(list, outputItems);
@@ -875,16 +909,312 @@ public abstract class IRuneType {
 				return (hasConsumeRune() && canSmeltItem(item)) || canTransmuteItem(item);
 			}
 
-			private void transmuteItem(ItemStack item) {
-				// TODO Auto-generated method stub
+			private ItemStack transmuteItem(ItemStack item)
+			{
+				if(item.getItem() == Items.STONE)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.COBBLESTONE, 1);
+				}
+				else if(item.getItem() == Items.COBBLESTONE)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.GRAVEL, 1);
+				}
+				else if(item.getItem() == Items.GRAVEL)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.SAND, 1);
+				}
 				
+				//boat nightmare
+				else if(item.getItem() == Items.ACACIA_BOAT)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BIRCH_BOAT, 1);
+				}
+				else if(item.getItem() == Items.BIRCH_BOAT)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.DARK_OAK_BOAT, 1);
+				}
+				else if(item.getItem() == Items.DARK_OAK_BOAT)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.JUNGLE_BOAT, 1);
+				}
+				else if(item.getItem() == Items.JUNGLE_BOAT)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.SPRUCE_BOAT, 1);
+				}
+				else if(item.getItem() == Items.SPRUCE_BOAT)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.OAK_BOAT, 1);
+				}
+				else if(item.getItem() == Items.OAK_BOAT)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.ACACIA_BOAT, 1);
+				}
+				
+				//wood
+
+				else if(item.getItem() == Items.ACACIA_WOOD)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BIRCH_WOOD, 1);
+				}
+				else if(item.getItem() == Items.BIRCH_WOOD)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.DARK_OAK_WOOD, 1);
+				}
+				else if(item.getItem() == Items.DARK_OAK_WOOD)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.JUNGLE_WOOD, 1);
+				}
+				else if(item.getItem() == Items.JUNGLE_WOOD)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.OAK_WOOD, 1);
+				}
+				else if(item.getItem() == Items.OAK_WOOD)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.SPRUCE_WOOD, 1);
+				}
+				else if(item.getItem() == Items.SPRUCE_WOOD)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.ACACIA_WOOD, 1);
+				}
+				
+				//doors!!!!
+
+				else if(item.getItem() == Items.ACACIA_DOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BIRCH_DOOR, 1);
+				}
+				else if(item.getItem() == Items.BIRCH_DOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.DARK_OAK_DOOR, 1);
+				}
+				else if(item.getItem() == Items.DARK_OAK_DOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.JUNGLE_DOOR, 1);
+				}
+				else if(item.getItem() == Items.JUNGLE_DOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.OAK_DOOR, 1);
+				}
+				else if(item.getItem() == Items.OAK_DOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.SPRUCE_DOOR, 1);
+				}
+				else if(item.getItem() == Items.SPRUCE_DOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.ACACIA_DOOR, 1);
+				}
+
+				////////////////////////////////////////ITS A TRAP!
+
+				else if(item.getItem() == Items.ACACIA_TRAPDOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BIRCH_TRAPDOOR, 1);
+				}
+				else if(item.getItem() == Items.BIRCH_TRAPDOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.DARK_OAK_TRAPDOOR, 1);
+				}
+				else if(item.getItem() == Items.DARK_OAK_TRAPDOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.JUNGLE_TRAPDOOR, 1);
+				}
+				else if(item.getItem() == Items.JUNGLE_TRAPDOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.OAK_TRAPDOOR, 1);
+				}
+				else if(item.getItem() == Items.OAK_TRAPDOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.SPRUCE_TRAPDOOR, 1);
+				}
+				else if(item.getItem() == Items.SPRUCE_TRAPDOOR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.ACACIA_TRAPDOOR, 1);
+				}
+				
+				/////////////
+
+				else if(item.getItem() == Items.COOKED_BEEF)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BEEF, 1);
+				}
+				else if(item.getItem() == Items.LEATHER)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.ROTTEN_FLESH, 1);
+				}
+				else if(item.getItem() == Items.COOKED_CHICKEN)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.CHICKEN, 1);
+				}
+				else if(item.getItem() == Items.COOKED_COD)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.COD, 1);
+				}
+				else if(item.getItem() == Items.COOKED_MUTTON)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.MUTTON, 1);
+				}
+				else if(item.getItem() == Items.COOKED_PORKCHOP)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.PORKCHOP, 1);
+				}
+				else if(item.getItem() == Items.COOKED_RABBIT)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.RABBIT, 1);
+				}
+				else if(item.getItem() == Items.COOKED_SALMON)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.SALMON, 1);
+				}
+				else if(item.getItem() == Items.BREAD)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.WHEAT, 1);
+				}
+				else if(item.getItem() == Items.PUMPKIN_PIE)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BOWL, 1);
+				}
+				else if(item.getItem() == Items.MUSHROOM_STEW)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BOWL, 1);
+				}
+				else if(item.getItem() == Items.RABBIT_STEW)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BOWL, 1);
+				}
+				else if(item.getItem() == Items.SUSPICIOUS_STEW)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BOWL, 1);
+				}
+				else if(item.getItem() == Items.BROWN_MUSHROOM)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.RED_MUSHROOM, 1);
+				}
+				else if(item.getItem() == Items.RED_MUSHROOM)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.BROWN_MUSHROOM, 1);
+				}
+				else if(item.getItem() == Items.POPPED_CHORUS_FRUIT)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.CHORUS_FRUIT, 1);
+				}
+				else if(item.getItem() == Items.NETHER_STAR)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.SOUL_SAND, 1);
+				}
+				else if(item.getItem() == Items.SOUL_SAND)
+				{
+					this.getAndSplit(item, 1);
+					//voided to my soul
+					return new ItemStack(Items.SAND, 1);
+				}
+				
+				return ItemStack.EMPTY;
+			}
+
+			public static ItemStack getAndSplit(ItemStack stacks, int amount) {
+				return !stacks.isEmpty() && amount > 0 ? stacks.split(amount) : ItemStack.EMPTY;
 			}
 
 			private boolean canTransmuteItem(ItemStack item)
 			{
+				if(item.getItem() == Items.STONE)
+					return true;
+				if(item.getItem() == Items.COBBLESTONE)
+					return true;
+				if(item.getItem() == Items.GRAVEL)
+					return true;
+				if(item.getItem() == Items.SAND)
+					return true;
 				return false;
 			}
-
 			private void smeltItem(ItemStack item)
 			{
 			}
@@ -905,10 +1235,12 @@ public abstract class IRuneType {
 			{
 				return list.get(1).split(amount);
 			}
-
+			World world;
 			@Override
 			public void doAction(RuneTileEntity entity)
 			{
+				if(world==null)
+					world = entity.getWorld();
 				if(this.hasConsumeRune())
 				{
 					
