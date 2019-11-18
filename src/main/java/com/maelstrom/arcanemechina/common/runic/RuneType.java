@@ -223,11 +223,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 
 		public static class RuneContainer extends RuneType {
 
-			static final RenderPlane plane_t = new RenderPlane(32, 32);
-			static final RenderPlane plane_s = new RenderPlane(64, 64);
-			static final RenderPlane plane_m = new RenderPlane(128, 128);
-			static final RenderPlane plane_l = new RenderPlane(256, 256);
-			static final RenderPlane plane_h = new RenderPlane(512, 512);
+			static final RenderPlane plane = new RenderPlane();
 			private RuneSize runeSize;
 
 			public boolean isCraftingHolder() {
@@ -469,24 +465,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 					//GlStateManager.translated(-8, 0, -8);
 					GlStateManager.translated(8 -  8 * getRuneScale(), 0, 8 -  8 * getRuneScale());
 					GlStateManager.scaled(getRuneScale(), getRuneScale(), getRuneScale());
-					switch (this.runeSize) {
-					case HUGE:
-						plane_h.render();
-						break;
-					case LARGE:
-						plane_l.render();
-						break;
-					case MEDIUM:
-						plane_m.render();
-						break;
-					case SMALL:
-						plane_s.render();
-						break;
-					case TINY:
-						plane_t.render();
-						break;
-
-					}
+					plane.render();
 					GlStateManager.popMatrix();
 					GlStateManager.pushMatrix();
 					if(!this.isCraftingHolder())
@@ -541,7 +520,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 				return "varible";
 			}
 
-			static final RenderPlane plane = new RenderPlane(32, 32);
+			static final RenderPlane plane = new RenderPlane();
 			static ResourceLocation varible = new ResourceLocation("arcanemechina:textures/runes/varible.png");
 
 			@Override
@@ -681,7 +660,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 			static ResourceLocation toggle_off = new ResourceLocation("arcanemechina:textures/runes/toggle.png");
 			static ResourceLocation toggle_on = new ResourceLocation("arcanemechina:textures/runes/toggle_active.png");
 
-			static final RenderPlane plane = new RenderPlane(32, 32);
+			static final RenderPlane plane = new RenderPlane();
 
 			@Override
 			public void render(RuneTileEntity te, double x, double y, double z, float particks, int destroystage) {
@@ -922,7 +901,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 				return "hold";
 			}
 
-			static final RenderPlane plane = new RenderPlane(32, 32);
+			static final RenderPlane plane = new RenderPlane();
 
 			@Override
 			public void render(RuneTileEntity te, double x, double y, double z, float particks, int destroystage) {

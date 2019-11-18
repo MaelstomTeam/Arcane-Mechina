@@ -1,10 +1,8 @@
-package com.maelstrom.arcanemechina.common.runic;
+package com.maelstrom.arcanemechina.common.runic.newrune;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -16,7 +14,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public interface IRuneRenderer {
+public interface IRuneRenderer2 {
 
 	public static void bindTexture(ResourceLocation location) {
 		TextureManager texturemanager = Minecraft.getInstance().textureManager;
@@ -66,6 +64,6 @@ public interface IRuneRenderer {
 		getTextureManager().getTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 	}
 
-	public void render(RuneTileEntity te, double x, double y, double z, float particks, int destroystage);
+	public void render(float particks);
 
 }
