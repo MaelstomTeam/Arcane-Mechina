@@ -5,14 +5,14 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.maelstrom.arcanemechina.common.Registry;
-import com.maelstrom.arcanemechina.common.runic.IRuneType;
-import com.maelstrom.arcanemechina.common.runic.IRuneType.RuneList;
-import com.maelstrom.arcanemechina.common.runic.IRuneType.RuneList.HOLD;
-import com.maelstrom.arcanemechina.common.runic.IRuneType.RuneList.RuneContainer;
-import com.maelstrom.arcanemechina.common.runic.IRuneType.RuneList.TOGGLE;
-import com.maelstrom.arcanemechina.common.runic.IRuneType.RuneList.VARIBLE;
-import com.maelstrom.arcanemechina.common.runic.IRuneType.RuneSize;
-import com.maelstrom.arcanemechina.common.runic.IRuneType.hasAction;
+import com.maelstrom.arcanemechina.common.runic.RuneType;
+import com.maelstrom.arcanemechina.common.runic.RuneType.RuneList;
+import com.maelstrom.arcanemechina.common.runic.RuneType.RuneList.HOLD;
+import com.maelstrom.arcanemechina.common.runic.RuneType.RuneList.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.RuneType.RuneList.TOGGLE;
+import com.maelstrom.arcanemechina.common.runic.RuneType.RuneList.VARIBLE;
+import com.maelstrom.arcanemechina.common.runic.RuneType.RuneSize;
+import com.maelstrom.arcanemechina.common.runic.RuneType.hasAction;
 
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -38,13 +38,13 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 		{
 			HOLD holder = new RuneList.HOLD();
 			TOGGLE toggler = new RuneList.TOGGLE();
-			VARIBLE tick_10_0 = new RuneList.VARIBLE(10);
-			VARIBLE tick_10_1 = new RuneList.VARIBLE(200);
+			VARIBLE tick_10_0 = new RuneList.VARIBLE(0+(int)(Math.random() * 60));
+			VARIBLE tick_10_1 = new RuneList.VARIBLE(60+(int)(Math.random() * 60));
 			rune.setSize(RuneSize.SMALL);
 			rune.setChildren(holder, 0);
 			holder.setChildren(toggler, 0);
 			holder.setItem(new ItemStack(Items.DIAMOND_PICKAXE));
-			holder.getItemInput().get(0).setDamage(holder.getItemInput().get(0).getMaxDamage() / 2);
+			//holder.getItemInput().get(0).setDamage(holder.getItemInput().get(0).getMaxDamage() / 2);
 			toggler.setChildren(tick_10_0, 0);
 			toggler.setChildren(tick_10_1, 1);
 		}
@@ -55,7 +55,7 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 			
 			RuneContainer runeCon2 = new RuneContainer();
 			runeCon2.setSize(RuneSize.MEDIUM);
-			rune.setSize(RuneSize.HUGE);
+			rune.setSize(RuneSize.LARGE);
 			rune.setChildren(runeCon1, 0);
 			rune.setChildren(runeCon2, 1);
 			
@@ -132,7 +132,7 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////
-		for (IRuneType.IInventoryRune r : rune.getAllOfType(IRuneType.IInventoryRune.class)) {
+		for (RuneType.IInventoryRune r : rune.getAllOfType(RuneType.IInventoryRune.class)) {
 			for (int i = 0; i < r.getItemOutput().size(); i++) {
 				ItemStack item = r.removeItem(false, i, r.getItemOutput().get(i).getCount());
 				if (item.getCount() > 0) {
@@ -152,6 +152,13 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 				r.resetInteractions(this);
 			}
 		super.remove();
+	}
+	
+	@Override
+	public void markDirty()
+	{
+		super.markDirty();
+		world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 2);//send update to client
 	}
 
 }
