@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.common.runic.newrune;
+package com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -68,20 +68,29 @@ public interface IInventoryRune extends IInventory {
 
 	public default void addItem(ItemStack item)
 	{
-		if(canAddItem(item))
+		int value=0;
+		for(ItemStack i2 : getAllItems().subList(10, 19))
 		{
-			int value=0;
-			for(ItemStack i2 : getAllItems().subList(10, 19))
+			if(canAddItem(item, i2))
 			{
-				if(canAddItem(item, i2))
-				{
-					if(i2.getCount() > 0)
-						i2.grow(item.getCount());
-					else
-						this.setInventorySlotContents(value,item.copy());
-				}
-				value++;
+				if(i2.getCount() > 0)
+					i2.grow(item.getCount());
+				else
+					this.setInventorySlotContents(value,item.copy());
+				break;
 			}
+			value++;
+		}
+	}
+
+	public default void addItem(ItemStack item, int index)
+	{
+		if(canAddItem(item, this.getStackInSlot(index)))
+		{
+			if(item.getCount() > 0)
+				item.grow(item.getCount());
+			else if(item.isEmpty())
+				this.setInventorySlotContents(index,item.copy());
 		}
 	}
 

@@ -7,6 +7,7 @@ import com.maelstrom.snowcone.common.WorldUtilities;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.container.WorkbenchContainer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.ICraftingRecipe;
@@ -29,6 +30,13 @@ public class RecipeHelper {
 		stick = createFromList(new ItemStack[][] { new ItemStack[] { new ItemStack(Items.OAK_WOOD) },
 				new ItemStack[] { new ItemStack(Items.OAK_WOOD) } });
 
+	}
+	public static Item reference_item = Items.PAPER;
+	public static ItemStack createFromListToItemStack(ItemStack[][] list)
+	{
+		ItemStack output = new ItemStack(reference_item, 1);
+		output.setTag(createFromList(list));
+		return output;
 	}
 
 	// has to be a perfect sublist, no xxx,xx,x must all be same size

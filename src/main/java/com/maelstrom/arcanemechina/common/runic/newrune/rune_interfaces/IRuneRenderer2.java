@@ -1,6 +1,5 @@
-package com.maelstrom.arcanemechina.common.runic.newrune;
+package com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces;
 
-import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.client.Minecraft;
@@ -14,6 +13,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+@SuppressWarnings("deprecation")
 public interface IRuneRenderer2 {
 
 	public static void bindTexture(ResourceLocation location) {

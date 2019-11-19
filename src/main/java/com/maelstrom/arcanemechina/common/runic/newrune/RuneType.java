@@ -63,7 +63,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	}
 
 	// actual class here!
-	private UUID uuid;
+	private UUID uuid = UUID.randomUUID();
 
 	public UUID getUUID() {
 		return this.uuid;
@@ -103,9 +103,12 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	private Vec2f pos = Vec2f.ZERO;
 
+	private float scale;
+
 	public void readFromNBT(CompoundNBT tag) {
 		connections.clear();
 		tag.getUniqueId("UUID");
+		scale = tag.getFloat("SCALE");
 		setPosition(tag.getCompound("pos"));
 		ListNBT list = (ListNBT) tag.get("connections");
 		for (int i = 0; i < list.size(); i++) {
@@ -114,11 +117,21 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		readNBT(tag.getCompound("data"));
 	}
 
+	public void setScale(float scale)
+	{
+		this.scale = scale;
+	}
+	public float getScale()
+	{
+		return scale;
+	}
+
 	public CompoundNBT writeToNBT() {
 		CompoundNBT tag = new CompoundNBT();
 		tag.putShort("ID", getID(this));
 		tag.putUniqueId("uuid", uuid);
 		CompoundNBT position = new CompoundNBT();
+		position.putFloat("SCALE", scale);
 		position.putFloat("X", pos.x);
 		position.putFloat("Y", pos.y);
 		tag.put("pos", position);
@@ -243,24 +256,22 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void render(float particks) {
-			GlStateManager.pushMatrix();
 			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
-			GlStateManager.scaled(.5f, .5f, .5f);
+			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
-			GlStateManager.pushMatrix();
-			String text = this.getValueAsString();
-			GlStateManager.translated(8f, 0, 7f);
-			GlStateManager.rotated(90, 1, 0, 0);
-			GlStateManager.rotated(180, 0, 0, 1);
-			float center_x = IRuneRenderer2.getFontRenderer().getStringWidth(text) / 2f;
-			float center_y = IRuneRenderer2.getFontRenderer().FONT_HEIGHT / 2f;
-			float scaler = MathHelper.lerp(4f / (center_x * 2), 0f, 2f);
-			GlStateManager.scaled(scaler, scaler, scaler);
-			IRuneRenderer2.getFontRenderer().drawString(text, -center_x, -center_y, 0x00000000);
-			GlStateManager.popMatrix();
+				GlStateManager.pushMatrix();
+					String text = this.getValueAsString();
+					GlStateManager.translated(8f, 0, 7f);
+					GlStateManager.rotated(90, 1, 0, 0);
+					GlStateManager.rotated(180, 0, 0, 1);
+					float center_x = IRuneRenderer2.getFontRenderer().getStringWidth(text) / 2f;
+					float center_y = IRuneRenderer2.getFontRenderer().FONT_HEIGHT / 2f;
+					float scaler = MathHelper.lerp(4f / (center_x * 2), 0f, 2f);
+					GlStateManager.scaled(scaler, scaler, scaler);
+					IRuneRenderer2.getFontRenderer().drawString(text, -center_x, -center_y, 0x00000000);
+				GlStateManager.popMatrix();
 			IRuneRenderer2.bindTexture(varible);
 			plane.render();
-			GlStateManager.popMatrix();
 			GlStateManager.popMatrix();
 		}
 
@@ -336,15 +347,17 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void render(float particks) {
+			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
+			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
-			if (item_list.get(0) != ItemStack.EMPTY) {
-				GlStateManager.pushMatrix();
-				IRuneRenderer2.renderItem(item_list.get(0));
-				GlStateManager.popMatrix();
-			}
+				if (item_list.get(0) != ItemStack.EMPTY) {
+					GlStateManager.pushMatrix();
+					IRuneRenderer2.renderItem(item_list.get(0));
+					GlStateManager.popMatrix();
+				}
 			GlStateManager.pushMatrix();
-			IRuneRenderer2.bindTexture(hold);
-			plane.render();
+				IRuneRenderer2.bindTexture(hold);
+				plane.render();
 			GlStateManager.popMatrix();
 			GlStateManager.popMatrix();
 		}
@@ -375,7 +388,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		public boolean hasToggle() {
-			if (this.getListUUID().get(1) != null)
+			if (this.getListUUID().get(0) != null)
 				return this.getParent().getLink(getListUUID().get(0)) != null;
 			return false;
 		}
@@ -410,7 +423,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		@Override
 		public void tick(World world, BlockPos blockPos, RuneTileEntity entity) {
 			if (hasItem() && hasToggle() && world instanceof ServerWorld) {
-				if (this.getStackInSlot(0).getItem() == Items.CRAFTING_TABLE) // temp disabled due to not being tested!
+				if (this.getStackInSlot(0).getItem() == Items.CRAFTING_TABLE)
 				{
 					// do crafting
 					if (craftReference == null) {
@@ -420,10 +433,11 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 						boolean canCraft = true;
 						ICraftingRecipe recipe = craftReference.getRecipe(entity.getWorld());
 						for (ItemStack i : getAllItems().subList(1, 10)) {
-							if (i != ItemStack.EMPTY && (i.getCount() <= 1))
+							if (i != ItemStack.EMPTY && (i.getCount() < 1))
 								canCraft = false;
 						}
 						if (canCraft && this.canAddItem(recipe.getRecipeOutput())) {
+							int counter = 1;
 							for (ItemStack i : getAllItems().subList(1, 10)) {
 								if (i.hasContainerItem())
 									for (ItemStack i2 : getAllItems().subList(10, 19)) {
@@ -431,6 +445,9 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 									}
 								if (i != ItemStack.EMPTY)
 									i.shrink(1);
+								if(i.isEmpty())
+									this.setInventorySlotContents(counter, ItemStack.EMPTY);
+								counter++;
 							}
 							ItemStack output = recipe.getRecipeOutput();
 							addItem(output);
@@ -446,24 +463,23 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					if (!world.isAirBlock(pos) && world.canMineBlockBody(fakePlayer, pos)) {
 						if (getToggle().getState()) {
 							// find a more accurate way to do this!
-							progress = (int) ((state.getBlockHardness(world, pos)
-									/ (10f - this.getStackInSlot(0).getDestroySpeed(state))) * counter);
+							progress = (int) ((state.getBlockHardness(world, pos) / (10f - this.getStackInSlot(0).getDestroySpeed(state))) * counter);
 							world.sendBlockBreakProgress(subID, pos, progress - 1);
 							if (progress >= 10) {
-								List<ItemStack> items = WorldUtilities.BreakBlock((ServerWorld) world, pos, fakePlayer);
-								for (ItemStack item2 : items) {
-									if (item2 != null && !item2.isEmpty()) {
+								List<ItemStack> block_drops = WorldUtilities.BreakBlock((ServerWorld) world, pos, fakePlayer);
+								for (ItemStack current_item : block_drops) {
+									if (current_item != null && !current_item.isEmpty()) {
 										boolean found = false;
 										if (this.getStackInSlot(0).canHarvestBlock(state))
 											for (int i = 0; i < this.getSizeInventory() - 1; i++) {
-												if (this.getStackInSlot(i + 1).isEmpty()) {
-													this.setInventorySlotContents(i + 1, item2);
+												if (this.canAddItem(current_item, this.getStackInSlot(i + 1))) {
+													this.addItem(current_item,i+1);
 													found = true;
+													break;
 												}
 											}
-										if (found)
-											world.addEntity(
-													new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), item2));
+										if(!found)
+											world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), current_item));
 										if (this.getStackInSlot(0).isDamageable()) {
 											if (this.getStackInSlot(0).getDamage() >= this.getStackInSlot(0)
 													.getMaxDamage())
@@ -471,8 +487,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 											else
 												this.getStackInSlot(0).attemptDamageItem(1,
 														entity.getWorld().getRandom(), fakePlayer);
-											world.notifyBlockUpdate(entity.getPos(), entity.getBlockState(),
-													entity.getBlockState(), 2);
+											world.notifyBlockUpdate(entity.getPos(), entity.getBlockState(), entity.getBlockState(), 2);
 										}
 									}
 								}
@@ -533,7 +548,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void render(float particks) {
-
+			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
+			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
 			if (this.state)
 				IRuneRenderer2.bindTexture(toggle_on);
@@ -662,9 +678,21 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			return "io_into_rune";
 		}
 
+		static ResourceLocation insert_to_rune = new ResourceLocation("arcanemechina:textures/runes/insert.png");
+		static ResourceLocation extract_from_rune = new ResourceLocation("arcanemechina:textures/runes/extract.png");
+
+
 		@Override
 		public void render(float particks) {
-			// TODO Auto-generated method stub
+			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
+			GlStateManager.scaled(getScale(), getScale(), getScale());
+			GlStateManager.pushMatrix();
+			if (input)
+				IRuneRenderer2.bindTexture(insert_to_rune);
+			else
+				IRuneRenderer2.bindTexture(extract_from_rune);
+			plane.render();
+			GlStateManager.popMatrix();
 
 		}
 
@@ -677,8 +705,42 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					transfer(this.getInterRuneConnection());
 				}
 				else if (world.getTileEntity(blockPos.offset(dir)) instanceof IInventory) {
-					TileEntity tile = world.getTileEntity(blockPos.offset(dir));
-					transfer((IInventory)tile);
+					transfer((IInventory)world.getTileEntity(blockPos.offset(dir)));
+				}
+				else
+				{
+					//if output
+					if (!input) {
+						for (int i = 0; i < getInventoryRune().getSizeInventory(); i++)
+						{
+
+							ItemStack item = null;
+							if(getInventoryRune() instanceof HoldingRune)
+							{
+								if(i < getInventoryRune().getSizeInventory() - 1)
+									if (!getInventoryRune().getStackInSlot(i + 1).isEmpty())
+										item = getInventoryRune().getStackInSlot(i + 1).split(maxPull);
+							}
+							//don't export anything from the crafting rune as it is required to get a crafting recipe
+							//might remove as one might want to use this to cycle recipes in the main crafter
+							else if(getInventoryRune() instanceof CraftingContainerRune)
+								;
+							else
+							{
+								if (!getInventoryRune().getStackInSlot(i).isEmpty()) {
+									item = getInventoryRune().getStackInSlot(i).split(maxPull);
+								}
+							}
+							if(item != null)
+							{
+								ItemEntity item_entity = new ItemEntity(world,blockPos.getX(), blockPos.getY(), blockPos.getZ(), item);
+								item_entity.setMotion(dir.getXOffset(), dir.getYOffset(), dir.getZOffset());
+								world.addEntity(item_entity);
+								break;
+							}
+							
+						}
+					}
 				}
 		}
 		
@@ -696,13 +758,29 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					getInventoryRune().addItem(item);
 				}
 			} else {
+				//don't export anything from the crafting rune as it is required to get a crafting recipe
+				//might remove as one might want to use this to cycle recipes in the main crafter
+				if(getInventoryRune() instanceof CraftingContainerRune)
+					return;
 				int index_rune = 0;
 				int index_inventory = 0;
-				for (int i = 0; i < getInventoryRune().getSizeInventory() - 1; i++)
-					if (!getInventoryRune().getStackInSlot(i + 1).isEmpty()) {
-						index_rune = i;
-						break;
-					}
+				if(getInventoryRune() instanceof HoldingRune)
+				{
+					for (int i = 0; i < getInventoryRune().getSizeInventory() - 1; i++)
+						if (!getInventoryRune().getStackInSlot(i + 1).isEmpty()) {
+							index_rune = i + 1;
+							break;
+						}
+				}
+				else
+				{
+					for (int i = 0; i < getInventoryRune().getSizeInventory(); i++)
+						if (!getInventoryRune().getStackInSlot(i).isEmpty()) {
+							index_rune = i;
+							break;
+						}
+				}
+							
 				for (int i = 0; i < inventory.getSizeInventory(); i++)
 					if (getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(index_rune),
 							inventory.getStackInSlot(i))) {
