@@ -29,7 +29,7 @@ public class RuneContainer {
 		RuneType.VaribleRune off          = new RuneType.VaribleRune();
 		RuneType.VaribleRune on           = new RuneType.VaribleRune();
 		RuneType.IORune      output_items = new RuneType.IORune();
-		//RuneType.IORune      input_items  = new RuneType.IORune();
+		RuneType.IORune      input_items  = new RuneType.IORune();
 		container.setSize(RuneSize.MEDIUM);
 		
 		//add to container
@@ -38,7 +38,7 @@ public class RuneContainer {
 		container.addChild(on);
 		container.addChild(off);
 		container.addChild(output_items);
-		//container.addChild(input_items);
+		container.addChild(input_items);
 		
 		//modify values
 		hold.setInventorySlotContents(0, new ItemStack(Items.DIAMOND_PICKAXE));
@@ -46,14 +46,14 @@ public class RuneContainer {
 		off.setValue((short) 0);
 		output_items.setDirection(Direction.EAST);
 		output_items.setInput(false);
-		//input_items .setDirection(Direction.WEST);
+		input_items .setDirection(Direction.WEST);
 		
 		//link to other runes
 		hold.addLink(toggle);
 		toggle.addLink(on);
 		toggle.addLink(off);
 		output_items.addLink(hold);
-		//input_items.addLink(hold);
+		input_items.addLink(hold);
 		return container;
 	}
 	

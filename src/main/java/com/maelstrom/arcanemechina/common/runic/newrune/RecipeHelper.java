@@ -59,20 +59,21 @@ public class RecipeHelper {
 	}
 
 	public static ItemStack[][] getFromNBT(CompoundNBT tag) {
-		if (tag.get("recipe_data") != null && tag.getCompound("recipe_data").get("recipe") != null) {
-			ItemStack[][] itemstacks = new ItemStack[3][3];
-			ListNBT list = (ListNBT) tag.getCompound("recipe_data").get("recipe");
-
-			for (int y2 = 0; y2 < 3; y2++) {
-				for (int x2 = 0; x2 < 3; x2++) {
-					if (itemstacks[x2] == null)
-						itemstacks[x2] = new ItemStack[3];
-					itemstacks[x2][y2] = ItemStack.read(list.getCompound(x2 + (y2 * 3)));
+		if(tag != null)
+			if (tag.get("recipe_data") != null && tag.getCompound("recipe_data").get("recipe") != null) {
+				ItemStack[][] itemstacks = new ItemStack[3][3];
+				ListNBT list = (ListNBT) tag.getCompound("recipe_data").get("recipe");
+	
+				for (int y2 = 0; y2 < 3; y2++) {
+					for (int x2 = 0; x2 < 3; x2++) {
+						if (itemstacks[x2] == null)
+							itemstacks[x2] = new ItemStack[3];
+						itemstacks[x2][y2] = ItemStack.read(list.getCompound(x2 + (y2 * 3)));
+					}
 				}
+				return itemstacks;
 			}
-			return itemstacks;
-		} else
-			return getFromNBT(empty3x3);
+		return getFromNBT(empty3x3);
 
 	}
 
@@ -100,6 +101,13 @@ public class RecipeHelper {
 			return s.get();
 		return null;
 
+	}
+
+	public static boolean isCraftingItem(ItemStack item)
+	{
+		if(item != null && !item.isEmpty() && item.getTag() != null && item.getTag().get("recipe_data") != null)
+			return true;
+		return false;
 	}
 
 }

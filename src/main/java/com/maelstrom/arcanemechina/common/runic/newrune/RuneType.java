@@ -23,6 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ToolItem;
 import net.minecraft.item.crafting.ICraftingRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -755,13 +756,34 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		{
 			if (input) {
 				int index = 0;
-				for (int i = 0; i < inventory.getSizeInventory(); i++)
-					if (!inventory.getStackInSlot(i).isEmpty()) {
-						index = i;
-						break;
+				if(getInventoryRune() instanceof CraftingContainerRune)
+				{
+					if(getInventoryRune().getStackInSlot(0).isEmpty())
+						for(int i = 0; i < inventory.getSizeInventory(); i++)
+							if(RecipeHelper.isCraftingItem(inventory.getStackInSlot(i)))
+								index = i;
+				}
+				else if(getInventoryRune() instanceof HoldingRune)
+				{
+					if(getInventoryRune().getStackInSlot(0).isEmpty())
+					{
+						for(int i = 0; i < inventory.getSizeInventory(); i++)
+							if(getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(0),inventory.getStackInSlot(i)) && inventory.getStackInSlot(i).getItem() instanceof ToolItem)
+								index = i;
 					}
+					return;
+				}
+				else {
+					for (int i = 0; i < inventory.getSizeInventory(); i++)
+						if (!inventory.getStackInSlot(i).isEmpty()) {
+							index = i;
+							break;
+						}
+				}
 				if (getInventoryRune().canAddItem(inventory.getStackInSlot(index).copy().split(maxPull))) {
 					ItemStack item = inventory.getStackInSlot(index).split(maxPull);
+					if(inventory.getStackInSlot(index).getCount() <= 0)
+						inventory.setInventorySlotContents(index, ItemStack.EMPTY);
 					getInventoryRune().addItem(item);
 				}
 			} else {
