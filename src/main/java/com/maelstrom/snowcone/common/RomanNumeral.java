@@ -25,6 +25,8 @@ public class RomanNumeral {
     }
 
 	public final static String toRomanNumeral(int value) {
+		if(value == 0)
+			return "0";
 		int l = number_map.floorKey(value);
 		if (value == l) {
 			return number_map.get(value);

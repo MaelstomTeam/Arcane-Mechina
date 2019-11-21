@@ -3,16 +3,14 @@ package com.maelstrom.arcanemechina.client.gui;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.maelstrom.arcanemechina.common.runic.RuneType;
-import com.maelstrom.arcanemechina.common.runic.RuneType.RuneList.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.newrune.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.newrune.RuneSize;
+import com.maelstrom.arcanemechina.common.runic.newrune.RuneType;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.maelstrom.arcanemechina.common.runic.RuneType.RuneSize;
 
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.Button.IPressable;
 import net.minecraft.util.text.TranslationTextComponent;

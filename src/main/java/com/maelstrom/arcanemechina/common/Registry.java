@@ -33,7 +33,7 @@ public class Registry
 	public static Item chalk			= new Item(new Item.Properties().group(ARCANE).maxStackSize(1)).setRegistryName(ArcaneMechina.MODID, "chalk");
 	public static Item dustCrystals		= new Item(new Item.Properties().group(ARCANE)).setRegistryName(ArcaneMechina.MODID, "dustcrystalitem");
 	public static Block dustCrystalOre	= new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(15f)).setRegistryName(ArcaneMechina.MODID,"dustcrystals");
-	public static RuneBlock rune		= (RuneBlock) new RuneBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops()).setRegistryName(ArcaneMechina.MODID,"rune");
+	public static RuneBlock rune		;
 	
 	public static void RegisterItemGroups()
 	{
@@ -53,6 +53,7 @@ public class Registry
 	@SubscribeEvent
 	public static void RegisterBlocks(RegistryEvent.Register<Block> event) 
 	{
+		rune = (RuneBlock) new RuneBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops()).setRegistryName(ArcaneMechina.MODID,"rune");
 		event.getRegistry().registerAll(
 				dustCrystalOre,
 				rune

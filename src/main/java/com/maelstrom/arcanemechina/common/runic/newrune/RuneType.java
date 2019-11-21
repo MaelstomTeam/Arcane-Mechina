@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
+import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
 import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.IInventoryRune;
 import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.IRuneRenderer2;
 import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.ITicking;
@@ -24,7 +26,6 @@ import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.crafting.ICraftingRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
@@ -40,17 +41,22 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	static final RenderPlane plane = new RenderPlane();
 	// static helpers and such
 
-	private static List<Class<? extends RuneType>> hiddenList;
+	private static List<Class<? extends RuneType>> hiddenList = new ArrayList<Class<? extends RuneType>>();
 	static {
 		hiddenList.add(CraftingContainerRune.class);
 		hiddenList.add(VaribleRune.class);
 		hiddenList.add(HoldingRune.class);
 		hiddenList.add(ToggleRune.class);
 		hiddenList.add(IORune.class);
+		hiddenList.add(RedstoneIORune.class);
 	}
 
 	private static short getID(RuneType runeType) {
 		return (short) hiddenList.indexOf(runeType.getClass());
+	}
+
+	public short getID() {
+		return getID(this);
 	}
 
 	public static RuneType getFromID(short rune_id) {
@@ -63,7 +69,12 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	}
 
 	// actual class here!
-	private UUID uuid = UUID.randomUUID();
+	private UUID uuid;
+	
+	public RuneType()
+	{
+		uuid = UUID.randomUUID();
+	}
 
 	public UUID getUUID() {
 		return this.uuid;
@@ -78,11 +89,15 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	public abstract boolean canLink(RuneType rune);
 
 	public boolean canLink(UUID rune) {
+		if(getParent().getLink(uuid) == null)
+			return false;
 		return canLink(getParent().getLink(uuid));
 	}
 
 	public void addLink(RuneType rune) {
-		this.addLink(rune.uuid);
+		if (!connections.contains(rune) && canLink(rune)) {
+			connections.add(rune.getUUID());
+		}
 	}
 
 	public void addLink(UUID rune) {
@@ -103,7 +118,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	private Vec2f pos = Vec2f.ZERO;
 
-	private float scale;
+	private float scale = 0.25f;
 
 	public void readFromNBT(CompoundNBT tag) {
 		connections.clear();
@@ -130,8 +145,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		CompoundNBT tag = new CompoundNBT();
 		tag.putShort("ID", getID(this));
 		tag.putUniqueId("uuid", uuid);
+		tag.putFloat("SCALE", scale);
 		CompoundNBT position = new CompoundNBT();
-		position.putFloat("SCALE", scale);
 		position.putFloat("X", pos.x);
 		position.putFloat("Y", pos.y);
 		tag.put("pos", position);
@@ -246,7 +261,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	public static class VaribleRune extends RuneType {
 		static ResourceLocation varible = new ResourceLocation("arcanemechina:textures/runes/varible.png");
-		private short value;
+		private short value = 20;
 
 		@Override
 		public String getName() {
@@ -257,6 +272,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		@Override
 		public void render(float particks) {
 			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
+			ArcaneMechina.LOGGER.info(getScale());
 			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
 				GlStateManager.pushMatrix();
@@ -313,17 +329,12 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	public static class HoldingRune extends RuneType implements IInventoryRune, ITicking {
 
 		private int counter;
-		NonNullList<ItemStack> item_list = NonNullList.withSize(9, ItemStack.EMPTY);
+		NonNullList<ItemStack> item_list = NonNullList.withSize(19, ItemStack.EMPTY);
 		static ResourceLocation hold = new ResourceLocation("arcanemechina:textures/runes/hold.png");
 
 		private boolean isdirty = false;
 		private int progress;
-		protected static int currSubId = -1;
-		private int subID;
-
-		public HoldingRune() {
-			subID = currSubId--;
-		}
+		private int subID = (int) (Math.random() * 10000);
 
 		@Override
 		public int getSizeInventory() {
@@ -453,7 +464,6 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 							addItem(output);
 						}
 					}
-
 				} else {
 					BlockPos pos = entity.getPos().offset(entity.offset());
 					BlockState state = world.getBlockState(pos);
@@ -471,9 +481,9 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 									if (current_item != null && !current_item.isEmpty()) {
 										boolean found = false;
 										if (this.getStackInSlot(0).canHarvestBlock(state))
-											for (int i = 0; i < this.getSizeInventory() - 1; i++) {
-												if (this.canAddItem(current_item, this.getStackInSlot(i + 1))) {
-													this.addItem(current_item,i+1);
+											for (int i = 1; i < this.getSizeInventory(); i++) {
+												if (this.canAddItem(current_item, this.getStackInSlot(i))) {
+													this.addItem(current_item,i);
 													found = true;
 													break;
 												}
@@ -481,12 +491,10 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 										if(!found)
 											world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), current_item));
 										if (this.getStackInSlot(0).isDamageable()) {
-											if (this.getStackInSlot(0).getDamage() >= this.getStackInSlot(0)
-													.getMaxDamage())
+											if (this.getStackInSlot(0).getDamage() >= this.getStackInSlot(0).getMaxDamage())
 												this.setInventorySlotContents(0, ItemStack.EMPTY);
 											else
-												this.getStackInSlot(0).attemptDamageItem(1,
-														entity.getWorld().getRandom(), fakePlayer);
+												this.getStackInSlot(0).attemptDamageItem(1,entity.getWorld().getRandom(), fakePlayer);
 											world.notifyBlockUpdate(entity.getPos(), entity.getBlockState(), entity.getBlockState(), 2);
 										}
 									}
@@ -662,7 +670,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		public boolean hasInterRuneConnection() {
-			if (this.getListUUID().get(1) != null)
+			if (this.getListUUID().size() >= 2 && this.getListUUID().get(1) != null)
 				return this.getParent().getLink(getListUUID().get(1)) != null;
 			return false;
 		}
@@ -675,7 +683,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public String getName() {
-			return "io_into_rune";
+			return "io";
 		}
 
 		static ResourceLocation insert_to_rune = new ResourceLocation("arcanemechina:textures/runes/insert.png");
@@ -731,10 +739,9 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 									item = getInventoryRune().getStackInSlot(i).split(maxPull);
 								}
 							}
-							if(item != null)
+							if(item != null && item != ItemStack.EMPTY)
 							{
-								ItemEntity item_entity = new ItemEntity(world,blockPos.getX(), blockPos.getY(), blockPos.getZ(), item);
-								item_entity.setMotion(dir.getXOffset(), dir.getYOffset(), dir.getZOffset());
+								ItemEntity item_entity = new ItemEntity(world,blockPos.getX(), blockPos.getY()+1, blockPos.getZ(), item);
 								world.addEntity(item_entity);
 								break;
 							}
@@ -762,13 +769,13 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 				//might remove as one might want to use this to cycle recipes in the main crafter
 				if(getInventoryRune() instanceof CraftingContainerRune)
 					return;
-				int index_rune = 0;
-				int index_inventory = 0;
+				int index_rune = -1;
+				int index_inventory = -1;
 				if(getInventoryRune() instanceof HoldingRune)
 				{
-					for (int i = 0; i < getInventoryRune().getSizeInventory() - 1; i++)
-						if (!getInventoryRune().getStackInSlot(i + 1).isEmpty()) {
-							index_rune = i + 1;
+					for (int i = 1; i < getInventoryRune().getSizeInventory(); i++)
+						if (!getInventoryRune().getStackInSlot(i).isEmpty()) {
+							index_rune = i;
 							break;
 						}
 				}
@@ -780,17 +787,25 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 							break;
 						}
 				}
-							
-				for (int i = 0; i < inventory.getSizeInventory(); i++)
-					if (getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(index_rune),
-							inventory.getStackInSlot(i))) {
-						index_inventory = i;
-						break;
+				if(index_rune == -1)
+					return;
+					for (int i = 0; i < inventory.getSizeInventory(); i++)
+					{
+						if (getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(index_rune), inventory.getStackInSlot(i))) {
+							index_inventory = i;
+							break;
+						}
 					}
-				if (getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(index_rune),
-						inventory.getStackInSlot(index_inventory))) {
+				if(index_inventory == -1)
+					return;
+				if(getInventoryRune().getStackInSlot(index_rune).isEmpty() && inventory.getStackInSlot(index_inventory).isEmpty())
+					return;
+				if (getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(index_rune), inventory.getStackInSlot(index_inventory))) {
 					ItemStack item = getInventoryRune().getStackInSlot(index_rune).split(maxPull);
-					inventory.setInventorySlotContents(index_inventory, item);
+					if(inventory.getStackInSlot(index_inventory) != ItemStack.EMPTY)
+						inventory.getStackInSlot(index_inventory).grow(item.getCount());
+					else
+						inventory.setInventorySlotContents(index_inventory, item);
 				}
 			}
 		}
@@ -806,10 +821,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void readNBT(CompoundNBT tag) {
-			try {
-				dir = Direction.values()[tag.getInt("direction")];
-			} finally {
-			}
+			dir = Direction.values()[tag.getInt("direction")];
 			maxPull = tag.getInt("maxPull");
 			input = tag.getBoolean("input");
 		}
@@ -819,6 +831,101 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			return rune instanceof IInventoryRune;
 		}
 
+		public void setInput(boolean b)
+		{
+			input = b;
+			
+		}
+
+	}
+	
+	public static class RedstoneIORune extends RuneType implements ITicking
+	{
+		private boolean isInput = false;
+		private int redstone_power = 0;
+		private Direction side = Direction.NORTH;
+		@Override
+		public String getName()
+		{
+			return "redstone_io";
+		}
+
+		public void setInput(boolean isInput)
+		{
+			this.isInput = isInput;
+		}
+
+		public void setPower(int redstone_power)
+		{
+			this.redstone_power = redstone_power;
+		}
+
+		@Override
+		public void render(float particks)
+		{
+			
+		}
+
+		@Override
+		public void tick(World world, BlockPos blockPos, RuneTileEntity entity)
+		{
+			
+			if(!isInput == world.getBlockState(blockPos).get(RuneBlock.canPower))
+			{
+				BlockState state = world.getBlockState(blockPos);
+				BlockState newState = state.with(RuneBlock.canPower, isInput);
+				world.setBlockState(blockPos, newState, 2|16|32);
+			}
+			if(isInput)
+			{
+				this.redstone_power = world.getRedstonePower(blockPos, side);
+			}
+			else
+			{
+				//set power
+			}
+		}
+
+		@Override
+		public boolean canLink(RuneType rune)
+		{
+			return false;
+		}
+
+		@Override
+		public CompoundNBT writeNBT()
+		{
+			CompoundNBT tag = new CompoundNBT();
+			tag.putInt("side", side.ordinal());
+			tag.putInt("redstone_power", redstone_power);
+			tag.putBoolean("input", isInput);
+			return tag;
+		}
+
+		@Override
+		public void readNBT(CompoundNBT tag)
+		{
+			side = Direction.values()[tag.getInt("side")];
+			redstone_power = tag.getInt("redstone_power");
+			isInput = tag.getBoolean("input");
+			
+		}
+
+		public int getPower()
+		{
+			return this.redstone_power;
+		}
+
+		public Direction getSide()
+		{
+			return this.side ;
+		}
+
+		public boolean canOutputRedstone()
+		{
+			return !this.isInput;
+		}
+		
 	}
 
 }
