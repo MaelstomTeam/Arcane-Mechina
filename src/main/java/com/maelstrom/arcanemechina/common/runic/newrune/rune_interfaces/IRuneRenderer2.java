@@ -46,7 +46,7 @@ public interface IRuneRenderer2 {
 			GlStateManager.translated(8, 0, 8);
 		if(stack.getItem() instanceof BlockItem)
 		{
-			GlStateManager.scaled(.6,0.6,.6);
+			GlStateManager.scaled(.6,.6,.6);
 			GlStateManager.translated(0, 8, 0);
 			GlStateManager.rotated(90, 0, 1, 0);
 		}

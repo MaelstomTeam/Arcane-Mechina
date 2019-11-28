@@ -124,5 +124,4 @@ public interface IInventoryRune extends IInventory
 		}
 		return false;
 	}
-
 }

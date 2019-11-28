@@ -25,35 +25,48 @@ public class RuneContainer {
 		RuneContainer container = new RuneContainer();
 		//declare
 		RuneType.HoldingRune hold         = new RuneType.HoldingRune();
+		RuneType.HoldingRune hold2         = new RuneType.HoldingRune();
 		RuneType.ToggleRune  toggle       = new RuneType.ToggleRune();
 		RuneType.VaribleRune off          = new RuneType.VaribleRune();
 		RuneType.VaribleRune on           = new RuneType.VaribleRune();
 		RuneType.IORune      output_items = new RuneType.IORune();
 		RuneType.IORune      input_items  = new RuneType.IORune();
+		RuneType.IORune      output_items2 = new RuneType.IORune();
+		RuneType.IORune      input_items2  = new RuneType.IORune();
 		container.setSize(RuneSize.MEDIUM);
-		
+		hold.setPosition(8, 8);
+		hold2.setPosition((int)(Math.random() * 16), (int)(Math.random() * 16));
 		//add to container
 		container.addChild(hold);
+		container.addChild(hold2);
 		container.addChild(toggle);
 		container.addChild(on);
 		container.addChild(off);
 		container.addChild(output_items);
 		container.addChild(input_items);
+		container.addChild(output_items2);
+		container.addChild(input_items2);
 		
 		//modify values
 		hold.setInventorySlotContents(0, new ItemStack(Items.DIAMOND_PICKAXE));
 		on.setValue((short) 200);
 		off.setValue((short) 0);
 		output_items.setDirection(Direction.EAST);
-		output_items.setInput(false);
+		//output_items.setInput(false);
 		input_items .setDirection(Direction.WEST);
+		
+		output_items2.setDirection(Direction.NORTH);
+		output_items2.setInput(false);
+		input_items2.setDirection(Direction.SOUTH);
 		
 		//link to other runes
 		hold.addLink(toggle);
 		toggle.addLink(on);
 		toggle.addLink(off);
-		output_items.addLink(hold);
+		output_items.addLink(hold2);
 		input_items.addLink(hold);
+		output_items2.addLink(hold);
+		output_items2.addLink(hold2);
 		return container;
 	}
 	
@@ -181,8 +194,9 @@ public class RuneContainer {
 	{
 		for(RuneType rune : children.values())
 		{	
-			if(uuid ==  rune.getUUID())
+			if(uuid ==  rune.getUUID()) {
 				return rune;
+			}
 		}
 		return children.get(uuid);
 	}
@@ -239,6 +253,7 @@ public class RuneContainer {
 	public void render(float partial_ticks, RuneTileEntity rune_tile)
 	{
 		GlStateManager.pushMatrix();
+		GlStateManager.pushMatrix();
 		IRuneRenderer2.bindTexture(getRuneResource());
 		plane.render();
 		GlStateManager.popMatrix();
@@ -246,9 +261,11 @@ public class RuneContainer {
 			if(rune instanceof IRuneRenderer2)
 			{
 				GlStateManager.pushMatrix();
+				GlStateManager.translated(7, 0, 7);
 				((IRuneRenderer2) rune).render(partial_ticks);
 				GlStateManager.popMatrix();
 			}
+		GlStateManager.popMatrix();
 	}
 
 	public boolean hasRune(Class<? extends RuneType> type)

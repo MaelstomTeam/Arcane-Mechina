@@ -74,10 +74,11 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	
 	public RuneType()
 	{
-		uuid = UUID.randomUUID();
 	}
 
 	public UUID getUUID() {
+		if(uuid == null)
+			uuid = UUID.randomUUID();
 		return this.uuid;
 	}
 
@@ -123,7 +124,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	public void readFromNBT(CompoundNBT tag) {
 		connections.clear();
-		tag.getUniqueId("UUID");
+			uuid = UUID.fromString(tag.getString("uuid"));
 		scale = tag.getFloat("SCALE");
 		setPosition(tag.getCompound("pos"));
 		ListNBT list = (ListNBT) tag.get("connections");
@@ -145,7 +146,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	public CompoundNBT writeToNBT() {
 		CompoundNBT tag = new CompoundNBT();
 		tag.putShort("ID", getID(this));
-		tag.putUniqueId("uuid", uuid);
+		tag.putString("uuid", uuid.toString());
 		tag.putFloat("SCALE", scale);
 		CompoundNBT position = new CompoundNBT();
 		position.putFloat("X", pos.x);
@@ -273,11 +274,11 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		@Override
 		public void render(float particks) {
 			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
-			ArcaneMechina.LOGGER.info(getScale());
 			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
 				GlStateManager.pushMatrix();
 					String text = this.getValueAsString();
+					GlStateManager.translated(8f, 0, 8f);
 					GlStateManager.translated(8f, 0, 7f);
 					GlStateManager.rotated(90, 1, 0, 0);
 					GlStateManager.rotated(180, 0, 0, 1);
@@ -364,6 +365,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			GlStateManager.pushMatrix();
 				if (item_list.get(0) != ItemStack.EMPTY) {
 					GlStateManager.pushMatrix();
+					GlStateManager.translated(8, 0, 8);
 					IRuneRenderer2.renderItem(item_list.get(0));
 					GlStateManager.popMatrix();
 				}
@@ -400,7 +402,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		public boolean hasToggle() {
-			if (this.getListUUID().get(0) != null)
+			if (this.getListUUID().size() >= 1 && this.getListUUID().get(0) != null)
 				return this.getParent().getLink(getListUUID().get(0)) != null;
 			return false;
 		}
@@ -412,7 +414,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		public boolean hasCraft() {
-			if (this.getListUUID().get(1) != null)
+			if (this.getListUUID().size() >= 2 && this.getListUUID().get(1) != null)
 				return this.getParent().getLink(getListUUID().get(1)) != null;
 			return false;
 		}
@@ -659,7 +661,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		public boolean hasInventoryRune() {
-			if (this.getListUUID().get(0) != null)
+			if (this.getListUUID().size() >= 1 &&this.getListUUID().get(0) != null)
 				return this.getParent().getLink(getListUUID().get(0)) != null;
 			return false;
 		}
@@ -677,7 +679,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		private IInventoryRune getInterRuneConnection() {
-			if (hasInventoryRune())
+			if (hasInventoryRune() && hasInterRuneConnection())
 				return (IInventoryRune) this.getParent().getLink(getListUUID().get(1));
 			return null;
 		}
@@ -689,19 +691,61 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		static ResourceLocation insert_to_rune = new ResourceLocation("arcanemechina:textures/runes/insert.png");
 		static ResourceLocation extract_from_rune = new ResourceLocation("arcanemechina:textures/runes/extract.png");
-
+        
+		@Override
+		public float getScale()
+		{
+			return .125f;
+		}
 
 		@Override
 		public void render(float particks) {
-			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
-			GlStateManager.scaled(getScale(), getScale(), getScale());
-			GlStateManager.pushMatrix();
-			if (input)
-				IRuneRenderer2.bindTexture(insert_to_rune);
+			if(this.getInterRuneConnection() != null && this.getInventoryRune() != null)
+			{
+				Vec2f pos1 = ((RuneType)getInventoryRune()).getPosition();
+				Vec2f pos2 = ((RuneType)getInterRuneConnection()).getPosition();
+				double x2 = (pos2.x + pos1.x) / 2d;
+				double z2 = (pos2.y + pos1.y) / 2d;
+				ArcaneMechina.LOGGER.info(z2);
+				GlStateManager.pushMatrix();
+				//GlStateManager.translated(x2, 0, z2);
+				GlStateManager.pushMatrix();
+				double angle = Math.toDegrees(-Math.atan2(pos2.y - pos1.y, pos2.x - pos1.x))+45;
+				GlStateManager.translated(2,0,3);
+				GlStateManager.rotated(angle, 0, 1, 0);
+				GlStateManager.pushMatrix();
+				GlStateManager.scaled(getScale(), getScale(), getScale());
+				GlStateManager.pushMatrix();
+				if (input)
+					IRuneRenderer2.bindTexture(insert_to_rune);
+				else
+					IRuneRenderer2.bindTexture(extract_from_rune);
+				plane.render();
+				GlStateManager.popMatrix();
+				GlStateManager.popMatrix();
+				GlStateManager.popMatrix();
+				GlStateManager.popMatrix();
+			}
 			else
-				IRuneRenderer2.bindTexture(extract_from_rune);
-			plane.render();
-			GlStateManager.popMatrix();
+			{
+//				double x = this.dir.getXOffset();
+//				double z = this.dir.getZOffset();
+//				x = 16 * x;
+//				z = 16 * z;
+//				GlStateManager.translated(x, 0, z);
+//				if(this.dir.getZOffset() != 0)
+//				{
+//					GlStateManager.rotated(90, 0, 1, 0);
+//				}
+//				GlStateManager.scaled(getScale(), getScale(), getScale());
+//				GlStateManager.pushMatrix();
+//				if (input)
+//					IRuneRenderer2.bindTexture(insert_to_rune);
+//				else
+//					IRuneRenderer2.bindTexture(extract_from_rune);
+//				plane.render();
+//				GlStateManager.popMatrix();
+			}
 
 		}
 
@@ -896,7 +940,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			{
 				BlockState state = world.getBlockState(blockPos);
 				BlockState newState = state.with(RuneBlock.canPower, isInput);
-				world.setBlockState(blockPos, newState, 2|16|32);
+				world.setBlockState(blockPos, newState, 2);
 			}
 			if(isInput)
 			{

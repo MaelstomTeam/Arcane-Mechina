@@ -70,8 +70,8 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 
 	@Override
 	public void tick() {
-		if (world.isRemote)
-			return;
+		if (world.isRemote);
+			//return;
 		rune.tick(this);
 		
 		
