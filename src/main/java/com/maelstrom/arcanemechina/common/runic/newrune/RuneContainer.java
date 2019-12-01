@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
 import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.IRuneRenderer2;
 import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.ITicking;
@@ -20,99 +19,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 
 public class RuneContainer {
-	
-	public static RuneContainer getNewMiningRune(){
-		RuneContainer container = new RuneContainer();
-		//declare
-		RuneType.HoldingRune hold         = new RuneType.HoldingRune();
-		RuneType.HoldingRune hold2         = new RuneType.HoldingRune();
-		RuneType.ToggleRune  toggle       = new RuneType.ToggleRune();
-		RuneType.VaribleRune off          = new RuneType.VaribleRune();
-		RuneType.VaribleRune on           = new RuneType.VaribleRune();
-		RuneType.IORune      output_items = new RuneType.IORune();
-		RuneType.IORune      input_items  = new RuneType.IORune();
-		RuneType.IORune      output_items2 = new RuneType.IORune();
-		RuneType.IORune      input_items2  = new RuneType.IORune();
-		container.setSize(RuneSize.MEDIUM);
-		hold.setPosition(8, 8);
-		hold2.setPosition((int)(Math.random() * 16), (int)(Math.random() * 16));
-		//add to container
-		container.addChild(hold);
-		container.addChild(hold2);
-		container.addChild(toggle);
-		container.addChild(on);
-		container.addChild(off);
-		container.addChild(output_items);
-		container.addChild(input_items);
-		container.addChild(output_items2);
-		container.addChild(input_items2);
-		
-		//modify values
-		hold.setInventorySlotContents(0, new ItemStack(Items.DIAMOND_PICKAXE));
-		on.setValue((short) 200);
-		off.setValue((short) 0);
-		output_items.setDirection(Direction.EAST);
-		//output_items.setInput(false);
-		input_items .setDirection(Direction.WEST);
-		
-		output_items2.setDirection(Direction.NORTH);
-		output_items2.setInput(false);
-		input_items2.setDirection(Direction.SOUTH);
-		
-		//link to other runes
-		hold.addLink(toggle);
-		toggle.addLink(on);
-		toggle.addLink(off);
-		output_items.addLink(hold2);
-		input_items.addLink(hold);
-		output_items2.addLink(hold);
-		output_items2.addLink(hold2);
-		return container;
-	}
-	
-	public static RuneContainer getNewCraftingRune(){
-		RuneContainer container = new RuneContainer();
-		//declare
-		RuneType.HoldingRune hold = new RuneType.HoldingRune();
-		RuneType.ToggleRune 	toggle = new RuneType.ToggleRune();
-		RuneType.VaribleRune off = new RuneType.VaribleRune();
-		RuneType.VaribleRune on = new RuneType.VaribleRune();
-		RuneType.IORune output_items = new RuneType.IORune();
-		RuneType.IORune input_items = new RuneType.IORune();
-		RuneType.CraftingContainerRune recipe_rune = new RuneType.CraftingContainerRune();
-
-		container.setSize(RuneSize.MEDIUM);
-		//add to container
-		container.addChild(hold);
-		container.addChild(toggle);
-		container.addChild(off);
-		container.addChild(on);
-		container.addChild(output_items);
-		container.addChild(input_items);
-		container.addChild(recipe_rune);
-		//modify values
-		ItemStack stone_reference = new ItemStack(Items.COBBLESTONE);
-		hold.setInventorySlotContents(0, new ItemStack(Items.CRAFTING_TABLE));
-		recipe_rune.setInventorySlotContents(0, RecipeHelper.createFromListToItemStack(
-				new ItemStack[][]{
-					new ItemStack[] {stone_reference, stone_reference, stone_reference},
-					new ItemStack[] {stone_reference, ItemStack.EMPTY, stone_reference},
-					new ItemStack[] {stone_reference, stone_reference, stone_reference}
-				}));
-		off.setValue((short) 19);
-		on.setValue((short) 1);
-		output_items.setDirection(Direction.EAST);
-		input_items .setDirection(Direction.WEST);
-		
-		//link to other runes
-		hold.addLink(toggle);
-		hold.addLink(recipe_rune);
-		toggle.addLink(off);
-		toggle.addLink(on);
-		output_items.addLink(hold);
-		input_items.addLink(hold);
-		return container;
-	}
 	
 	private RuneSize runeSize;
 	private HashMap<UUID, RuneType> children = new HashMap<UUID, RuneType>();
@@ -134,9 +40,9 @@ public class RuneContainer {
 		case MEDIUM:
 			return 9;
 		case SMALL:
-			return 5;
+			return 6;
 		case TINY:
-			return 2;
+			return 3;
 		}
 		return 0;
 	}
@@ -149,6 +55,11 @@ public class RuneContainer {
 		{
 			addChild(rune);
 		}
+	}
+	
+	public RuneType getRuneAtPosition(float x, float z)
+	{
+		return null;
 	}
 
 	public HashMap<UUID, RuneType> getChildren() {
@@ -240,13 +151,13 @@ public class RuneContainer {
 		case LARGE:
 			return 3f;
 		case MEDIUM:
-			return 2f;
+			return 1.5f;
 		case SMALL:
 			return 1f;
 		case TINY:
 			return .5f;
 		}
-		return .5f;
+		return 1f;
 	}
 
 	static final RenderPlane plane = new RenderPlane();
@@ -254,14 +165,32 @@ public class RuneContainer {
 	{
 		GlStateManager.pushMatrix();
 		GlStateManager.pushMatrix();
-		IRuneRenderer2.bindTexture(getRuneResource());
-		plane.render();
+		switch(this.runeSize)
+		{
+		case HUGE:
+			break;
+		case LARGE:
+			break;
+		case MEDIUM:
+			GlStateManager.translated(-16f/getRuneScale()/2f, 0, -16f/getRuneScale()/2f);
+			break;
+		case SMALL:
+			GlStateManager.translated(-.5, 0, -.5);
+			break;
+		case TINY:
+			break;
+		
+		}
+			GlStateManager.scaled(getRuneScale(),getRuneScale(),getRuneScale());
+			IRuneRenderer2.bindTexture(getRuneResource());
+			plane.render();
 		GlStateManager.popMatrix();
 		for(RuneType rune : children.values())
 			if(rune instanceof IRuneRenderer2)
 			{
 				GlStateManager.pushMatrix();
-				GlStateManager.translated(7, 0, 7);
+				GlStateManager.translated(1, 0, 1);
+				GlStateManager.translated(-1, 0, -0.5);
 				((IRuneRenderer2) rune).render(partial_ticks);
 				GlStateManager.popMatrix();
 			}

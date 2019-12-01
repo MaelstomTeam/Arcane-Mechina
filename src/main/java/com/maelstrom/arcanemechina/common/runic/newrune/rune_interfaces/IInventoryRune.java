@@ -1,12 +1,9 @@
 package com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
 
 public interface IInventoryRune extends IInventory
@@ -86,7 +83,7 @@ public interface IInventoryRune extends IInventory
 		{
 			if (canAddItem(item, i2))
 			{
-				if (i2.getCount() > 0)
+				if (i2.getCount() > 0 && i2.getCount() <= i2.getMaxStackSize())
 					i2.grow(item.getCount());
 				else
 					this.setInventorySlotContents(value, item.copy());
@@ -106,9 +103,8 @@ public interface IInventoryRune extends IInventory
 
 	public default boolean canAddItem(ItemStack item, ItemStack item2)
 	{
-
 		if (item.isStackable() && item2.isStackable())
-			if (ItemStack.areItemStackTagsEqual(item, item2))
+			if (ItemStack.areItemStackTagsEqual(item, item2) && item.getCount() + item2.getCount() <= item.getMaxStackSize())
 				return true;
 		if (item.isEmpty() || item2.isEmpty())
 			return true;

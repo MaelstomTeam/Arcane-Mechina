@@ -1,0 +1,15 @@
+{
+    "forge_marker": 1,
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "arcanemechina:items/scroll_rune"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damaged": 1
+            },
+		    "model": "arcanemechina:item/predrawnrune_drawn"
+        }
+    ]
+}

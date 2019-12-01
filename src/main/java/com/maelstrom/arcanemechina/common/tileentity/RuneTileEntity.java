@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.maelstrom.arcanemechina.common.Registry;
 import com.maelstrom.arcanemechina.common.runic.newrune.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.newrune.RuneHelper;
 import com.maelstrom.arcanemechina.common.runic.newrune.RuneType;
 import com.maelstrom.arcanemechina.common.runic.newrune.RuneType.HoldingRune;
 
@@ -21,7 +22,7 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 
 	public RuneTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn);
-		this.rune = RuneContainer.getNewMiningRune();
+		this.rune = RuneHelper.getEmpty();
 		
 	}
 
@@ -109,6 +110,12 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 	public RuneContainer getRuneContainer()
 	{
 		return rune;
+	}
+
+	public void setContainer(RuneContainer rune2)
+	{
+		rune = rune2;
+		this.markDirty();
 	}
 
 }

@@ -16,6 +16,7 @@ import com.maelstrom.snowcone.common.WorldUtilities;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -120,7 +121,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	private Vec2f pos = Vec2f.ZERO;
 
-	private float scale = 0.25f;
+	private float scale = 0.33f;
 
 	public void readFromNBT(CompoundNBT tag) {
 		connections.clear();
@@ -195,15 +196,58 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			return "crafting_container";
 		}
 
+		static ResourceLocation craft = new ResourceLocation("arcanemechina:textures/runes/64px.png");
+		static ResourceLocation hold = new ResourceLocation("arcanemechina:textures/runes/hold.png");
+		
+
+		public float getScale()
+		{
+			return 0.5f;
+		}
+		
 		@Override
 		public void render(float particks) {
-			// donothing
+			GlStateManager.translated(this.getPosition().x-4.25, 0, this.getPosition().y-4.25);
+			GlStateManager.pushMatrix();
+			GlStateManager.pushMatrix();
+			if(RecipeHelper.isCraftingItem(this.getStackInSlot(0)))
+			{
+				ItemStack[][] list = RecipeHelper.getFromNBT(this.getStackInSlot(0).getTag());
+				int x = 0;
+				int y = 0;
+				for(ItemStack[] list1 : list)
+				{
+					for(ItemStack item : list1)
+					{
+						if (item != ItemStack.EMPTY) {
+							GlStateManager.pushMatrix();
+							GlStateManager.scaled(0.1, 0.1, 0.1);
+							GlStateManager.translated(16 * x+19, 0, 16 * y+18);
+							GlStateManager.enableRescaleNormal();
+							IRuneRenderer2.renderItem(item);
+							IRuneRenderer2.bindTexture(hold);
+							plane.render();
+							GlStateManager.popMatrix();
+						}
+						x++;
+					}
+					x=0;
+					y++;
+				}
+			}
+			GlStateManager.popMatrix();
+			GlStateManager.pushMatrix();
+				GlStateManager.scaled(getScale(), getScale(), getScale());
+				IRuneRenderer2.bindTexture(craft);
+				plane.render();
+			GlStateManager.popMatrix();
+			GlStateManager.popMatrix();
 		}
 
 		@Override
 		public CompoundNBT writeNBT() {
 			CompoundNBT tag = new CompoundNBT();
-			tag.put("item", this.getStackInSlot(0).getTag());
+			tag.put("item", this.getStackInSlot(0).write(new CompoundNBT()));
 			return tag;
 		}
 
@@ -237,7 +281,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		public NonNullList<ItemStack> getAllItems() {
 			return inventory;
 		}
-
+		
 		public ICraftingRecipe getRecipe(World world) {
 			return RecipeHelper.getRecipe(world, this.getStackInSlot(0));
 		}
@@ -273,21 +317,23 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void render(float particks) {
-			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
+			float v2 = 2.75f;
+			GlStateManager.translated(this.getPosition().x-v2, 0, this.getPosition().y-v2);
 			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
 				GlStateManager.pushMatrix();
 					String text = this.getValueAsString();
-					GlStateManager.translated(8f, 0, 8f);
-					GlStateManager.translated(8f, 0, 7f);
+					GlStateManager.translated(8f, 0, 7.25f);
 					GlStateManager.rotated(90, 1, 0, 0);
-					GlStateManager.rotated(180, 0, 0, 1);
+					GlStateManager.rotated(90, 0, 0, 1);
 					float center_x = IRuneRenderer2.getFontRenderer().getStringWidth(text) / 2f;
 					float center_y = IRuneRenderer2.getFontRenderer().FONT_HEIGHT / 2f;
 					float scaler = MathHelper.lerp(4f / (center_x * 2), 0f, 2f);
 					GlStateManager.scaled(scaler, scaler, scaler);
 					IRuneRenderer2.getFontRenderer().drawString(text, -center_x, -center_y, 0x00000000);
 				GlStateManager.popMatrix();
+			GlStateManager.translated(0, 0, 15.5);
+			GlStateManager.rotated(90, 0, 1, 0);
 			IRuneRenderer2.bindTexture(varible);
 			plane.render();
 			GlStateManager.popMatrix();
@@ -360,12 +406,13 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void render(float particks) {
-			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
+			float value = 2.75f;
+			GlStateManager.translated(this.getPosition().x-value, 0, this.getPosition().y-value);
 			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
 				if (item_list.get(0) != ItemStack.EMPTY) {
 					GlStateManager.pushMatrix();
-					GlStateManager.translated(8, 0, 8);
+					GlStateManager.translated(.3, 0, .3);
 					IRuneRenderer2.renderItem(item_list.get(0));
 					GlStateManager.popMatrix();
 				}
@@ -420,7 +467,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		private CraftingContainerRune getCraft() {
-			if (hasToggle())
+			if (hasToggle() && hasCraft())
 				return (CraftingContainerRune) this.getParent().getLink(getListUUID().get(1));
 			return null;
 		}
@@ -559,7 +606,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void render(float particks) {
-			GlStateManager.translated(this.getPosition().x, 0, this.getPosition().y);
+			float value = 2.75f;
+			GlStateManager.translated(this.getPosition().x-value, 0, this.getPosition().y-value);
 			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
 			if (this.state)
@@ -697,56 +745,40 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		{
 			return .125f;
 		}
-
 		@Override
 		public void render(float particks) {
-			if(this.getInterRuneConnection() != null && this.getInventoryRune() != null)
+			double x = this.dir.getXOffset();
+			double z = this.dir.getZOffset();
+			x = 8 * x+7;
+			z = 8 * z+8.5;
+			GlStateManager.translated(x, MathHelper.lerp(pp(Minecraft.getInstance().world.getGameTime() + particks, 20) / 20f, 0.1, 1.1), z);
+			if(this.dir.getZOffset() != 0)
 			{
-				Vec2f pos1 = ((RuneType)getInventoryRune()).getPosition();
-				Vec2f pos2 = ((RuneType)getInterRuneConnection()).getPosition();
-				double x2 = (pos2.x + pos1.x) / 2d;
-				double z2 = (pos2.y + pos1.y) / 2d;
-				ArcaneMechina.LOGGER.info(z2);
-				GlStateManager.pushMatrix();
-				//GlStateManager.translated(x2, 0, z2);
-				GlStateManager.pushMatrix();
-				double angle = Math.toDegrees(-Math.atan2(pos2.y - pos1.y, pos2.x - pos1.x))+45;
-				GlStateManager.translated(2,0,3);
-				GlStateManager.rotated(angle, 0, 1, 0);
-				GlStateManager.pushMatrix();
-				GlStateManager.scaled(getScale(), getScale(), getScale());
-				GlStateManager.pushMatrix();
-				if (input)
-					IRuneRenderer2.bindTexture(insert_to_rune);
-				else
-					IRuneRenderer2.bindTexture(extract_from_rune);
-				plane.render();
-				GlStateManager.popMatrix();
-				GlStateManager.popMatrix();
-				GlStateManager.popMatrix();
-				GlStateManager.popMatrix();
+				GlStateManager.rotated(90, 0, 1, 0);
 			}
+			GlStateManager.pushMatrix();
+			GlStateManager.scaled(getScale(), getScale(), getScale());
+			if (input)
+				IRuneRenderer2.bindTexture(insert_to_rune);
 			else
-			{
-//				double x = this.dir.getXOffset();
-//				double z = this.dir.getZOffset();
-//				x = 16 * x;
-//				z = 16 * z;
-//				GlStateManager.translated(x, 0, z);
-//				if(this.dir.getZOffset() != 0)
-//				{
-//					GlStateManager.rotated(90, 0, 1, 0);
-//				}
-//				GlStateManager.scaled(getScale(), getScale(), getScale());
-//				GlStateManager.pushMatrix();
-//				if (input)
-//					IRuneRenderer2.bindTexture(insert_to_rune);
-//				else
-//					IRuneRenderer2.bindTexture(extract_from_rune);
-//				plane.render();
-//				GlStateManager.popMatrix();
-			}
+				IRuneRenderer2.bindTexture(extract_from_rune);
+			plane.render();
+			GlStateManager.popMatrix();
 
+		}
+
+		private float pp(float value, float maxValue)
+		{
+			boolean reverse = false;
+			float newValue = value;
+			while(newValue > maxValue)
+			{
+				newValue -= maxValue;
+				reverse = !reverse;
+			}
+			if(reverse)
+				return maxValue-newValue;
+			return newValue;
 		}
 
 		@Override
@@ -799,13 +831,16 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		private void transfer(IInventory inventory)
 		{
 			if (input) {
-				int index = 0;
+				int index = -1;
 				if(getInventoryRune() instanceof CraftingContainerRune)
 				{
 					if(getInventoryRune().getStackInSlot(0).isEmpty())
 						for(int i = 0; i < inventory.getSizeInventory(); i++)
 							if(RecipeHelper.isCraftingItem(inventory.getStackInSlot(i)))
+							{
 								index = i;
+								break;
+							}
 				}
 				else if(getInventoryRune() instanceof HoldingRune)
 				{
@@ -813,9 +848,11 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					{
 						for(int i = 0; i < inventory.getSizeInventory(); i++)
 							if(getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(0),inventory.getStackInSlot(i)) && inventory.getStackInSlot(i).getItem() instanceof ToolItem)
+							{
 								index = i;
+								break;
+							}
 					}
-					return;
 				}
 				else {
 					for (int i = 0; i < inventory.getSizeInventory(); i++)
@@ -824,6 +861,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 							break;
 						}
 				}
+				if(index == -1)
+					return;
 				if (getInventoryRune().canAddItem(inventory.getStackInSlot(index).copy().split(maxPull))) {
 					ItemStack item = inventory.getStackInSlot(index).split(maxPull);
 					if(inventory.getStackInSlot(index).getCount() <= 0)

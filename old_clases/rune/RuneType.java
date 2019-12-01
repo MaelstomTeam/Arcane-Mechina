@@ -392,7 +392,6 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 						world);
 				if (s.isPresent())
 					return s.get();
-				// ArcaneMechina.LOGGER.info(s);
 				return null;
 
 			}

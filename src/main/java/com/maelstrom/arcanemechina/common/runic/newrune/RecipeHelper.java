@@ -3,39 +3,40 @@ package com.maelstrom.arcanemechina.common.runic.newrune;
 import java.util.HashMap;
 import java.util.Optional;
 
+import com.maelstrom.arcanemechina.ArcaneMechina;
+import com.maelstrom.arcanemechina.common.Registry;
+import com.maelstrom.arcanemechina.common.inventory.DummyCraftingInventory;
 import com.maelstrom.snowcone.common.WorldUtilities;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.ICraftingRecipe;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class RecipeHelper {
 	private static WorkbenchContainer container;
 	private static HashMap<ItemStack, ItemStack[][]> helper = new HashMap<ItemStack, ItemStack[][]>();
-	public static CompoundNBT empty3x3 = new CompoundNBT();
-	public static CompoundNBT stick = new CompoundNBT();
-	static {
-		empty3x3 = createFromList(
-				new ItemStack[][] { new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY },
-						new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY },
-						new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY } });
-
-		stick = createFromList(new ItemStack[][] { new ItemStack[] { new ItemStack(Items.OAK_WOOD) },
-				new ItemStack[] { new ItemStack(Items.OAK_WOOD) } });
-
-	}
-	public static Item reference_item = Items.PAPER;
+	public static CompoundNBT empty3x3 = createFromList(
+			new ItemStack[][] { new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY },
+				new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY },
+				new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY } });
+	public static Item reference_item = Registry.recipe;
 	public static ItemStack createFromListToItemStack(ItemStack[][] list)
 	{
 		ItemStack output = new ItemStack(reference_item, 1);
-		output.setTag(createFromList(list));
+		output.getOrCreateTag().put("recipe_data",createFromList(list));
+		output.setDamage(1);
 		return output;
 	}
 
@@ -44,18 +45,24 @@ public class RecipeHelper {
 		int x = list.length;
 		int y = list[0].length;
 		CompoundNBT recipe_data = new CompoundNBT();
-
+		
 		ListNBT list_nbt = new ListNBT();
-
 		for (int y2 = 0; y2 < 3; y2++) {
 			for (int x2 = 0; x2 < 3; x2++) {
-				if (list[x2] != null && list[x2][y2] != null)
-					list_nbt.add(list[x2][y2].getOrCreateTag());
-				list_nbt.add(ItemStack.EMPTY.getOrCreateTag());
+				try {
+					if (list[y2] != null && list[y2][x2] != null)
+						list_nbt.add(list[y2][x2].write(new CompoundNBT()));
+					else
+						list_nbt.add(ItemStack.EMPTY.write(new CompoundNBT()));
+				}
+				catch(Exception e)
+				{
+					list_nbt.add(ItemStack.EMPTY.write(new CompoundNBT()));
+				}
 			}
 		}
 		recipe_data.put("recipe", list_nbt);
-		return (CompoundNBT) new CompoundNBT().put("recipe_data", recipe_data);
+		return recipe_data;
 	}
 
 	public static ItemStack[][] getFromNBT(CompoundNBT tag) {
@@ -73,32 +80,60 @@ public class RecipeHelper {
 				}
 				return itemstacks;
 			}
-		return getFromNBT(empty3x3);
+		return null;
 
 	}
 
 	public static ICraftingRecipe getRecipe(World world, ItemStack item) {
 		ItemStack[][] itemCraft = helper.get(item);
 		if (itemCraft != null) {
-		} else {
+		}
+		else {
 			itemCraft = getFromNBT(item.getOrCreateTag());
 			helper.put(item, itemCraft);
 		}
-		if (container == null)
-			container = new WorkbenchContainer(0,
-					WorldUtilities.getFakePlayer(world.getServer().getWorld(world.dimension.getType())).inventory);
-		for (int i = 0; i < container.getSize(); i++)
-			container.putStackInSlot(i, ItemStack.EMPTY);
-		CraftingInventory crafting_inventory = new CraftingInventory(container, 3, 3);
-		for (int x1 = 0; x1 < 3; x1++) {
-			for (int y1 = 0; y1 < 3; y1++) {
-				crafting_inventory.setInventorySlotContents((x1 + y1 * 3), itemCraft[x1][y1]);
+		
+		if(world instanceof ServerWorld)
+		{
+			if (container == null)
+				container = new WorkbenchContainer(0,
+						WorldUtilities.getFakePlayer((ServerWorld)world).inventory);
+			for (int i = 0; i < container.getSize(); i++)
+				container.putStackInSlot(i, ItemStack.EMPTY);
+			CraftingInventory crafting_inventory = new CraftingInventory(container, 3, 3);
+			for (int x1 = 0; x1 < 3; x1++) {
+				for (int y1 = 0; y1 < 3; y1++) {
+					crafting_inventory.setInventorySlotContents((x1 + y1 * 3), itemCraft[x1][y1]);
+				}
 			}
+			Optional<ICraftingRecipe> s = world.getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING,
+					crafting_inventory, world);
+			if (s.isPresent())
+				return s.get();
 		}
-		Optional<ICraftingRecipe> s = world.getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING,
-				crafting_inventory, world);
-		if (s.isPresent())
-			return s.get();
+		else {
+			if(itemCraft == null)
+				return null;
+			for (int i = 0; i < 9; i++)
+				DummyCraftingInventory.instance.setInventorySlotContents(i, ItemStack.EMPTY);
+			for (int x1 = 0; x1 < 3; x1++) {
+				for (int y1 = 0; y1 < 3; y1++) {
+					if(itemCraft.length < x1 && itemCraft[x1].length < y1)
+					{
+						ItemStack temp = itemCraft[x1][y1];
+						DummyCraftingInventory.instance.setInventorySlotContents((x1 + y1 * 3), temp);
+					}
+				}
+			}
+			for(IRecipe<?> recipe : world.getRecipeManager().getRecipes())
+				if(recipe instanceof ICraftingRecipe)
+				{
+					if(((ICraftingRecipe)recipe).matches(DummyCraftingInventory.instance, world))
+					{
+						return (ICraftingRecipe) recipe;
+					}
+				}
+		}
 		return null;
 
 	}
