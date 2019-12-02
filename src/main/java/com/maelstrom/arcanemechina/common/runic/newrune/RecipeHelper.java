@@ -31,7 +31,7 @@ public class RecipeHelper {
 			new ItemStack[][] { new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY },
 				new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY },
 				new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY } });
-	public static Item reference_item = Registry.recipe;
+	public static Item reference_item = Registry.blueprint_recipe;
 	public static ItemStack createFromListToItemStack(ItemStack[][] list)
 	{
 		ItemStack output = new ItemStack(reference_item, 1);

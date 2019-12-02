@@ -6,8 +6,9 @@ import com.google.common.base.Preconditions;
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
 import com.maelstrom.arcanemechina.common.items.ChalkItem;
-import com.maelstrom.arcanemechina.common.items.PreDrawnRuneItem;
-import com.maelstrom.arcanemechina.common.items.RecipeItem;
+import com.maelstrom.arcanemechina.common.items.NoDamageItem;
+import com.maelstrom.arcanemechina.common.items.RuneBlueprintItem;
+import com.maelstrom.arcanemechina.common.items.RecipeBlueprintItem;
 import com.maelstrom.arcanemechina.common.runic.newrune.RuneContainer;
 import com.maelstrom.arcanemechina.common.runic.newrune.RuneHelper;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
@@ -25,6 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,21 +35,33 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 @Mod.EventBusSubscriber(modid = ArcaneMechina.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Registry
 {
-	public static TileEntityType<?> RUNE_TILE = null;
-	public static final CustomItemGroup ARCANE = new CustomItemGroup("AM.ARCANE");
-	public static final CustomItemGroup MACHINIST = new CustomItemGroup("AM.MACHINIST");
+	public static TileEntityType<?> RUNE_TILE      = null;
+	public static final CustomItemGroup ARCANE     = new CustomItemGroup("AM.ARCANE");
+	public static final CustomItemGroup MACHINIST  = new CustomItemGroup("AM.MACHINIST");
+	public static final CustomItemGroup BLUEPRINTS = new CustomItemGroup("AM.BLUEPRINTS");
 
-	public static Item chalk = new ChalkItem();
-	public static Item dustCrystals = new Item(new Item.Properties().group(ARCANE)).setRegistryName(ArcaneMechina.MODID, "dustcrystalitem");
-	public static Item preDrawnRune = new PreDrawnRuneItem();
-	public static Item recipe 		= new RecipeItem();
-	public static Block dustCrystalOre = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(15f)).setRegistryName(ArcaneMechina.MODID, "dustcrystals");
+
+	///////////////ITEMS/////////////
+	public static Item chalk            = new ChalkItem();
+	public static Item dustCrystals     = new NoDamageItem(new Item.Properties().group(ARCANE).addToolType(ToolType.PICKAXE, 1), 6, "dustcrystalitem");
+	public static Item blueprint_rune   = new RuneBlueprintItem();
+	public static Item blueprint_recipe	= new RecipeBlueprintItem();
+	public static Item gears            = new NoDamageItem(new Item.Properties().group(Registry.MACHINIST).setNoRepair(), 4, "gears");//wood,stone,iron,diamond
+	public static Item belts            = new NoDamageItem(new Item.Properties().group(Registry.MACHINIST).setNoRepair(), 3, "belts");//leather, rubber, reinforced
+	public static Item elemtents        = new NoDamageItem(new Item.Properties().group(Registry.MACHINIST).setNoRepair(), 2, "tempreture_element");//heating, cooling
+	public static Item industrialOthers;
+	
+	
+	
+	//////////////BLOCKS/////////////
+	public static Block dustCrystalOre  = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 10.0F)).setRegistryName(ArcaneMechina.MODID, "dustcrystals");
 	public static RuneBlock rune;
 
 	public static void RegisterItemGroups()
 	{
 		ARCANE.setIcon(new ItemStack(chalk));
 		MACHINIST.setIcon(new ItemStack(chalk));
+		BLUEPRINTS.setIcon(new ItemStack(blueprint_rune));
 	}
 
 	@SubscribeEvent
@@ -55,11 +69,14 @@ public class Registry
 	{
 		event.getRegistry().registerAll(
 				chalk, 
-				dustCrystals, 
-				preDrawnRune, 
-				recipe,
+				dustCrystals,
+				blueprint_rune,
+				blueprint_recipe,
+				gears,
+				belts,
+				elemtents,
 				getItem(dustCrystalOre, ARCANE, "dustcrystalore_block"), 
-				getItem(rune, ARCANE, "rune_block"));
+				getItem(rune, null, "rune_block"));
 	}
 
 	@SubscribeEvent

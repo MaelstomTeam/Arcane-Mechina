@@ -589,6 +589,12 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			return rune instanceof ToggleRune || rune instanceof IORune;
 		}
 
+		@Override
+		public void pretick(World world, BlockPos blockPos, RuneTileEntity entity){}
+
+		@Override
+		public void posttick(World world, BlockPos blockPos, RuneTileEntity entity){}
+
 	}
 
 	public static class ToggleRune extends RuneType implements ITicking {
@@ -642,9 +648,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			counter = 0;
 			state = !state;
 		}
-
 		@Override
-		public void tick(World world, BlockPos blockPos, RuneTileEntity entity) {
+		public void pretick(World world, BlockPos blockPos, RuneTileEntity entity) {
 			if (!hasOnVarible() && !hasOffVarible()) {
 				// do nothing
 			} else {
@@ -668,6 +673,12 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 				}
 			}
 		}
+		
+		@Override
+		public void tick(World world, BlockPos blockPos, RuneTileEntity entity){}
+
+		@Override
+		public void posttick(World world, BlockPos blockPos, RuneTileEntity entity){}
 
 		@Override
 		public CompoundNBT writeNBT() {
@@ -781,8 +792,14 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			return newValue;
 		}
 
+
+
 		@Override
-		public void tick(World world, BlockPos blockPos, RuneTileEntity entity) {
+		public void pretick(World world, BlockPos blockPos, RuneTileEntity entity){}
+		@Override
+		public void tick(World world, BlockPos blockPos, RuneTileEntity entity){}
+		@Override
+		public void posttick(World world, BlockPos blockPos, RuneTileEntity entity) {
 			if (this.hasInventoryRune())
 				//VOODOO MAGIC THAT MIGHT NOT WORK!!
 				if(this.hasInterRuneConnection())
@@ -972,6 +989,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		@Override
+		public void pretick(World world, BlockPos blockPos, RuneTileEntity entity){}
+		@Override
 		public void tick(World world, BlockPos blockPos, RuneTileEntity entity)
 		{
 			
@@ -985,11 +1004,9 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			{
 				this.redstone_power = world.getRedstonePower(blockPos, side);
 			}
-			else
-			{
-				//set power
-			}
 		}
+		@Override
+		public void posttick(World world, BlockPos blockPos, RuneTileEntity entity){}
 
 		@Override
 		public boolean canLink(RuneType rune)

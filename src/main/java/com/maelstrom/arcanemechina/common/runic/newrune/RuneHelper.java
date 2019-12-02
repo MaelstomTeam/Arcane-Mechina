@@ -113,7 +113,7 @@ public class RuneHelper
 	
 	public static ItemStack toItem(RuneContainer rune)
 	{
-		ItemStack item = new ItemStack(Registry.preDrawnRune);
+		ItemStack item = new ItemStack(Registry.blueprint_rune);
 		item.setDamage(1);
 		CompoundNBT tag = rune.writeNBT();
 		
@@ -128,7 +128,7 @@ public class RuneHelper
 
 	public static boolean hasRune(ItemStack drawn_rune)
 	{
-		if(drawn_rune.getItem() == Registry.preDrawnRune)
+		if(drawn_rune.getItem() == Registry.blueprint_rune)
 			return drawn_rune.getTag().contains("rune_data");
 		return false;
 	}

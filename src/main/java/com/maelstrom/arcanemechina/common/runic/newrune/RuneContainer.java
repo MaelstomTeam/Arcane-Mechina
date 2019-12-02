@@ -117,16 +117,20 @@ public class RuneContainer {
 		for(RuneType rune : children.values())
 		{
 			if(rune instanceof ITicking)
-				((ITicking) rune).doAction(rune_tile);
+			{
+				((ITicking) rune).doAction(rune_tile,0);//pre tick
+				((ITicking) rune).doAction(rune_tile,1);//tick
+				((ITicking) rune).doAction(rune_tile,2);//post tick
+			}
 		}
 	}
 
 
-	static final ResourceLocation tiny_resource = new ResourceLocation("arcanemechina:textures/runes/circle.png");
-	static final ResourceLocation small_resource = new ResourceLocation("arcanemechina:textures/runes/64px.png");
+	static final ResourceLocation tiny_resource   = new ResourceLocation("arcanemechina:textures/runes/circle.png");
+	static final ResourceLocation small_resource  = new ResourceLocation("arcanemechina:textures/runes/64px.png");
 	static final ResourceLocation medium_resource = new ResourceLocation("arcanemechina:textures/runes/128px.png");
-	static final ResourceLocation large_resource = new ResourceLocation("arcanemechina:textures/runes/256px.png");
-	static final ResourceLocation huge_resource = new ResourceLocation("arcanemechina:textures/runes/512px.png");
+	static final ResourceLocation large_resource  = new ResourceLocation("arcanemechina:textures/runes/256px.png");
+	static final ResourceLocation huge_resource   = new ResourceLocation("arcanemechina:textures/runes/512px.png");
 
 	public ResourceLocation getRuneResource() {
 		switch (this.runeSize) {
