@@ -1,14 +1,14 @@
 package com.maelstrom.arcanemechina.client.tesr;
 
 import com.maelstrom.arcanemechina.common.Registry;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneContainer;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType.CraftingContainerRune;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType.HoldingRune;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType.IORune;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType.RedstoneIORune;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType.ToggleRune;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType.VaribleRune;
+import com.maelstrom.arcanemechina.common.runic.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.RuneType;
+import com.maelstrom.arcanemechina.common.runic.RuneType.CraftingContainerRune;
+import com.maelstrom.arcanemechina.common.runic.RuneType.HoldingRune;
+import com.maelstrom.arcanemechina.common.runic.RuneType.IORune;
+import com.maelstrom.arcanemechina.common.runic.RuneType.RedstoneIORune;
+import com.maelstrom.arcanemechina.common.runic.RuneType.ToggleRune;
+import com.maelstrom.arcanemechina.common.runic.RuneType.VaribleRune;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.mojang.blaze3d.platform.GlStateManager;
 
@@ -40,14 +40,15 @@ public class RenderRune extends TileEntityRenderer<RuneTileEntity> {
 	}
 	int sub = 0;
 	public void drawRuneContainerDebug(RuneContainer rune) {
-		for(RuneType rune_to_render : rune.getChildren().values())
+		for(RuneType rune_to_render : rune.getChildren())
 		{
-			GlStateManager.translated(0, 10, 0);
-			if(rune_to_render!=null)
-				drawRuneDebug(rune_to_render);
+			if(rune_to_render != null)
+			{
+				GlStateManager.translated(0, 10, 0);
+				if(rune_to_render!=null)
+					drawRuneDebug(rune_to_render);
+			}
 		}
-		for(RuneType rune_to_render : rune.getChildren().values())
-			GlStateManager.translated(0, -10, 0);
 	}
 	public void drawRuneDebug(RuneType rune)
 	{

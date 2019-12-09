@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces;
+package com.maelstrom.arcanemechina.common.runic.rune_interfaces;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 

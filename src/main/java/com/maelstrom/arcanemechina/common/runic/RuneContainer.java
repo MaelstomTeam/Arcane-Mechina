@@ -1,28 +1,25 @@
-package com.maelstrom.arcanemechina.common.runic.newrune;
+package com.maelstrom.arcanemechina.common.runic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
-import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.IRuneRenderer2;
-import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.ITicking;
+import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IRuneRenderer2;
+import com.maelstrom.arcanemechina.common.runic.rune_interfaces.ITicking;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 
 public class RuneContainer {
 	
 	private RuneSize runeSize;
-	private HashMap<UUID, RuneType> children = new HashMap<UUID, RuneType>();
-
+	private RuneType[] children;// = new HashMap<UUID, RuneType>();
+	public int currIDMax = 0;
+	
 	public RuneContainer() {
 		this(RuneSize.MEDIUM);
 	}
@@ -48,13 +45,15 @@ public class RuneContainer {
 	}
 
 	public void setSize(RuneSize size) {
+		setSize(size,false);
+	}
+
+	public void setSize(RuneSize size, boolean clear) {
 		this.runeSize = size;
-		HashMap<UUID, RuneType> oldchildren = children;
-		int max = 0;
-		for(RuneType rune : oldchildren.values())
-		{
-			addChild(rune);
-		}
+		if(clear)
+			children = Arrays.copyOf(children, getCapacity());
+		else
+			children = new RuneType[this.getCapacity()];
 	}
 	
 	public RuneType getRuneAtPosition(float x, float z)
@@ -62,18 +61,27 @@ public class RuneContainer {
 		return null;
 	}
 
-	public HashMap<UUID, RuneType> getChildren() {
+	public RuneType[] getChildren() {
 		return children;
 	}
-
-	public void addChild(RuneType child) {
-		if(children.size() < this.getCapacity())
+	public int getEmptySlot()
+	{
+		int empty = -1;
+		for(RuneType rune : children)
 		{
-			this.children.put(child.getUUID(),child);
-			child.setParent(this);
+			empty++;
+			if(rune == null)
+				return empty;
+		}
+		return -1;
+	}
+	public void addChild(RuneType child) {
+		child.setParent(this);
+		if(child.getUUID() != -1 && child.getUUID() < this.getCapacity() && (children[child.getUUID()] == null || children[child.getUUID()] == child))
+		{
+			this.children[child.getUUID()] = child;
 		}
 		else
-			//BECOME BATMAN!
 			child.setParent(null);
 	}
 
@@ -81,7 +89,7 @@ public class RuneContainer {
 		CompoundNBT nbt = new CompoundNBT();
 		nbt.putInt("SIZE", runeSize.ordinal());
 		ListNBT list = new ListNBT();
-		for (RuneType child : children.values()) {
+		for (RuneType child : children) {
 			if (child != null)
 				list.add(child.writeToNBT());
 		}
@@ -90,31 +98,31 @@ public class RuneContainer {
 	}
 
 	public void readNBT(CompoundNBT nbt) {
-		children.clear();
+		children = new RuneType[this.getCapacity()];
 		setSize(RuneSize.values()[nbt.getInt("SIZE")]);
 		ListNBT list = (ListNBT) nbt.get("CHILDREN");
 		for (int i = 0; i < list.size(); i++) {
 			CompoundNBT tag = list.getCompound(i);
-			RuneType rune = RuneType.getFromID(tag.getShort("ID"));
+			RuneType rune = RuneType.getFromID(tag.getShort("RuneID"));
 			rune.readFromNBT(tag);
 			addChild(rune);
 		}
 	}
 
-	public RuneType getLink(UUID uuid)
+	public RuneType getLink(int uuid)
 	{
-		for(RuneType rune : children.values())
+		for(RuneType rune : children)
 		{	
 			if(uuid ==  rune.getUUID()) {
 				return rune;
 			}
 		}
-		return children.get(uuid);
+		return children[uuid];
 	}
 	
 	public void tick(RuneTileEntity rune_tile)
 	{
-		for(RuneType rune : children.values())
+		for(RuneType rune : children)
 		{
 			if(rune instanceof ITicking)
 			{
@@ -189,7 +197,9 @@ public class RuneContainer {
 			IRuneRenderer2.bindTexture(getRuneResource());
 			plane.render();
 		GlStateManager.popMatrix();
-		for(RuneType rune : children.values())
+		for(RuneType rune : children)
+			if(rune != null)
+			{
 			if(rune instanceof IRuneRenderer2)
 			{
 				GlStateManager.pushMatrix();
@@ -198,13 +208,17 @@ public class RuneContainer {
 				((IRuneRenderer2) rune).render(partial_ticks);
 				GlStateManager.popMatrix();
 			}
+			}
 		GlStateManager.popMatrix();
 	}
 
 	public boolean hasRune(Class<? extends RuneType> type)
 	{
-		for(RuneType rune : children.values())
+		if(type == null)
+			return false;
+		for(RuneType rune : children)
 		{
+			if(rune != null)
 			if(rune.getClass().equals(type))
 				return true;
 		}
@@ -214,7 +228,8 @@ public class RuneContainer {
 	public List<RuneType> getRune(Class<? extends RuneType> get)
 	{
 		List<RuneType> list = new ArrayList<RuneType>();
-		for(RuneType rune : children.values())
+		for(RuneType rune : children)
+			if(rune != null)
 			if (rune.getClass().equals(get))
 				list.add(rune);
 		return list;

@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.common.runic.newrune;
+package com.maelstrom.arcanemechina.common.runic;
 
 import net.minecraft.util.IStringSerializable;
 

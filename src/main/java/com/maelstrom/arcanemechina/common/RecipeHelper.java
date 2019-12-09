@@ -1,21 +1,15 @@
-package com.maelstrom.arcanemechina.common.runic.newrune;
+package com.maelstrom.arcanemechina.common;
 
 import java.util.HashMap;
 import java.util.Optional;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
-import com.maelstrom.arcanemechina.common.Registry;
 import com.maelstrom.arcanemechina.common.inventory.DummyCraftingInventory;
 import com.maelstrom.snowcone.common.WorldUtilities;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.ICraftingRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
@@ -42,8 +36,6 @@ public class RecipeHelper {
 
 	// has to be a perfect sublist, no xxx,xx,x must all be same size
 	public static CompoundNBT createFromList(ItemStack[][] list) {
-		int x = list.length;
-		int y = list[0].length;
 		CompoundNBT recipe_data = new CompoundNBT();
 		
 		ListNBT list_nbt = new ListNBT();

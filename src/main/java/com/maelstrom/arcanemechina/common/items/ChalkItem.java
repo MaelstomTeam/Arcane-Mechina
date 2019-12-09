@@ -2,8 +2,8 @@ package com.maelstrom.arcanemechina.common.items;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.Registry;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneContainer;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneHelper;
+import com.maelstrom.arcanemechina.common.runic.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.RuneHelper;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 
 import net.minecraft.entity.player.PlayerEntity;

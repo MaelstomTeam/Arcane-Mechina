@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces;
+package com.maelstrom.arcanemechina.common.runic.rune_interfaces;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -106,7 +106,7 @@ public interface IInventoryRune extends IInventory
 		if (item.isStackable() && item2.isStackable())
 			if (ItemStack.areItemStackTagsEqual(item, item2) && item.getCount() + item2.getCount() <= item.getMaxStackSize())
 				return true;
-		if (item.isEmpty() || item2.isEmpty())
+		if (item2.isEmpty())
 			return true;
 		return false;
 	}

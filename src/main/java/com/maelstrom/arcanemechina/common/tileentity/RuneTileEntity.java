@@ -3,10 +3,10 @@ package com.maelstrom.arcanemechina.common.tileentity;
 import javax.annotation.Nullable;
 
 import com.maelstrom.arcanemechina.common.Registry;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneContainer;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneHelper;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType;
-import com.maelstrom.arcanemechina.common.runic.newrune.RuneType.HoldingRune;
+import com.maelstrom.arcanemechina.common.runic.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.RuneHelper;
+import com.maelstrom.arcanemechina.common.runic.RuneType;
+import com.maelstrom.arcanemechina.common.runic.RuneType.HoldingRune;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;

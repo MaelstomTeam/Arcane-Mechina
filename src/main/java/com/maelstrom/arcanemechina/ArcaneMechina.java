@@ -7,7 +7,6 @@ import com.maelstrom.arcanemechina.client.tesr.RenderRune;
 import com.maelstrom.arcanemechina.common.Registry;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;

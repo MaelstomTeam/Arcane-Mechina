@@ -16,6 +16,7 @@ public class NoDamageItem extends Item
 		this.setRegistryName(ArcaneMechina.MODID, unlocal);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public int getItemStackLimit(ItemStack stack)
     {
     	if(stack.getItem() == this)

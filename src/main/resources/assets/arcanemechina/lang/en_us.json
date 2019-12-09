@@ -1,7 +1,7 @@
 {
 	"itemGroup.AM.ARCANE":"The Arcane",
 	"itemGroup.AM.MACHINIST":"The Machine",
-	"itemGroup.AM.BLUEPRINT":"Blueprints",
+	"itemGroup.AM.BLUEPRINTS":"Blueprints",
 	"item.arcanemechina.chalk":"Chalk",
 	"item.arcanemechina.recipe":"Crafting Recipe",
 	"item.arcanemechina.tempreture_element":"Heating Element",
@@ -18,7 +18,7 @@
 	"item.arcanemechina.dustcrystalitem.2":"Hard Dust Crystal",
 	"item.arcanemechina.dustcrystalitem.3":"Light Dust Crystal",
 	"item.arcanemechina.dustcrystalitem.4":"Etheral Dust Crystal",
-	"item.arcanemechina.dustcrystalitem.5":"Hellish Dust Crystal",
+	"item.arcanemechina.dustcrystalitem.5":"Corrupt Dust Crystal",
 	"block.arcanemechina.dustcrystals":"Dust Crystal Ore",
 	"item.arcanemechina.recipe":"Crafting Recipe",
 	"item.arcanemechina.recipe.preset.stick":"Stick from Oak Recipe",

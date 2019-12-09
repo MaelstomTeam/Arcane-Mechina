@@ -1,6 +1,6 @@
-package com.maelstrom.arcanemechina.common.runic.newrune;
+package com.maelstrom.arcanemechina.common.runic;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
+import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.Registry;
 
 import net.minecraft.item.ItemStack;
@@ -19,7 +19,9 @@ public class RuneHelper
 		RuneType.VaribleRune on           = new RuneType.VaribleRune();
 		RuneType.IORune      output_items = new RuneType.IORune();
 		RuneType.IORune      input_items  = new RuneType.IORune();
+		
 		container.setSize(RuneSize.SMALL);
+		
 		hold.setPosition(8,13);
 		toggle.setPosition(8, 8);
 		on.setPosition(4, 5);
@@ -46,6 +48,7 @@ public class RuneHelper
 		hold.addLink(toggle);
 		toggle.addLink(on);
 		toggle.addLink(off);
+		
 		output_items.addLink(hold);
 		input_items.addLink(hold);
 		return container;

@@ -1,7 +1,7 @@
 package com.maelstrom.arcanemechina.common.items;
 
+import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.Registry;
-import com.maelstrom.arcanemechina.common.runic.newrune.RecipeHelper;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.common.runic.newrune;
+package com.maelstrom.arcanemechina.common.runic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,11 @@ import java.util.UUID;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
+import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
-import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.IInventoryRune;
-import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.IRuneRenderer2;
-import com.maelstrom.arcanemechina.common.runic.newrune.rune_interfaces.ITicking;
+import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IInventoryRune;
+import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IRuneRenderer2;
+import com.maelstrom.arcanemechina.common.runic.rune_interfaces.ITicking;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.maelstrom.snowcone.common.RomanNumeral;
 import com.maelstrom.snowcone.common.WorldUtilities;
@@ -43,18 +44,18 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	static final RenderPlane plane = new RenderPlane();
 	// static helpers and such
 
-	private static List<Class<? extends RuneType>> hiddenList = new ArrayList<Class<? extends RuneType>>();
+	private static List<Class<? extends RuneType>> indexList = new ArrayList<Class<? extends RuneType>>();
 	static {
-		hiddenList.add(CraftingContainerRune.class);
-		hiddenList.add(VaribleRune.class);
-		hiddenList.add(HoldingRune.class);
-		hiddenList.add(ToggleRune.class);
-		hiddenList.add(IORune.class);
-		hiddenList.add(RedstoneIORune.class);
+		indexList.add(CraftingContainerRune.class);
+		indexList.add(VaribleRune.class);
+		indexList.add(HoldingRune.class);
+		indexList.add(ToggleRune.class);
+		indexList.add(IORune.class);
+		indexList.add(RedstoneIORune.class);
 	}
 
 	private static short getID(RuneType runeType) {
-		return (short) hiddenList.indexOf(runeType.getClass());
+		return (short) indexList.indexOf(runeType.getClass());
 	}
 
 	public short getID() {
@@ -63,29 +64,32 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	public static RuneType getFromID(short rune_id) {
 		try {
-			if (rune_id < hiddenList.size())
-				return hiddenList.get(rune_id).newInstance();
+			if (rune_id < indexList.size())
+				return indexList.get(rune_id).newInstance();
 		} catch (Exception e) {
 		}
 		return null;
 	}
-
+	
 	// actual class here!
-	private UUID uuid;
+	private int uuid = -1;
 	
 	public RuneType()
 	{
 	}
 
-	public UUID getUUID() {
-		if(uuid == null)
-			uuid = UUID.randomUUID();
+	public int getUUID() {
+		if(uuid == -1)
+		{
+			uuid = this.parent.currIDMax;
+			this.parent.currIDMax++;
+		}
 		return this.uuid;
 	}
 
-	private List<UUID> connections = new ArrayList<UUID>();
+	private List<Integer> connections = new ArrayList<Integer>();
 
-	public List<UUID> getListUUID() {
+	public List<Integer> getListUUID() {
 		return connections;
 	}
 
@@ -98,19 +102,18 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 	}
 
 	public void addLink(RuneType rune) {
-		if (!connections.contains(rune) && canLink(rune)) {
+		if (!connections.contains(rune.getUUID()) && canLink(rune)) {
 			connections.add(rune.getUUID());
 		}
 	}
 
-	public void addLink(UUID rune) {
-		if (!connections.contains(rune) && canLink(rune)) {
+	public void addLink(int rune) {
+		if (!connections.contains(rune) && canLink(parent.getLink(rune))) {
 			connections.add(rune);
 		}
 	}
 
 	private RuneContainer parent;
-
 	public RuneContainer getParent() {
 		return parent;
 	}
@@ -125,12 +128,12 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	public void readFromNBT(CompoundNBT tag) {
 		connections.clear();
-			uuid = UUID.fromString(tag.getString("uuid"));
+		uuid = tag.getInt("uuid");
 		scale = tag.getFloat("SCALE");
 		setPosition(tag.getCompound("pos"));
 		ListNBT list = (ListNBT) tag.get("connections");
 		for (int i = 0; i < list.size(); i++) {
-			connections.add(((CompoundNBT) list.get(i)).getUniqueId("uuid"));
+			connections.add(((CompoundNBT) list.get(i)).getInt("uuid"));
 		}
 		readNBT(tag.getCompound("data"));
 	}
@@ -146,8 +149,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	public CompoundNBT writeToNBT() {
 		CompoundNBT tag = new CompoundNBT();
-		tag.putShort("ID", getID(this));
-		tag.putString("uuid", uuid.toString());
+		tag.putShort("RuneID", getID(this));
+		tag.putInt("uuid", uuid);
 		tag.putFloat("SCALE", scale);
 		CompoundNBT position = new CompoundNBT();
 		position.putFloat("X", pos.x);
@@ -157,9 +160,9 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		ListNBT list = new ListNBT();
 
-		for (UUID connection : connections) {
+		for (int connection : connections) {
 			CompoundNBT con = new CompoundNBT();
-			con.putUniqueId("uuid", connection);
+			con.putInt("uuid", connection);
 			list.add(con);
 		}
 		tag.put("connections", list);
@@ -501,9 +504,15 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 							int counter = 1;
 							for (ItemStack i : getAllItems().subList(1, 10)) {
 								if (i.hasContainerItem())
-									for (ItemStack i2 : getAllItems().subList(10, 19)) {
-										canAddItem(i.getContainerItem());
+								{
+									for (ItemStack i2 : getAllItems().subList(10, 19))
+									{
+										if(canAddItem(i.getContainerItem(),i2))
+										{
+											this.addItem(i2);
+										}
 									}
+								}
 								if (i != ItemStack.EMPTY)
 									i.shrink(1);
 								if(i.isEmpty())
@@ -796,8 +805,10 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void pretick(World world, BlockPos blockPos, RuneTileEntity entity){}
+
 		@Override
 		public void tick(World world, BlockPos blockPos, RuneTileEntity entity){}
+
 		@Override
 		public void posttick(World world, BlockPos blockPos, RuneTileEntity entity) {
 			if (this.hasInventoryRune())
@@ -864,7 +875,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					if(getInventoryRune().getStackInSlot(0).isEmpty())
 					{
 						for(int i = 0; i < inventory.getSizeInventory(); i++)
-							if(getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(0),inventory.getStackInSlot(i)) && inventory.getStackInSlot(i).getItem() instanceof ToolItem)
+							if(getInventoryRune().canAddItem(inventory.getStackInSlot(i),getInventoryRune().getStackInSlot(0)) && inventory.getStackInSlot(i).getItem() instanceof ToolItem)
 							{
 								index = i;
 								break;
