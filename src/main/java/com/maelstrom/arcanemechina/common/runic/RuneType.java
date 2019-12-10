@@ -18,6 +18,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -52,6 +53,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		indexList.add(ToggleRune.class);
 		indexList.add(IORune.class);
 		indexList.add(RedstoneIORune.class);
+		indexList.add(SubRuneContainer.class);
 	}
 
 	private static short getID(RuneType runeType) {
@@ -310,7 +312,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 	public static class VaribleRune extends RuneType {
 		static ResourceLocation varible = new ResourceLocation("arcanemechina:textures/runes/varible.png");
-		private short value = 20;
+		private short value = 0;
 
 		@Override
 		public String getName() {
@@ -329,9 +331,11 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					GlStateManager.translated(8f, 0, 7.25f);
 					GlStateManager.rotated(90, 1, 0, 0);
 					GlStateManager.rotated(90, 0, 0, 1);
-					float center_x = IRuneRenderer2.getFontRenderer().getStringWidth(text) / 2f;
+					float center_x = getStringWidth(IRuneRenderer2.getFontRenderer(),text) / 2f;
 					float center_y = IRuneRenderer2.getFontRenderer().FONT_HEIGHT / 2f;
-					float scaler = MathHelper.lerp(4f / (center_x * 2), 0f, 2f);
+					float scaler_max = (this.getParent().isInternal() ? 0.5f : 0.8f);
+					float scaler = MathHelper.lerp(3f / (center_x), 0.1f, scaler_max);
+					ArcaneMechina.LOGGER.info(scaler);
 					GlStateManager.scaled(scaler, scaler, scaler);
 					IRuneRenderer2.getFontRenderer().drawString(text, -center_x, -center_y, 0x00000000);
 				GlStateManager.popMatrix();
@@ -340,6 +344,16 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			IRuneRenderer2.bindTexture(varible);
 			plane.render();
 			GlStateManager.popMatrix();
+		}
+		
+		private static float getStringWidth(FontRenderer font, String text)
+		{
+			float size = 0f;
+			for(int letter = 0; letter < text.length(); letter++)
+			{
+				size += font.getCharWidth(text.charAt(letter));
+			}
+			return size;
 		}
 
 		private String num_value;
@@ -359,7 +373,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void readNBT(CompoundNBT tag) {
-			tag.getShort("value");
+			value = tag.getShort("value");
 		}
 
 		public short getValue() {
@@ -495,11 +509,16 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					}
 					if (craftReference != null) {
 						boolean canCraft = true;
+						canCraft = false;
 						ICraftingRecipe recipe = craftReference.getRecipe(entity.getWorld());
 						for (ItemStack i : getAllItems().subList(1, 10)) {
-							if (i != ItemStack.EMPTY && (i.getCount() < 1))
+							if (i != ItemStack.EMPTY && (i.getCount() > 1))
 								canCraft = false;
 						}
+						try{
+
+							//recipe.matches(new CraftingInventory(null, counter, counter), worldIn);
+						}finally {}
 						if (canCraft && this.canAddItem(recipe.getRecipeOutput())) {
 							int counter = 1;
 							for (ItemStack i : getAllItems().subList(1, 10)) {
@@ -510,6 +529,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 										if(canAddItem(i.getContainerItem(),i2))
 										{
 											this.addItem(i2);
+											break;
 										}
 									}
 								}
@@ -520,7 +540,15 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 								counter++;
 							}
 							ItemStack output = recipe.getRecipeOutput();
-							addItem(output);
+							for(int i = 0; i < this.getSizeInventory(); i++)
+							{
+								if(i != 0)
+									if(this.canAddItem(output,this.getStackInSlot(i)))
+									{
+										addItem(output,i);
+										break;
+									}
+							}
 						}
 					}
 				} else {
@@ -595,7 +623,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public boolean canLink(RuneType rune) {
-			return rune instanceof ToggleRune || rune instanceof IORune;
+			return rune instanceof ToggleRune || rune instanceof IORune || rune instanceof CraftingContainerRune;
 		}
 
 		@Override
@@ -642,7 +670,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		}
 
 		private VaribleRune getOnRune() {
-			if (this.getListUUID().get(1) != null)
+			if (this.getListUUID().get(0) != null)
 				return (VaribleRune) getParent().getLink(this.getListUUID().get(0));
 			return null;
 		}
@@ -771,7 +799,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			double z = this.dir.getZOffset();
 			x = 8 * x+7;
 			z = 8 * z+8.5;
-			GlStateManager.translated(x, MathHelper.lerp(pp(Minecraft.getInstance().world.getGameTime() + particks, 20) / 20f, 0.1, 1.1), z);
+			GlStateManager.translated(x, MathHelper.lerp(pingpong(Minecraft.getInstance().world.getGameTime() + particks, 20) / 20f, 0.1, 1.1), z);
 			if(this.dir.getZOffset() != 0)
 			{
 				GlStateManager.rotated(90, 0, 1, 0);
@@ -787,7 +815,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		}
 
-		private float pp(float value, float maxValue)
+		private float pingpong(float value, float maxValue)
 		{
 			boolean reverse = false;
 			float newValue = value;
@@ -801,8 +829,6 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			return newValue;
 		}
 
-
-
 		@Override
 		public void pretick(World world, BlockPos blockPos, RuneTileEntity entity){}
 
@@ -812,48 +838,57 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		@Override
 		public void posttick(World world, BlockPos blockPos, RuneTileEntity entity) {
 			if (this.hasInventoryRune())
-				//VOODOO MAGIC THAT MIGHT NOT WORK!!
-				if(this.hasInterRuneConnection())
+			{
+				if(this.getParent().isInternal() && !this.hasInterRuneConnection())
 				{
-					transfer(this.getInterRuneConnection());
+					IInventoryRune rune = (IInventoryRune) this.getParent().getParent().getInventory(this.input);
+					if(rune != null)
+						transfer(rune);
 				}
-				else if (world.getTileEntity(blockPos.offset(dir)) instanceof IInventory) {
-					transfer((IInventory)world.getTileEntity(blockPos.offset(dir)));
-				}
-				else
-				{
-					//if output
-					if (!input) {
-						for (int i = 0; i < getInventoryRune().getSizeInventory(); i++)
-						{
-
-							ItemStack item = null;
-							if(getInventoryRune() instanceof HoldingRune)
+				else {
+					//VOODOO MAGIC THAT MIGHT NOT WORK!!
+					if(this.hasInterRuneConnection())
+					{
+						transfer(this.getInterRuneConnection());
+					}
+					else if (world.getTileEntity(blockPos.offset(dir)) instanceof IInventory) {
+						transfer((IInventory)world.getTileEntity(blockPos.offset(dir)));
+					}
+					else
+					{
+						if (!input) {
+							for (int i = 0; i < getInventoryRune().getSizeInventory(); i++)
 							{
-								if(i < getInventoryRune().getSizeInventory() - 1)
-									if (!getInventoryRune().getStackInSlot(i + 1).isEmpty())
-										item = getInventoryRune().getStackInSlot(i + 1).split(maxPull);
-							}
-							//don't export anything from the crafting rune as it is required to get a crafting recipe
-							//might remove as one might want to use this to cycle recipes in the main crafter
-							else if(getInventoryRune() instanceof CraftingContainerRune)
-								;
-							else
-							{
-								if (!getInventoryRune().getStackInSlot(i).isEmpty()) {
-									item = getInventoryRune().getStackInSlot(i).split(maxPull);
+	
+								ItemStack item = null;
+								if(getInventoryRune() instanceof HoldingRune)
+								{
+									if(i < getInventoryRune().getSizeInventory() - 1)
+										if (!getInventoryRune().getStackInSlot(i + 1).isEmpty())
+											item = getInventoryRune().getStackInSlot(i + 1).split(maxPull);
 								}
+								//don't export anything from the crafting rune as it is required to get a crafting recipe
+								//might remove as one might want to use this to cycle recipes in the main crafter
+								else if(getInventoryRune() instanceof CraftingContainerRune)
+									;
+								else
+								{
+									if (!getInventoryRune().getStackInSlot(i).isEmpty()) {
+										item = getInventoryRune().getStackInSlot(i).split(maxPull);
+									}
+								}
+								if(item != null && item != ItemStack.EMPTY)
+								{
+									ItemEntity item_entity = new ItemEntity(world,blockPos.getX(), blockPos.getY()+1, blockPos.getZ(), item);
+									world.addEntity(item_entity);
+									break;
+								}
+								
 							}
-							if(item != null && item != ItemStack.EMPTY)
-							{
-								ItemEntity item_entity = new ItemEntity(world,blockPos.getX(), blockPos.getY()+1, blockPos.getZ(), item);
-								world.addEntity(item_entity);
-								break;
-							}
-							
 						}
 					}
 				}
+			}
 		}
 		
 		private void transfer(IInventory inventory)
@@ -1061,4 +1096,124 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		
 	}
 
+	public static class SubRuneContainer extends RuneType implements ITicking
+	{
+		
+		RuneContainer internalRune = new RuneContainer();
+		NonNullList<ItemStack> item_list = NonNullList.withSize(19, ItemStack.EMPTY);
+		public SubRuneContainer()
+		{
+			internalRune.setInternal(true);
+			internalRune.setParent(this);
+		}
+
+		public RuneContainer getInternalRune()
+		{
+			return internalRune;
+		}
+
+		public void setInternalRune(RuneContainer internalRune)
+		{
+			this.internalRune = internalRune;
+			internalRune.setInternal(true);
+			internalRune.setParent(this);
+		}
+
+		public IInventoryRune getInventory(boolean input)
+		{
+			if(input)
+			{
+				if(hasInput())
+					return (IInventoryRune) this.getParent().getLink(getListUUID().get(0));
+			}
+			else
+			{
+				if(hasOutput())
+					return getOutput();
+			}
+			return null;
+		}
+
+		public boolean hasInput() {
+			if (this.getListUUID().size() >= 1 &&this.getListUUID().get(0) != null)
+				return this.getParent().getLink(getListUUID().get(0)) != null;
+			return false;
+		}
+
+		public boolean hasOutput() {
+			if (this.getListUUID().size() >= 2 && this.getListUUID().get(1) != null)
+				return this.getParent().getLink(getListUUID().get(1)) != null;
+			else if(this.getListUUID().size() >=1 && this.getListUUID().get(0)!= null)
+				return this.getParent().getLink(getListUUID().get(0)) != null;
+			return false;
+		}
+		public IInventoryRune getOutput()
+		{
+			if (this.getListUUID().size() >= 2 && this.getListUUID().get(1) != null)
+				return (IInventoryRune) this.getParent().getLink(getListUUID().get(1));
+			else if(this.getListUUID().size() >=1 && this.getListUUID().get(0)!= null)
+				return (IInventoryRune) this.getParent().getLink(getListUUID().get(0));
+			return null;
+		}
+
+		@Override
+		public String getName()
+		{
+			return "sub_rune";
+		}
+
+		@Override
+		public void render(float particks)
+		{
+			float value = 2.75f;
+			GlStateManager.translated(this.getPosition().x-value, 0, this.getPosition().y-value);
+			GlStateManager.scaled(getScale(), getScale(), getScale());
+			GlStateManager.pushMatrix();
+			internalRune.render(particks);
+			GlStateManager.popMatrix();
+		}
+		
+		@Override
+		public void pretick(World world, BlockPos blockPos, RuneTileEntity entity)
+		{
+			internalRune.tick(entity,0);
+		}
+
+		@Override
+		public void tick(World world, BlockPos blockPos, RuneTileEntity entity)
+		{
+			internalRune.tick(entity,1);
+		}
+
+		@Override
+		public void posttick(World world, BlockPos blockPos, RuneTileEntity entity)
+		{
+			internalRune.tick(entity,2);
+		}
+
+		@Override
+		public boolean canLink(RuneType rune)
+		{
+			return rune instanceof IInventoryRune;
+		}
+
+		@Override
+		public CompoundNBT writeNBT()
+		{
+			CompoundNBT tag = new CompoundNBT();
+			tag.put("rune",internalRune.writeNBT());
+			return tag;
+		}
+
+		@Override
+		public void readNBT(CompoundNBT tag)
+		{
+			if(tag.get("rune") != null)
+			{
+				internalRune.readNBT(tag.getCompound("rune"));
+			}
+		}
+		
+	}
+	
 }

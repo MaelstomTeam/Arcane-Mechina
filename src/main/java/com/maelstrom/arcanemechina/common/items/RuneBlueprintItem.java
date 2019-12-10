@@ -29,7 +29,7 @@ public class RuneBlueprintItem extends NoDamageItem
 	{
 		super(new Item.Properties().group(Registry.BLUEPRINTS).setNoRepair(), 2, "predrawnrune");
 	}
-
+	
 	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
 	{
 		if (this.isInGroup(group))
@@ -37,37 +37,22 @@ public class RuneBlueprintItem extends NoDamageItem
 			items.add(new ItemStack(this));
 			items.add(RuneHelper.toItem(RuneHelper.getNewCraftingRune()).setDisplayName(new TranslationTextComponent(this.getTranslationKey() + ".preset.crafting_rune")));
 			items.add(RuneHelper.toItem(RuneHelper.getNewMiningRune()).setDisplayName(new TranslationTextComponent(this.getTranslationKey() + ".preset.mining_rune")));
+			items.add(RuneHelper.toItem(RuneHelper.getSubRuneFurnaceCrafter()).setDisplayName(new TranslationTextComponent(this.getTranslationKey() + ".preset.sub_rune_crafting_miner")));
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
-		if(stack.getTag() != null && stack.getTag().get("rune_data") != null) {
+		if (stack.getTag() != null && stack.getTag().get("rune_data") != null)
+		{
 			RuneContainer runes = RuneHelper.fromItem(stack);
 			String fullDetails = "";
-			for(RuneType rune : runes.getChildren())
+			for (RuneType rune : runes.getChildren())
 			{
-				if(rune != null)
+				if (rune != null)
 				{
-					String runeDetails = "";
-					if(flagIn.isAdvanced())
-					{
-						runeDetails += ":" + rune.getUUID();
-						if(rune.getListUUID().size() > 0)
-						{
-							runeDetails += ":L ";
-						for(int link : rune.getListUUID())
-						{
-							runeDetails += link + " ";
-						}
-						}
-						fullDetails += rune.getName() + runeDetails + " \n";
-					}
-					else
-					{
-						fullDetails += rune.getName() + runeDetails + " | ";
-					}
+					fullDetails += rune.getName() + " | ";
 				}
 			}
 			StringTextComponent text = new StringTextComponent(fullDetails.substring(0, fullDetails.length() - 3));

@@ -1,5 +1,6 @@
 package com.maelstrom.arcanemechina.common.runic;
 
+import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.Registry;
 
@@ -10,6 +11,52 @@ import net.minecraft.util.Direction;
 
 public class RuneHelper
 {
+	public static RuneContainer getSubRuneFurnaceCrafter()
+	{
+		RuneContainer miner = getNewMiningRune();
+		RuneContainer crafter = getNewCraftingRune();
+		RuneContainer overRune = new RuneContainer();
+
+		RuneType.SubRuneContainer miner_rune = new RuneType.SubRuneContainer();
+		miner_rune.setInternalRune(miner);
+		RuneType.SubRuneContainer crafter_rune = new RuneType.SubRuneContainer();
+		crafter_rune.setInternalRune(crafter);
+		RuneType.HoldingRune holder_output_miner_input_crafter = new RuneType.HoldingRune();
+		RuneType.HoldingRune holder_output = new RuneType.HoldingRune();
+		RuneType.HoldingRune holder_input_miner = new RuneType.HoldingRune();
+		
+		RuneType.IORune      input_items  = new RuneType.IORune();
+		RuneType.IORune      output_items = new RuneType.IORune();
+		
+		overRune.addChild(miner_rune);
+		overRune.addChild(crafter_rune);
+		overRune.addChild(holder_output_miner_input_crafter);
+		overRune.addChild(holder_input_miner);
+		overRune.addChild(holder_output);
+		overRune.addChild(input_items);
+		overRune.addChild(output_items);
+
+		crafter_rune.addLink(holder_output_miner_input_crafter);//in
+		crafter_rune.addLink(holder_output);//out
+		miner_rune.addLink(holder_input_miner);//in
+		miner_rune.addLink(holder_output_miner_input_crafter);//out
+		input_items.addLink(holder_input_miner);
+		input_items.setDirection(Direction.NORTH);
+		output_items.addLink(holder_output);
+		output_items.setInput(false);
+		output_items.setDirection(Direction.SOUTH);
+		
+
+		crafter_rune.setPosition(10, 13);
+		miner_rune.setPosition(10, 3);
+		holder_output_miner_input_crafter.setPosition(2, 1);
+		holder_input_miner.setPosition(2, 7);
+		holder_output.setPosition(2, 13);
+		
+		
+		return overRune;
+	}
+	
 	public static RuneContainer getNewMiningRune(){
 		RuneContainer container = new RuneContainer();
 		//declare
@@ -36,10 +83,9 @@ public class RuneHelper
 		container.addChild(input_items);
 		
 		//modify values
-		//hold.setInventorySlotContents(0, new ItemStack(Items.DIAMOND_PICKAXE));
+		hold.setInventorySlotContents(0, new ItemStack(Items.DIAMOND_PICKAXE));
 		on.setValue((short) 200);
 		off.setValue((short) 0);
-		
 		output_items.setDirection(Direction.NORTH);
 		output_items.setInput(false);
 		input_items .setDirection(Direction.SOUTH);
@@ -75,12 +121,13 @@ public class RuneHelper
 		container.addChild(input_items);
 		container.addChild(recipe_rune);
 		//modify values
-		ItemStack stone_reference = new ItemStack(Items.STICK);
+		ItemStack stone_reference = new ItemStack(Items.COBBLESTONE);
 		hold.setInventorySlotContents(0, new ItemStack(Items.CRAFTING_TABLE));
 		ItemStack item = RecipeHelper.createFromListToItemStack(
 				new ItemStack[][]{
-					new ItemStack[] {stone_reference},
-					new ItemStack[] {stone_reference}
+					new ItemStack[] {stone_reference,stone_reference,stone_reference},
+					new ItemStack[] {stone_reference,ItemStack.EMPTY,stone_reference},
+					new ItemStack[] {stone_reference,stone_reference,stone_reference}
 				});
 		recipe_rune.setInventorySlotContents(0, item);
 		
@@ -91,9 +138,10 @@ public class RuneHelper
 		off.setPosition(1, 13);
 		
 		
-		off.setValue((short) 19);
+		off.setValue((short) 1);
 		on.setValue((short) 1);
 		output_items.setDirection(Direction.EAST);
+		output_items.setInput(false);
 		input_items .setDirection(Direction.WEST);
 		
 		//link to other runes

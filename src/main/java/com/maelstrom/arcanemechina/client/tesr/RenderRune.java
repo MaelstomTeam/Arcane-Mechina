@@ -34,7 +34,7 @@ public class RenderRune extends TileEntityRenderer<RuneTileEntity> {
 				GlStateManager.popMatrix();
 			}
 			GlStateManager.scaled(1f/16f, 1f/16f, 1f/16f);
-			te.rune.render(partialTicks, te);
+			te.rune.render(partialTicks);
 		GlStateManager.popMatrix();
 		sub = 0;
 	}

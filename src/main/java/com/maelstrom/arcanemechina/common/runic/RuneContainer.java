@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
+import com.maelstrom.arcanemechina.common.runic.RuneType.SubRuneContainer;
+import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IInventoryRune;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IRuneRenderer2;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.ITicking;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
@@ -15,11 +17,12 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 
 public class RuneContainer {
-	
+	private String name;
 	private RuneSize runeSize;
 	private RuneType[] children;// = new HashMap<UUID, RuneType>();
 	public int currIDMax = 0;
-	
+	private boolean isInternal = false;
+	private SubRuneContainer parent;
 	public RuneContainer() {
 		this(RuneSize.MEDIUM);
 	}
@@ -88,6 +91,9 @@ public class RuneContainer {
 	public CompoundNBT writeNBT() {
 		CompoundNBT nbt = new CompoundNBT();
 		nbt.putInt("SIZE", runeSize.ordinal());
+		nbt.putBoolean("isInternal", isInternal());
+		if(getName() != null)
+			nbt.putString("NAME", getName());
 		ListNBT list = new ListNBT();
 		for (RuneType child : children) {
 			if (child != null)
@@ -98,6 +104,10 @@ public class RuneContainer {
 	}
 
 	public void readNBT(CompoundNBT nbt) {
+		if(nbt.get("NAME") != null)
+			setName(nbt.getString("NAME"));
+		if(nbt.get("isInternal") != null)
+			this.setInternal(nbt.getBoolean("isInternal"));
 		children = new RuneType[this.getCapacity()];
 		setSize(RuneSize.values()[nbt.getInt("SIZE")]);
 		ListNBT list = (ListNBT) nbt.get("CHILDREN");
@@ -129,6 +139,17 @@ public class RuneContainer {
 				((ITicking) rune).doAction(rune_tile,0);//pre tick
 				((ITicking) rune).doAction(rune_tile,1);//tick
 				((ITicking) rune).doAction(rune_tile,2);//post tick
+			}
+		}
+	}
+	
+	public void tick(RuneTileEntity rune_tile, int phase)
+	{
+		for(RuneType rune : children)
+		{
+			if(rune instanceof ITicking)
+			{
+				((ITicking) rune).doAction(rune_tile,phase);
 			}
 		}
 	}
@@ -173,7 +194,7 @@ public class RuneContainer {
 	}
 
 	static final RenderPlane plane = new RenderPlane();
-	public void render(float partial_ticks, RuneTileEntity rune_tile)
+	public void render(float partial_ticks)
 	{
 		GlStateManager.pushMatrix();
 		GlStateManager.pushMatrix();
@@ -233,6 +254,43 @@ public class RuneContainer {
 			if (rune.getClass().equals(get))
 				list.add(rune);
 		return list;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public void markDirty()
+	{
+		for(RuneType rune : children)
+			if(rune instanceof IInventoryRune)
+				((IInventoryRune)rune).markDirty();
+	}
+
+	public boolean isInternal()
+	{
+		return isInternal;
+	}
+
+	public void setInternal(boolean isInternal)
+	{
+		this.isInternal = isInternal;
+	}
+
+	public SubRuneContainer getParent()
+	{
+		return parent;
+	}
+
+	public void setParent(SubRuneContainer parent)
+	{
+		this.parent = parent;
 	}
 	
 }
