@@ -1,6 +1,5 @@
 package com.maelstrom.arcanemechina.common.runic;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.Registry;
 
@@ -83,7 +82,7 @@ public class RuneHelper
 		container.addChild(input_items);
 		
 		//modify values
-		hold.setInventorySlotContents(0, new ItemStack(Items.DIAMOND_PICKAXE));
+		//hold.setInventorySlotContents(0, new ItemStack(Items.DIAMOND_PICKAXE));
 		on.setValue((short) 200);
 		off.setValue((short) 0);
 		output_items.setDirection(Direction.NORTH);
@@ -165,8 +164,18 @@ public class RuneHelper
 	public static ItemStack toItem(RuneContainer rune)
 	{
 		ItemStack item = new ItemStack(Registry.blueprint_rune);
+		return toItem(rune,item);
+	}
+	
+	public static ItemStack toItem(RuneContainer rune, ItemStack item)
+	{
+		return toItem(rune,item,false);
+	}
+	
+	public static ItemStack toItem(RuneContainer rune, ItemStack item, boolean clear_inventory)
+	{
 		item.setDamage(1);
-		CompoundNBT tag = rune.writeNBT();
+		CompoundNBT tag = rune.writeNBT(clear_inventory);
 		
 		//replace current data if exists
 		if(item.getOrCreateTag().contains("rune_data"))

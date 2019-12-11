@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -53,7 +54,14 @@ public class RenderSpecial
 			{
 				if (Screen.hasShiftDown())
 				{
-					event.getToolTip().remove(event.getToolTip().size() - 1);
+					if(Minecraft.getInstance().gameSettings.advancedItemTooltips)
+					{
+						ITextComponent temp = event.getToolTip().get(0);
+						event.getToolTip().clear();
+						event.getToolTip().add(temp);
+					}
+					else
+						event.getToolTip().remove(event.getToolTip().size() - 1);
 					tempIndex = event.getToolTip().size() + 1;
 					event.getToolTip().add(new StringTextComponent("                  "));
 					event.getToolTip().add(new StringTextComponent(""));
@@ -68,7 +76,7 @@ public class RenderSpecial
 	}
 
 	static int tempIndex = 0;
-
+	static ResourceLocation MAP = new ResourceLocation("minecraft", "textures/map/map_background.png");
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void RenderTooltipEvent(RenderTooltipEvent.PostText event)
@@ -90,7 +98,6 @@ public class RenderSpecial
 				{
 					GlStateManager.pushMatrix();
 					int offset = (tempIndex) * event.getFontRenderer().FONT_HEIGHT;
-					mc.getTextureManager().bindTexture(new ResourceLocation("minecraft", "textures/map/map_background.png"));
 
 					GlStateManager.pushMatrix();
 					Tessellator tessellator = Tessellator.getInstance();
@@ -109,6 +116,7 @@ public class RenderSpecial
 					bufferbuilder.pos((double) endX, (double) endY, 0.0D).endVertex();
 					bufferbuilder.pos((double) endX, (double) startY, 0.0D).endVertex();
 					bufferbuilder.pos((double) startX, (double) startY, 0.0D).endVertex();
+					mc.getTextureManager().bindTexture(MAP);
 					tessellator.draw();
 					GlStateManager.disableColorLogicOp();
 					GlStateManager.enableTexture();

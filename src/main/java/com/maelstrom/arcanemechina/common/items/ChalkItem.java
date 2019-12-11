@@ -7,6 +7,7 @@ import com.maelstrom.arcanemechina.common.runic.RuneHelper;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -31,7 +32,7 @@ public class ChalkItem extends Item
 		return onItemUse(context.getWorld(), context.getPos(), context.getItem(), context.getHand(),context.getPlayer(), context.getFace());
 	}
 	
-	private ActionResultType onItemUse(World world, BlockPos pos2, ItemStack itemstack, Hand hand, PlayerEntity player, Direction face)
+	private ActionResultType onItemUse(World world, BlockPos pos, ItemStack itemstack, Hand hand, PlayerEntity player, Direction face)
 	{
 		if(player instanceof FakePlayer)
 			return ActionResultType.FAIL;
@@ -40,19 +41,23 @@ public class ChalkItem extends Item
 			ItemStack drawn_rune = player.getHeldItem(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
 			if(RuneHelper.hasRune(drawn_rune))
 			{
-				BlockPos pos = pos2.offset(face);
-				world.setBlockState(pos, Registry.rune.getDefaultState());
+				BlockPos offset_position = pos.offset(face);
+				world.setBlockState(offset_position, Registry.rune.getDefaultState());
 				RuneContainer rune = RuneHelper.fromItem(drawn_rune);
 				if(rune == null)
 					rune = RuneHelper.getEmpty();
-				((RuneTileEntity)world.getTileEntity(pos)).setContainer(rune);
+				((RuneTileEntity)world.getTileEntity(offset_position)).setContainer(rune);
+				return ActionResultType.SUCCESS;
 			}
 		}
 		else
 		{
 			//show basic rune draw gui
+			if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer))
+				;//\
+			return ActionResultType.SUCCESS;
 		}
-		return ActionResultType.SUCCESS;
+		return ActionResultType.PASS;
 		
 	}
 

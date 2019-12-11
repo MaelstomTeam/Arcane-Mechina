@@ -1,0 +1,16 @@
+{
+	"type":"minecraft:crafting_shapeless",
+	"group": "predrawnrune",
+	"ingredients":
+	[
+		{
+			"item" : "arcanemechina:predrawnrune"
+		},
+		{
+			"item" : "minecraft:water_bucket"
+		}
+	],
+	"result" : {
+		"item": "arcanemechina:predrawnrune"
+	}
+}

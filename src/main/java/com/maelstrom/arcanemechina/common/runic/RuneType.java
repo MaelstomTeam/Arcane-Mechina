@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
 import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
@@ -335,7 +334,6 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					float center_y = IRuneRenderer2.getFontRenderer().FONT_HEIGHT / 2f;
 					float scaler_max = (this.getParent().isInternal() ? 0.5f : 0.8f);
 					float scaler = MathHelper.lerp(3f / (center_x), 0.1f, scaler_max);
-					ArcaneMechina.LOGGER.info(scaler);
 					GlStateManager.scaled(scaler, scaler, scaler);
 					IRuneRenderer2.getFontRenderer().drawString(text, -center_x, -center_y, 0x00000000);
 				GlStateManager.popMatrix();

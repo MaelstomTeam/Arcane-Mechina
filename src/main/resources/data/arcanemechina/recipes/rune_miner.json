@@ -1,0 +1,14 @@
+{
+	"type":"minecraft:crafting_shapeless",
+	"group": "predrawnrune",
+	"ingredients":
+	[
+		{
+			"item" : "arcanemechina:predrawnrune"
+		}
+	],
+	"result" : {
+		"item": "arcanemechina:predrawnrune",
+		"nbt" : "{display:{Name:'{\"translate\":\"item.arcanemechina.predrawnrune.preset.mining_rune\"}'},Damage:1,rune_data:{isInternal:0b,SIZE:1,CHILDREN:[{RuneID:2s,data:{counter:0},pos:{X:8.0f,Y:13.0f},SCALE:0.33f,uuid:0,connections:[{uuid:1}]},{RuneID:3s,data:{STATE:0b,COUNTER:0},pos:{X:8.0f,Y:8.0f},SCALE:0.33f,uuid:1,connections:[{uuid:2},{uuid:3}]},{RuneID:1s,data:{value:200s},pos:{X:4.0f,Y:5.0f},SCALE:0.33f,uuid:2,connections:[]},{RuneID:1s,data:{value:0s},pos:{X:12.0f,Y:5.0f},SCALE:0.33f,uuid:3,connections:[]},{RuneID:4s,data:{input:0b,maxPull:1,direction:2},pos:{X:0.0f,Y:0.0f},SCALE:0.33f,uuid:4,connections:[{uuid:0}]},{RuneID:4s,data:{input:1b,maxPull:1,direction:3},pos:{X:0.0f,Y:0.0f},SCALE:0.33f,uuid:5,connections:[{uuid:0}]}]}}"
+	}
+}

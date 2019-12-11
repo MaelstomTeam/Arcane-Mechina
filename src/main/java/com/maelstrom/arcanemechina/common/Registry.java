@@ -14,6 +14,7 @@ import com.maelstrom.snowcone.common.itemgroups.CustomItemGroup;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -78,13 +79,17 @@ public class Registry
 	{
 		rune = (RuneBlock) new RuneBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops()).setRegistryName(ArcaneMechina.MODID, "rune");
 		event.getRegistry().registerAll(dustCrystalOre, rune);
-
 	}
 
 	@SubscribeEvent
 	public static void onRegisterTileEntityTypes(@Nonnull final RegistryEvent.Register<TileEntityType<?>> event)
 	{
 		event.getRegistry().registerAll(RUNE_TILE = setup(TileEntityType.Builder.create(RuneTileEntity::new, rune).build(null), "rune"));
+	}
+	
+	@SubscribeEvent
+	public static void onContainerRegister(RegistryEvent.Register<ContainerType<?>> event)
+	{
 	}
 
 	public static void RegisterModels()
@@ -109,7 +114,6 @@ public class Registry
 
 	/**
 	 * Performs setup on a registry entry
-	 *
 	 * @param registryName The full registry name of the entry
 	 */
 	@Nonnull
