@@ -1,5 +1,7 @@
 package com.maelstrom.arcanemechina.common.blocks;
 
+import javax.annotation.Nullable;
+
 import com.maelstrom.arcanemechina.common.Registry;
 import com.maelstrom.arcanemechina.common.runic.RuneContainer;
 import com.maelstrom.arcanemechina.common.runic.RuneHelper;
@@ -15,10 +17,12 @@ import net.minecraft.block.ContainerBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -30,21 +34,53 @@ public class RuneBlock extends ContainerBlock
 
 	public static final BooleanProperty canPower 	   = BooleanProperty.create("can_power");
 	public static final BooleanProperty canPowerStrong = BooleanProperty.create("can_power_strong");
+	public static final EnumProperty<SPECIAL_RUNE>    specialRune    = EnumProperty.create("other_rune", SPECIAL_RUNE.class);
+	
+	public static enum SPECIAL_RUNE implements IStringSerializable
+	{
+		NONE("none"),
+		CUSTOM("custom"),
+		LARGE_TRANSMUTE("large_transmute");
+		
+		
+		
+		String name;
+		SPECIAL_RUNE(String name)
+		{
+			this.name = name;
+		}
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+		
+	}
 	
 	public RuneBlock(Properties properties)
 	{
 		super(properties);
-		this.setDefaultState(getDefaultState().with(canPower, false));
+		this.setDefaultState(getDefaultState().with(canPower, false).with(specialRune,SPECIAL_RUNE.NONE));
 	}
+	
+    @Nullable
+	public TileEntity createTileEntity(BlockState state, IBlockReader world)
+    {
+        if (state.get(specialRune) == SPECIAL_RUNE.CUSTOM)
+            return Registry.RUNE_TILE.create();
+        return null;
+    }
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader worldIn)
 	{
-		return Registry.RUNE_TILE.create();
+		return null;
 	}
 
 	public BlockRenderType getRenderType(BlockState state)
 	{
+		if(state.get(specialRune) == SPECIAL_RUNE.CUSTOM)
+			return BlockRenderType.INVISIBLE;
 		return BlockRenderType.MODEL;
 	}
 
@@ -123,7 +159,7 @@ public class RuneBlock extends ContainerBlock
 
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
 	{
-		builder.add(canPower, canPowerStrong);
+		builder.add(canPower, canPowerStrong, specialRune);
 	}
 	
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)

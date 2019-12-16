@@ -2,6 +2,7 @@ package com.maelstrom.arcanemechina.common.items;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.Registry;
+import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
 import com.maelstrom.arcanemechina.common.runic.RuneContainer;
 import com.maelstrom.arcanemechina.common.runic.RuneHelper;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
@@ -42,7 +43,7 @@ public class ChalkItem extends Item
 			if(RuneHelper.hasRune(drawn_rune))
 			{
 				BlockPos offset_position = pos.offset(face);
-				world.setBlockState(offset_position, Registry.rune.getDefaultState());
+				world.setBlockState(offset_position, Registry.rune.getDefaultState().with(RuneBlock.specialRune, RuneBlock.SPECIAL_RUNE.CUSTOM));
 				RuneContainer rune = RuneHelper.fromItem(drawn_rune);
 				if(rune == null)
 					rune = RuneHelper.getEmpty();
