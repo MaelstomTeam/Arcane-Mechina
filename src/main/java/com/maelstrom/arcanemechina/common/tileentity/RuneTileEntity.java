@@ -15,6 +15,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.extensions.IForgeTileEntity;
 
@@ -105,11 +106,23 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 	{
 		super.markDirty();
 		world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 2);//send update to client
+		setShape(null);
 	}
 
 	public RuneContainer getRuneContainer()
 	{
 		return rune;
+	}
+	
+	
+	private VoxelShape shape;
+	public VoxelShape getShape()
+	{
+		return shape;
+	}
+	public void setShape(VoxelShape shape)
+	{
+		this.shape = shape;
 	}
 
 	public void setContainer(RuneContainer rune2)

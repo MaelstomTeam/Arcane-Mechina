@@ -1038,10 +1038,10 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		public void tick(World world, BlockPos blockPos, RuneTileEntity entity)
 		{
 			
-			if(!isInput == world.getBlockState(blockPos).get(RuneBlock.canPower))
+			if(!isInput == world.getBlockState(blockPos).get(RuneBlock.canPowerWeak))
 			{
 				BlockState state = world.getBlockState(blockPos);
-				BlockState newState = state.with(RuneBlock.canPower, isInput);
+				BlockState newState = state.with(RuneBlock.canPowerWeak, isInput);
 				world.setBlockState(blockPos, newState, 2);
 			}
 			if(isInput)
