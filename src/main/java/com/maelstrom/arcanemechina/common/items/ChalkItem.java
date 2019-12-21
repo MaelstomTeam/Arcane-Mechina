@@ -9,6 +9,7 @@ import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -18,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ChalkItem extends Item
 {
@@ -53,9 +55,17 @@ public class ChalkItem extends Item
 		}
 		else
 		{
-			//show basic rune draw gui
-			if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer))
-				;//\
+
+			
+			BlockPos offset_position = pos.offset(face);
+			if(world.getBlockState(pos).getBlock() == Registry.rune)
+				offset_position = pos;
+			else {
+			world.setBlockState(offset_position, Registry.rune.getDefaultState().with(RuneBlock.specialRune, RuneBlock.SPECIAL_RUNE.CUSTOM));
+			((RuneTileEntity)world.getTileEntity(offset_position)).setContainer(new RuneContainer());
+			}
+			if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer) && world.getTileEntity(offset_position) instanceof RuneTileEntity)
+				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider)world.getTileEntity(offset_position), offset_position);
 			return ActionResultType.SUCCESS;
 		}
 		return ActionResultType.PASS;

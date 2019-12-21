@@ -8,7 +8,7 @@ import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
 import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IInventoryRune;
-import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IRuneRenderer2;
+import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IRuneRenderer;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.ITicking;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.maelstrom.snowcone.common.RomanNumeral;
@@ -40,7 +40,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.FakePlayer;
 
-public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
+public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 	static final RenderPlane plane = new RenderPlane();
 	// static helpers and such
 
@@ -228,8 +228,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 							GlStateManager.scaled(0.1, 0.1, 0.1);
 							GlStateManager.translated(16 * x+19, 0, 16 * y+18);
 							GlStateManager.enableRescaleNormal();
-							IRuneRenderer2.renderItem(item);
-							IRuneRenderer2.bindTexture(hold);
+							IRuneRenderer.renderItem(item);
+							IRuneRenderer.bindTexture(hold);
 							plane.render();
 							GlStateManager.popMatrix();
 						}
@@ -242,7 +242,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			GlStateManager.popMatrix();
 			GlStateManager.pushMatrix();
 				GlStateManager.scaled(getScale(), getScale(), getScale());
-				IRuneRenderer2.bindTexture(craft);
+				IRuneRenderer.bindTexture(craft);
 				plane.render();
 			GlStateManager.popMatrix();
 			GlStateManager.popMatrix();
@@ -330,16 +330,16 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 					GlStateManager.translated(8f, 0, 7.25f);
 					GlStateManager.rotated(90, 1, 0, 0);
 					GlStateManager.rotated(90, 0, 0, 1);
-					float center_x = getStringWidth(IRuneRenderer2.getFontRenderer(),text) / 2f;
-					float center_y = IRuneRenderer2.getFontRenderer().FONT_HEIGHT / 2f;
+					float center_x = getStringWidth(IRuneRenderer.getFontRenderer(),text) / 2f;
+					float center_y = IRuneRenderer.getFontRenderer().FONT_HEIGHT / 2f;
 					float scaler_max = (this.getParent().isInternal() ? 0.5f : 0.8f);
 					float scaler = MathHelper.lerp(3f / (center_x), 0.1f, scaler_max);
 					GlStateManager.scaled(scaler, scaler, scaler);
-					IRuneRenderer2.getFontRenderer().drawString(text, -center_x, -center_y, 0x00000000);
+					IRuneRenderer.getFontRenderer().drawString(text, -center_x, -center_y, 0x00000000);
 				GlStateManager.popMatrix();
 			GlStateManager.translated(0, 0, 15.5);
 			GlStateManager.rotated(90, 0, 1, 0);
-			IRuneRenderer2.bindTexture(varible);
+			IRuneRenderer.bindTexture(varible);
 			plane.render();
 			GlStateManager.popMatrix();
 		}
@@ -428,11 +428,11 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 				if (item_list.get(0) != ItemStack.EMPTY) {
 					GlStateManager.pushMatrix();
 					GlStateManager.translated(.3, 0, .3);
-					IRuneRenderer2.renderItem(item_list.get(0));
+					IRuneRenderer.renderItem(item_list.get(0));
 					GlStateManager.popMatrix();
 				}
 			GlStateManager.pushMatrix();
-				IRuneRenderer2.bindTexture(hold);
+				IRuneRenderer.bindTexture(hold);
 				plane.render();
 			GlStateManager.popMatrix();
 			GlStateManager.popMatrix();
@@ -498,6 +498,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void tick(World world, BlockPos blockPos, RuneTileEntity entity) {
+			if(entity != null)
 			if (hasItem() && hasToggle() && world instanceof ServerWorld) {
 				if (this.getStackInSlot(0).getItem() == Items.CRAFTING_TABLE)
 				{
@@ -652,9 +653,9 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			GlStateManager.scaled(getScale(), getScale(), getScale());
 			GlStateManager.pushMatrix();
 			if (this.state)
-				IRuneRenderer2.bindTexture(toggle_on);
+				IRuneRenderer.bindTexture(toggle_on);
 			else
-				IRuneRenderer2.bindTexture(toggle_off);
+				IRuneRenderer.bindTexture(toggle_off);
 			plane.render();
 			GlStateManager.popMatrix();
 		}
@@ -805,9 +806,9 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 			GlStateManager.pushMatrix();
 			GlStateManager.scaled(getScale(), getScale(), getScale());
 			if (input)
-				IRuneRenderer2.bindTexture(insert_to_rune);
+				IRuneRenderer.bindTexture(insert_to_rune);
 			else
-				IRuneRenderer2.bindTexture(extract_from_rune);
+				IRuneRenderer.bindTexture(extract_from_rune);
 			plane.render();
 			GlStateManager.popMatrix();
 
@@ -835,6 +836,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 
 		@Override
 		public void posttick(World world, BlockPos blockPos, RuneTileEntity entity) {
+			if(entity != null)
 			if (this.hasInventoryRune())
 			{
 				if(this.getParent().isInternal() && !this.hasInterRuneConnection())
@@ -1037,16 +1039,18 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer2 {
 		@Override
 		public void tick(World world, BlockPos blockPos, RuneTileEntity entity)
 		{
-			
-			if(!isInput == world.getBlockState(blockPos).get(RuneBlock.canPowerWeak))
+			if(entity != null)
 			{
-				BlockState state = world.getBlockState(blockPos);
-				BlockState newState = state.with(RuneBlock.canPowerWeak, isInput);
-				world.setBlockState(blockPos, newState, 2);
-			}
-			if(isInput)
-			{
-				this.redstone_power = world.getRedstonePower(blockPos, side);
+				if(!isInput == world.getBlockState(blockPos).get(RuneBlock.canPowerWeak))
+				{
+					BlockState state = world.getBlockState(blockPos);
+					BlockState newState = state.with(RuneBlock.canPowerWeak, isInput);
+					world.setBlockState(blockPos, newState, 2);
+				}
+				if(isInput)
+				{
+					this.redstone_power = world.getRedstonePower(blockPos, side);
+				}
 			}
 		}
 		@Override

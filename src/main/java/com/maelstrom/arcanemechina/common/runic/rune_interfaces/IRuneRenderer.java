@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 @SuppressWarnings("deprecation")
-public interface IRuneRenderer2 {
+public interface IRuneRenderer {
 
 	public static void bindTexture(ResourceLocation location) {
 		TextureManager texturemanager = Minecraft.getInstance().textureManager;

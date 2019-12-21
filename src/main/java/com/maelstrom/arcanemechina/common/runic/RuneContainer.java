@@ -7,7 +7,7 @@ import java.util.List;
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
 import com.maelstrom.arcanemechina.common.runic.RuneType.SubRuneContainer;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IInventoryRune;
-import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IRuneRenderer2;
+import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IRuneRenderer;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.ITicking;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -250,18 +250,18 @@ public class RuneContainer
 
 			}
 		GlStateManager.scaled(getRuneScale(), getRuneScale(), getRuneScale());
-		IRuneRenderer2.bindTexture(getRuneResource());
+		IRuneRenderer.bindTexture(getRuneResource());
 		plane.render();
 		GlStateManager.popMatrix();
 		for (RuneType rune : children)
 			if (rune != null)
 			{
-				if (rune instanceof IRuneRenderer2)
+				if (rune instanceof IRuneRenderer)
 				{
 					GlStateManager.pushMatrix();
 					GlStateManager.translated(1, 0, 1);
 					GlStateManager.translated(-1, 0, -0.5);
-					((IRuneRenderer2) rune).render(partial_ticks);
+					((IRuneRenderer) rune).render(partial_ticks);
 					GlStateManager.popMatrix();
 				}
 			}

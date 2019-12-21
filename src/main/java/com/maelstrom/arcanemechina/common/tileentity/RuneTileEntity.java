@@ -2,12 +2,18 @@ package com.maelstrom.arcanemechina.common.tileentity;
 
 import javax.annotation.Nullable;
 
+import com.maelstrom.arcanemechina.client.gui.RuneCraftingGui;
 import com.maelstrom.arcanemechina.common.Registry;
+import com.maelstrom.arcanemechina.common.container.RuneDrawingContainer;
 import com.maelstrom.arcanemechina.common.runic.RuneContainer;
 import com.maelstrom.arcanemechina.common.runic.RuneHelper;
 import com.maelstrom.arcanemechina.common.runic.RuneType;
 import com.maelstrom.arcanemechina.common.runic.RuneType.HoldingRune;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -16,10 +22,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.extensions.IForgeTileEntity;
 
-public class RuneTileEntity extends TileEntity implements ITickableTileEntity, IForgeTileEntity {
+public class RuneTileEntity extends TileEntity implements ITickableTileEntity, IForgeTileEntity, INamedContainerProvider {
 
 	public RuneTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn);
@@ -129,6 +136,18 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 	{
 		rune = rune2;
 		this.markDirty();
+	}
+
+	@Override
+	public Container createMenu(int id, PlayerInventory inv, PlayerEntity player)
+	{
+		return new RuneDrawingContainer(id,world,pos,inv,player);
+	}
+
+	@Override
+	public ITextComponent getDisplayName()
+	{
+		return RuneCraftingGui.title;
 	}
 
 }
