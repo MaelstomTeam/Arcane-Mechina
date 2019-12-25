@@ -1,32 +1,21 @@
 package com.maelstrom.arcanemechina.common;
 
 import java.util.HashMap;
-import java.util.Optional;
 
-import com.maelstrom.arcanemechina.common.inventory.DummyCraftingInventory;
-import com.maelstrom.snowcone.common.WorldUtilities;
-
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ICraftingRecipe;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
 public class RecipeHelper {
-	private static WorkbenchContainer container;
-	private static HashMap<ItemStack, ItemStack[][]> helper = new HashMap<ItemStack, ItemStack[][]>();
+	private static HashMap<ItemStack, CraftingRecipeCache> helper = new HashMap<ItemStack, CraftingRecipeCache>();
 	public static CompoundNBT empty3x3 = createFromList(
-			new ItemStack[][] { new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY },
-				new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY },
-				new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY } });
+			new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
+					ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
+					ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY });
 	public static Item reference_item = Registry.blueprint_recipe;
-	public static ItemStack createFromListToItemStack(ItemStack[][] list)
+	public static ItemStack createFromListToItemStack(ItemStack[] list)
 	{
 		ItemStack output = new ItemStack(reference_item, 1);
 		output.getOrCreateTag().put("recipe_data",createFromList(list));
@@ -35,40 +24,39 @@ public class RecipeHelper {
 	}
 
 	// has to be a perfect sublist, no xxx,xx,x must all be same size
-	public static CompoundNBT createFromList(ItemStack[][] list) {
+	public static CompoundNBT createFromList(ItemStack[] list) {
 		CompoundNBT recipe_data = new CompoundNBT();
 		
 		ListNBT list_nbt = new ListNBT();
-		for (int y2 = 0; y2 < 3; y2++) {
-			for (int x2 = 0; x2 < 3; x2++) {
-				try {
-					if (list[y2] != null && list[y2][x2] != null)
-						list_nbt.add(list[y2][x2].write(new CompoundNBT()));
-					else
-						list_nbt.add(ItemStack.EMPTY.write(new CompoundNBT()));
-				}
-				catch(Exception e)
-				{
+		for (int slot = 0; slot < 9; slot++) {
+			try {
+				if (list[slot] != null && list[slot] != null)
+					list_nbt.add(list[slot].write(new CompoundNBT()));
+				else
 					list_nbt.add(ItemStack.EMPTY.write(new CompoundNBT()));
-				}
+			}
+			catch(Exception e)
+			{
+				list_nbt.add(ItemStack.EMPTY.write(new CompoundNBT()));
 			}
 		}
 		recipe_data.put("recipe", list_nbt);
 		return recipe_data;
 	}
 
-	public static ItemStack[][] getFromNBT(CompoundNBT tag) {
+	public static ItemStack[] getFromItem(ItemStack item) {
+		if(isCraftingItem(item))
+			return getFromNBT(item.getTag());
+		return new ItemStack[] {ItemStack.EMPTY,ItemStack.EMPTY,ItemStack.EMPTY,ItemStack.EMPTY,ItemStack.EMPTY,ItemStack.EMPTY,ItemStack.EMPTY,ItemStack.EMPTY,ItemStack.EMPTY};
+	}
+	public static ItemStack[] getFromNBT(CompoundNBT tag) {
 		if(tag != null)
 			if (tag.get("recipe_data") != null && tag.getCompound("recipe_data").get("recipe") != null) {
-				ItemStack[][] itemstacks = new ItemStack[3][3];
+				ItemStack[] itemstacks = new ItemStack[9];
 				ListNBT list = (ListNBT) tag.getCompound("recipe_data").get("recipe");
 	
-				for (int y2 = 0; y2 < 3; y2++) {
-					for (int x2 = 0; x2 < 3; x2++) {
-						if (itemstacks[x2] == null)
-							itemstacks[x2] = new ItemStack[3];
-						itemstacks[x2][y2] = ItemStack.read(list.getCompound(x2 + (y2 * 3)));
-					}
+				for (int slot = 0; slot < 9; slot++) {
+					itemstacks[slot] = ItemStack.read(list.getCompound(slot));
 				}
 				return itemstacks;
 			}
@@ -76,57 +64,16 @@ public class RecipeHelper {
 
 	}
 
-	public static ICraftingRecipe getRecipe(World world, ItemStack item) {
-		ItemStack[][] itemCraft = helper.get(item);
-		if (itemCraft != null) {
+	public static CraftingRecipeCache getRecipe(World world, ItemStack item) {
+		CraftingRecipeCache cachedRecipe = helper.get(item);
+		if (cachedRecipe == null) {
+			cachedRecipe = new CraftingRecipeCache();
+			helper.put(item, cachedRecipe);
+			ItemStack[] items = getFromItem(item);
+			if(items != null)
+				cachedRecipe.setRecipe(items);
 		}
-		else {
-			itemCraft = getFromNBT(item.getOrCreateTag());
-			helper.put(item, itemCraft);
-		}
-		
-		if(world instanceof ServerWorld)
-		{
-			if (container == null)
-				container = new WorkbenchContainer(0,
-						WorldUtilities.getFakePlayer((ServerWorld)world).inventory);
-			for (int i = 0; i < container.getSize(); i++)
-				container.putStackInSlot(i, ItemStack.EMPTY);
-			CraftingInventory crafting_inventory = new CraftingInventory(container, 3, 3);
-			for (int x1 = 0; x1 < 3; x1++) {
-				for (int y1 = 0; y1 < 3; y1++) {
-					crafting_inventory.setInventorySlotContents((x1 + y1 * 3), itemCraft[x1][y1]);
-				}
-			}
-			Optional<ICraftingRecipe> s = world.getServer().getRecipeManager().getRecipe(IRecipeType.CRAFTING,
-					crafting_inventory, world);
-			if (s.isPresent())
-				return s.get();
-		}
-		else {
-			if(itemCraft == null)
-				return null;
-			for (int i = 0; i < 9; i++)
-				DummyCraftingInventory.instance.setInventorySlotContents(i, ItemStack.EMPTY);
-			for (int x1 = 0; x1 < 3; x1++) {
-				for (int y1 = 0; y1 < 3; y1++) {
-					if(itemCraft.length < x1 && itemCraft[x1].length < y1)
-					{
-						ItemStack temp = itemCraft[x1][y1];
-						DummyCraftingInventory.instance.setInventorySlotContents((x1 + y1 * 3), temp);
-					}
-				}
-			}
-			for(IRecipe<?> recipe : world.getRecipeManager().getRecipes())
-				if(recipe instanceof ICraftingRecipe)
-				{
-					if(((ICraftingRecipe)recipe).matches(DummyCraftingInventory.instance, world))
-					{
-						return (ICraftingRecipe) recipe;
-					}
-				}
-		}
-		return null;
+		return cachedRecipe;
 
 	}
 
@@ -136,5 +83,8 @@ public class RecipeHelper {
 			return true;
 		return false;
 	}
+    public static boolean isItemStackConsideredEqual(ItemStack result, ItemStack itemstack1) {
+        return !itemstack1.isEmpty() && itemstack1.getItem() == result.getItem() && (result.getDamage() == itemstack1.getDamage()) && ItemStack.areItemStackTagsEqual(result, itemstack1);
+    }
 
 }

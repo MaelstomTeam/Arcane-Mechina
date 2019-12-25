@@ -123,10 +123,9 @@ public class RuneHelper
 		ItemStack stone_reference = new ItemStack(Items.COBBLESTONE);
 		hold.setInventorySlotContents(0, new ItemStack(Items.CRAFTING_TABLE));
 		ItemStack item = RecipeHelper.createFromListToItemStack(
-				new ItemStack[][]{
-					new ItemStack[] {stone_reference,stone_reference,stone_reference},
-					new ItemStack[] {stone_reference,ItemStack.EMPTY,stone_reference},
-					new ItemStack[] {stone_reference,stone_reference,stone_reference}
+				new ItemStack[]{	stone_reference,stone_reference,stone_reference,
+									stone_reference,ItemStack.EMPTY,stone_reference,
+									stone_reference,stone_reference,stone_reference
 				});
 		recipe_rune.setInventorySlotContents(0, item);
 		

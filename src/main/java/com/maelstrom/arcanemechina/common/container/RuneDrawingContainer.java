@@ -1,6 +1,11 @@
 package com.maelstrom.arcanemechina.common.container;
 
 import com.maelstrom.arcanemechina.common.Registry;
+import com.maelstrom.arcanemechina.common.runic.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.RuneType;
+import com.maelstrom.arcanemechina.common.runic.RuneType.CraftingContainerRune;
+import com.maelstrom.arcanemechina.common.runic.RuneType.HoldingRune;
+import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -44,6 +49,17 @@ public class RuneDrawingContainer extends Container
 		for (int i1 = 0; i1 < 9; ++i1)
 		{
 			this.addSlot(new Slot(inv, i1, x + i1 * 18, y + 58));
+		}
+		RuneContainer container = ((RuneTileEntity)world.getTileEntity(pos)).getRuneContainer();
+		for(RuneType temp : container.getRune(CraftingContainerRune.class))
+		{
+			CraftingContainerRune rune = (CraftingContainerRune) temp;
+			this.addSlot(new Slot(rune, 0, (int)rune.getPosition().x * 5 + 40, (int)rune.getPosition().y * 5 - 2));
+		}
+		for(RuneType temp : container.getRune(HoldingRune.class))
+		{
+			HoldingRune rune = (HoldingRune) temp;
+			this.addSlot(new Slot(rune, 0, (int)rune.getPosition().x * 5 + 40, (int)rune.getPosition().y * 5 - 2));
 		}
 	}
 

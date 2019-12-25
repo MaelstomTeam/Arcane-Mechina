@@ -3,6 +3,7 @@ package com.maelstrom.arcanemechina.server;
 import com.maelstrom.arcanemechina.common.IProxy;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.world.World;
 
 public class ServerProxy implements IProxy
@@ -23,6 +24,12 @@ public class ServerProxy implements IProxy
 	public PlayerEntity getClientPlayer()
 	{
 		throw new IllegalStateException("Only run this on the client!");
+	}
+
+	@Override
+	public RecipeManager getRecipeManager(World world)
+	{
+		return world.getServer().getRecipeManager();
 	}
 
 }

@@ -240,7 +240,7 @@ public class RuneContainer
 			case LARGE:
 				break;
 			case MEDIUM:
-				GlStateManager.translated(-16f / getRuneScale() / 2f, 0, -16f / getRuneScale() / 2f);
+				GlStateManager.translated(-8f / 1.5f, 0, -8f / 1.5f);
 				break;
 			case SMALL:
 				GlStateManager.translated(-.5, 0, -.5);

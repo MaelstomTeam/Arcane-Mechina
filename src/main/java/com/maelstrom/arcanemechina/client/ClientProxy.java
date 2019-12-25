@@ -9,6 +9,7 @@ import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
@@ -35,4 +36,19 @@ public class ClientProxy implements IProxy
 		return Minecraft.getInstance().player;
 	}
 
+	@Override
+	public RecipeManager getRecipeManager(World world)
+	{
+		return world.getRecipeManager();
+	}
+
+
+	static boolean forceNoRender = false;
+	public static void Toggle() {
+		forceNoRender = !forceNoRender;
+	}
+	public static boolean getRenderer()
+	{
+		return forceNoRender;
+	}
 }

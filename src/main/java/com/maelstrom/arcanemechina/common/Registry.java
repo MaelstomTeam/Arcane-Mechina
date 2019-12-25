@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.google.common.base.Preconditions;
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.client.ClientProxy;
-import com.maelstrom.arcanemechina.client.gui.RuneCraftingGui;
 import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
 import com.maelstrom.arcanemechina.common.container.RuneDrawingContainer;
 import com.maelstrom.arcanemechina.common.items.ChalkItem;
@@ -18,7 +17,6 @@ import com.maelstrom.snowcone.common.itemgroups.CustomItemGroup;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;

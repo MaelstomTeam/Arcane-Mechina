@@ -2,7 +2,7 @@ modLoader="javafml"
 loaderVersion="[28,)"
 [[mods]]
 modId="arcanemechina"
-version="0.1.1.10b"
+version="0.1.1.13"
 displayName="Arcane Mechina"
 logoFile="logo.png"
 description='''

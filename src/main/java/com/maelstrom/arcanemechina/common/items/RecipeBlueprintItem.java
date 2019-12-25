@@ -28,7 +28,8 @@ public class RecipeBlueprintItem extends NoDamageItem
 		if (this.isInGroup(group))
 		{
 			items.add(new ItemStack(this));
-			items.add(RecipeHelper.createFromListToItemStack(new ItemStack[][] { new ItemStack[] { new ItemStack(Items.OAK_PLANKS) }, new ItemStack[] { new ItemStack(Items.OAK_PLANKS) } }).setDisplayName(new TranslationTextComponent(this.getTranslationKey() + ".preset.stick")));
+			items.add(RecipeHelper.createFromListToItemStack(new ItemStack[] { new ItemStack(Items.OAK_PLANKS), ItemStack.EMPTY, ItemStack.EMPTY,
+															                   new ItemStack(Items.OAK_PLANKS) }).setDisplayName(new TranslationTextComponent(this.getTranslationKey() + ".preset.stick")));
 		}
 
 	}
