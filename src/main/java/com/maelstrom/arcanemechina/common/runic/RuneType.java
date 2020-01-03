@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
 import com.maelstrom.arcanemechina.common.CraftingRecipeCache;
 import com.maelstrom.arcanemechina.common.CraftingRecipeCache.CompressedIngredient;
@@ -21,11 +22,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -498,13 +496,6 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 		}
 
 		private CraftingContainerRune craftReference;
-
-	    private CraftingInventory craftingInventory = new CraftingInventory(new Container(null, -1) {
-	        @Override
-	        public boolean canInteractWith(PlayerEntity var1) {
-	            return false;
-	        }
-	    }, 3, 3);
 	    
 		@Override
 		public void tick(World world, BlockPos blockPos, RuneTileEntity entity) {
@@ -562,6 +553,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 								{
 									addItem(cachedRecipe.getResultCopy(),i);
 									crafted = true;
+									ArcaneMechina.LOGGER.info(crafted);
 									break;
 								}
 							}
@@ -911,7 +903,9 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 				{
 					IInventoryRune rune = (IInventoryRune) this.getParent().getParent().getInventory(this.input);
 					if(rune != null)
+					{
 						transfer(rune);
+					}
 				}
 				else {
 					//VOODOO MAGIC THAT MIGHT NOT WORK!!
@@ -937,8 +931,8 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 								}
 								//don't export anything from the crafting rune as it is required to get a crafting recipe
 								//might remove as one might want to use this to cycle recipes in the main crafter
-								else if(getInventoryRune() instanceof CraftingContainerRune)
-									;
+								else if(getInventoryRune() instanceof CraftingContainerRune){
+								}
 								else
 								{
 									if (!getInventoryRune().getStackInSlot(i).isEmpty()) {
@@ -1010,28 +1004,35 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 				if(getInventoryRune() instanceof HoldingRune)
 				{
 					for (int i = 1; i < getInventoryRune().getSizeInventory(); i++)
-						if (!getInventoryRune().getStackInSlot(i).isEmpty()) {
+					{
+						if (getInventoryRune().getStackInSlot(i).isEmpty()) {
+							ArcaneMechina.LOGGER.info(getInventoryRune().getStackInSlot(i));
 							index_rune = i;
 							break;
 						}
+					}
 				}
 				else
 				{
 					for (int i = 0; i < getInventoryRune().getSizeInventory(); i++)
-						if (!getInventoryRune().getStackInSlot(i).isEmpty()) {
+					{
+						if (getInventoryRune().getStackInSlot(i).isEmpty()) {
 							index_rune = i;
 							break;
 						}
+					}
 				}
 				if(index_rune == -1)
+				{
 					return;
-					for (int i = 0; i < inventory.getSizeInventory(); i++)
-					{
-						if (getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(index_rune), inventory.getStackInSlot(i))) {
-							index_inventory = i;
-							break;
-						}
+				}
+				for (int i = 0; i < inventory.getSizeInventory(); i++)
+				{
+					if (getInventoryRune().canAddItem(getInventoryRune().getStackInSlot(index_rune), inventory.getStackInSlot(i))) {
+						index_inventory = i;
+						break;
 					}
+				}
 				if(index_inventory == -1)
 					return;
 				if(getInventoryRune().getStackInSlot(index_rune).isEmpty() && inventory.getStackInSlot(index_inventory).isEmpty())
@@ -1199,7 +1200,7 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 			else
 			{
 				if(hasOutput())
-					return getOutput();
+					return (IInventoryRune) this.getParent().getLink(getListUUID().get(1));
 			}
 			return null;
 		}

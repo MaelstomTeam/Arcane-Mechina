@@ -23,7 +23,7 @@ public class RuneHelper
 		RuneType.HoldingRune holder_output_miner_input_crafter = new RuneType.HoldingRune();
 		RuneType.HoldingRune holder_output = new RuneType.HoldingRune();
 		RuneType.HoldingRune holder_input_miner = new RuneType.HoldingRune();
-		
+
 		RuneType.IORune      input_items  = new RuneType.IORune();
 		RuneType.IORune      output_items = new RuneType.IORune();
 		
@@ -39,8 +39,12 @@ public class RuneHelper
 		crafter_rune.addLink(holder_output);//out
 		miner_rune.addLink(holder_input_miner);//in
 		miner_rune.addLink(holder_output_miner_input_crafter);//out
+
 		input_items.addLink(holder_input_miner);
 		input_items.setDirection(Direction.NORTH);
+		input_items.setInput(true);
+
+		
 		output_items.addLink(holder_output);
 		output_items.setInput(false);
 		output_items.setDirection(Direction.SOUTH);
@@ -48,8 +52,8 @@ public class RuneHelper
 
 		crafter_rune.setPosition(10, 13);
 		miner_rune.setPosition(10, 3);
-		holder_output_miner_input_crafter.setPosition(2, 1);
-		holder_input_miner.setPosition(2, 7);
+		holder_input_miner.setPosition(2, 1);
+		holder_output_miner_input_crafter.setPosition(2, 7);
 		holder_output.setPosition(2, 13);
 		
 		
@@ -138,9 +142,10 @@ public class RuneHelper
 		
 		off.setValue((short) 1);
 		on.setValue((short) 1);
-		output_items.setDirection(Direction.EAST);
+		output_items.setDirection(Direction.NORTH);
 		output_items.setInput(false);
-		input_items .setDirection(Direction.WEST);
+		input_items .setDirection(Direction.SOUTH);
+		output_items.setInput(true);
 		
 		//link to other runes
 		hold.addLink(toggle);

@@ -61,8 +61,8 @@ public class ChalkItem extends Item
 			if(world.getBlockState(pos).getBlock() == Registry.rune)
 				offset_position = pos;
 			else {
-			world.setBlockState(offset_position, Registry.rune.getDefaultState().with(RuneBlock.specialRune, RuneBlock.SPECIAL_RUNE.CUSTOM));
-			((RuneTileEntity)world.getTileEntity(offset_position)).setContainer(new RuneContainer());
+				world.setBlockState(offset_position, Registry.rune.getDefaultState().with(RuneBlock.specialRune, RuneBlock.SPECIAL_RUNE.CUSTOM));
+				((RuneTileEntity)world.getTileEntity(offset_position)).setContainer(new RuneContainer());
 			}
 			if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer) && world.getTileEntity(offset_position) instanceof RuneTileEntity)
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider)world.getTileEntity(offset_position), offset_position);

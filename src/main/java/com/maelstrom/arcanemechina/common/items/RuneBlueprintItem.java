@@ -62,7 +62,11 @@ public class RuneBlueprintItem extends NoDamageItem
 					fullDetails += rune.getName() + " | ";
 				}
 			}
-			StringTextComponent text = new StringTextComponent(fullDetails.substring(0, fullDetails.length() - 3));
+			StringTextComponent text;
+			if(fullDetails.length() > 3)
+				text = new StringTextComponent(fullDetails.substring(0, fullDetails.length() - 3));
+			else
+				text = new StringTextComponent(fullDetails);
 			text.getStyle().setColor(TextFormatting.DARK_GRAY);
 			tooltip.add(text);
 		}
