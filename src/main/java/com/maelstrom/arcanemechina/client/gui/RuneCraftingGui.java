@@ -103,7 +103,7 @@ public class RuneCraftingGui extends ContainerScreen<RuneDrawingContainer> imple
 				&& this.hoveredSlot.getStack().getItem() == Items.CRAFTING_TABLE)
 		{
 			GlStateManager.disableDepthTest();
-			ItemStack item = ((HoldingRune)rune_instance.getRune(RuneType.HoldingRune.class).get(0)).getStackInSlot(1);
+			ItemStack item = ((HoldingRune)rune_instance.getRune(RuneType.HoldingRune.class).get(0)).getStackInSlot(0);
 			IRuneRenderer.getItemRenderer().renderItemIntoGUI(item, hoveredSlot.xPos, hoveredSlot.yPos);
 			IRuneRenderer.getItemRenderer().renderItemAndEffectIntoGUI(item, hoveredSlot.xPos, hoveredSlot.yPos);
 			GlStateManager.enableDepthTest();
