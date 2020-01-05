@@ -3,8 +3,8 @@ package com.maelstrom.arcanemechina.common.items;
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.Registry;
 import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
+import com.maelstrom.arcanemechina.common.helper.RuneHelper;
 import com.maelstrom.arcanemechina.common.runic.RuneContainer;
-import com.maelstrom.arcanemechina.common.runic.RuneHelper;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,7 +45,7 @@ public class ChalkItem extends Item
 			if(RuneHelper.hasRune(drawn_rune))
 			{
 				BlockPos offset_position = pos.offset(face);
-				world.setBlockState(offset_position, Registry.rune.getDefaultState().with(RuneBlock.specialRune, RuneBlock.SPECIAL_RUNE.CUSTOM));
+				world.setBlockState(offset_position, Registry.inWorldRune.getDefaultState().with(RuneBlock.specialRune, RuneBlock.SPECIAL_RUNE.CUSTOM));
 				RuneContainer rune = RuneHelper.fromItem(drawn_rune);
 				if(rune == null)
 					rune = RuneHelper.getEmpty();
@@ -58,10 +58,10 @@ public class ChalkItem extends Item
 
 			
 			BlockPos offset_position = pos.offset(face);
-			if(world.getBlockState(pos).getBlock() == Registry.rune)
+			if(world.getBlockState(pos).getBlock() == Registry.inWorldRune)
 				offset_position = pos;
 			else {
-				world.setBlockState(offset_position, Registry.rune.getDefaultState().with(RuneBlock.specialRune, RuneBlock.SPECIAL_RUNE.CUSTOM));
+				world.setBlockState(offset_position, Registry.inWorldRune.getDefaultState().with(RuneBlock.specialRune, RuneBlock.SPECIAL_RUNE.CUSTOM));
 				((RuneTileEntity)world.getTileEntity(offset_position)).setContainer(new RuneContainer());
 			}
 			if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer) && world.getTileEntity(offset_position) instanceof RuneTileEntity)

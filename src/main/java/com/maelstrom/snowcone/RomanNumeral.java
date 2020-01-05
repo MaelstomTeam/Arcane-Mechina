@@ -1,4 +1,4 @@
-package com.maelstrom.snowcone.common;
+package com.maelstrom.snowcone;
 
 import java.util.TreeMap;
 
@@ -21,7 +21,6 @@ public class RomanNumeral {
         number_map.put(5, "V");
         number_map.put(4, "IV");
         number_map.put(1, "I");
-
     }
 
 	public final static String toRomanNumeral(int value) {

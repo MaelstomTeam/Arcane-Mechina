@@ -1,7 +1,9 @@
-package com.maelstrom.arcanemechina.common;
+package com.maelstrom.arcanemechina.common.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.maelstrom.arcanemechina.common.Registry;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;

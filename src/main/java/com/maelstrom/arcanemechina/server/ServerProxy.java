@@ -1,6 +1,6 @@
 package com.maelstrom.arcanemechina.server;
 
-import com.maelstrom.arcanemechina.common.IProxy;
+import com.maelstrom.snowcone.IProxy;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.crafting.RecipeManager;

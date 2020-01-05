@@ -1,4 +1,4 @@
-package com.maelstrom.snowcone.common.itemgroups;
+package com.maelstrom.snowcone.itemgroups;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

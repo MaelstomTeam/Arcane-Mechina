@@ -1,10 +1,11 @@
 package com.maelstrom.arcanemechina.client;
 
 import com.maelstrom.arcanemechina.client.gui.RuneCraftingGui;
+import com.maelstrom.arcanemechina.client.gui.RuneWorldCraftingGui;
 import com.maelstrom.arcanemechina.client.tesr.RenderRune;
-import com.maelstrom.arcanemechina.common.IProxy;
 import com.maelstrom.arcanemechina.common.Registry;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
+import com.maelstrom.snowcone.IProxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -19,8 +20,8 @@ public class ClientProxy implements IProxy
 	@Override
 	public void init()
 	{
-        ScreenManager.registerFactory(Registry.RDC, RuneCraftingGui::new);
-    	Registry.RegisterModels();
+        ScreenManager.registerFactory(Registry.RDC, RuneWorldCraftingGui::new);
+        ScreenManager.registerFactory(Registry.RCC, RuneCraftingGui::new);
     	ClientRegistry.bindTileEntitySpecialRenderer(RuneTileEntity.class, new RenderRune());
 	}
 

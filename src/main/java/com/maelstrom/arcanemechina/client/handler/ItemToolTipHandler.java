@@ -1,11 +1,11 @@
-package com.maelstrom.arcanemechina.client;
+package com.maelstrom.arcanemechina.client.handler;
 
 import java.util.HashMap;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.common.Registry;
+import com.maelstrom.arcanemechina.common.helper.RuneHelper;
 import com.maelstrom.arcanemechina.common.runic.RuneContainer;
-import com.maelstrom.arcanemechina.common.runic.RuneHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = ArcaneMechina.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public class RenderSpecial
+public class ItemToolTipHandler
 {
 	private static HashMap<ItemStack, RuneContainer> quickList = new HashMap<ItemStack, RuneContainer>();
 

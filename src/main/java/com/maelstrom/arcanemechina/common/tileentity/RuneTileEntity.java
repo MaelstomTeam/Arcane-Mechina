@@ -2,11 +2,11 @@ package com.maelstrom.arcanemechina.common.tileentity;
 
 import javax.annotation.Nullable;
 
-import com.maelstrom.arcanemechina.client.gui.RuneCraftingGui;
+import com.maelstrom.arcanemechina.client.gui.RuneWorldCraftingGui;
 import com.maelstrom.arcanemechina.common.Registry;
 import com.maelstrom.arcanemechina.common.container.RuneDrawingContainer;
+import com.maelstrom.arcanemechina.common.helper.RuneHelper;
 import com.maelstrom.arcanemechina.common.runic.RuneContainer;
-import com.maelstrom.arcanemechina.common.runic.RuneHelper;
 import com.maelstrom.arcanemechina.common.runic.RuneType;
 import com.maelstrom.arcanemechina.common.runic.RuneType.HoldingRune;
 
@@ -31,7 +31,6 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 	public RuneTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn);
 		this.rune = RuneHelper.getEmpty();
-		
 	}
 
 	public RuneTileEntity() {
@@ -147,7 +146,7 @@ public class RuneTileEntity extends TileEntity implements ITickableTileEntity, I
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return RuneCraftingGui.title;
+		return RuneWorldCraftingGui.title;
 	}
 
 }

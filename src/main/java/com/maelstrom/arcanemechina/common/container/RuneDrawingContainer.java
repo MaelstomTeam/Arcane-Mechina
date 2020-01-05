@@ -31,7 +31,7 @@ public class RuneDrawingContainer extends Container
 
 	public RuneDrawingContainer(int windowID, World world, BlockPos pos, PlayerInventory inv, PlayerEntity player)
 	{
-		super(Registry.RDC, -332);
+		super(Registry.RDC, windowID);
 		this.setTileEntity(world.getTileEntity(pos));
 		this.setPlayerEntity(player);
 		this.playerInventory = new InvWrapper((IInventory) playerInventory);
@@ -66,7 +66,7 @@ public class RuneDrawingContainer extends Container
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn)
 	{
-		return !(playerIn instanceof FakePlayer) && isWithinUsableDistance(IWorldPosCallable.DUMMY, playerIn, Registry.rune);
+		return !(playerIn instanceof FakePlayer) && isWithinUsableDistance(IWorldPosCallable.DUMMY, playerIn, Registry.inWorldRune);
 	}
 
 	public TileEntity getTileEntity()

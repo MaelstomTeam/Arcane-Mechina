@@ -1,4 +1,4 @@
-package com.maelstrom.arcanemechina.common;
+package com.maelstrom.snowcone;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.crafting.RecipeManager;

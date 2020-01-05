@@ -6,16 +6,16 @@ import java.util.UUID;
 
 import com.maelstrom.arcanemechina.ArcaneMechina;
 import com.maelstrom.arcanemechina.client.tesr.RenderPlane;
-import com.maelstrom.arcanemechina.common.CraftingRecipeCache;
-import com.maelstrom.arcanemechina.common.CraftingRecipeCache.CompressedIngredient;
-import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
+import com.maelstrom.arcanemechina.common.helper.CraftingRecipeCache;
+import com.maelstrom.arcanemechina.common.helper.CraftingRecipeCache.CompressedIngredient;
+import com.maelstrom.arcanemechina.common.helper.RecipeHelper;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IInventoryRune;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.IRuneRenderer;
 import com.maelstrom.arcanemechina.common.runic.rune_interfaces.ITicking;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
-import com.maelstrom.snowcone.common.RomanNumeral;
-import com.maelstrom.snowcone.common.WorldUtilities;
+import com.maelstrom.snowcone.RomanNumeral;
+import com.maelstrom.snowcone.WorldUtilities;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.block.BlockState;
@@ -1006,7 +1006,6 @@ public abstract class RuneType implements IStringSerializable, IRuneRenderer {
 					for (int i = 1; i < getInventoryRune().getSizeInventory(); i++)
 					{
 						if (getInventoryRune().getStackInSlot(i).isEmpty()) {
-							ArcaneMechina.LOGGER.info(getInventoryRune().getStackInSlot(i));
 							index_rune = i;
 							break;
 						}

@@ -1,6 +1,8 @@
-package com.maelstrom.arcanemechina.common;
+package com.maelstrom.arcanemechina.common.helper;
 
 import java.util.HashMap;
+
+import com.maelstrom.arcanemechina.common.Registry;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

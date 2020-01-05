@@ -1,7 +1,9 @@
-package com.maelstrom.arcanemechina.common.runic;
+package com.maelstrom.arcanemechina.common.helper;
 
-import com.maelstrom.arcanemechina.common.RecipeHelper;
 import com.maelstrom.arcanemechina.common.Registry;
+import com.maelstrom.arcanemechina.common.runic.RuneContainer;
+import com.maelstrom.arcanemechina.common.runic.RuneSize;
+import com.maelstrom.arcanemechina.common.runic.RuneType;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
