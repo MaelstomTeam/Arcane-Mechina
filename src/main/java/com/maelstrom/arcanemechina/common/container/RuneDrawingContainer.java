@@ -38,18 +38,19 @@ public class RuneDrawingContainer extends Container
 
 		int x = 51;
 		int y = 112;
-		for (int k = 0; k < 3; ++k)
+		for (int y2 = 0; y2 < 3; ++y2)
 		{
-			for (int l = 0; l < 9; ++l)
+			for (int x2 = 0; x2 < 9; ++x2)
 			{
-				this.addSlot(new Slot(inv, l + k * 9 + 9, x + l * 18, y + k * 18));
+				this.addSlot(new Slot(inv, x2 + y2 * 9 + 9, x + x2 * 18, y + y2 * 18));
 			}
 		}
 
-		for (int i1 = 0; i1 < 9; ++i1)
+		for (int x2 = 0; x2 < 9; ++x2)
 		{
-			this.addSlot(new Slot(inv, i1, x + i1 * 18, y + 58));
+			this.addSlot(new Slot(inv, x2, x + x2 * 18, y + 58));
 		}
+		
 		RuneContainer container = ((RuneTileEntity)world.getTileEntity(pos)).getRuneContainer();
 		for(RuneType temp : container.getRune(CraftingContainerRune.class))
 		{

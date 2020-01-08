@@ -10,7 +10,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class RecipeBlueprintItem extends NoDamageItem
+public class RecipeBlueprintItem extends BlueprintItem
 {
 
 	public RecipeBlueprintItem()

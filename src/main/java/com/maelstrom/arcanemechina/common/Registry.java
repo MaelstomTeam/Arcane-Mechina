@@ -9,6 +9,7 @@ import com.maelstrom.arcanemechina.common.blocks.RuneBlock;
 import com.maelstrom.arcanemechina.common.blocks.RuneCraftingTableBlock;
 import com.maelstrom.arcanemechina.common.container.RuneCraftingContainer;
 import com.maelstrom.arcanemechina.common.container.RuneDrawingContainer;
+import com.maelstrom.arcanemechina.common.container.inventory.BlueprintSlot;
 import com.maelstrom.arcanemechina.common.items.ChalkItem;
 import com.maelstrom.arcanemechina.common.items.NoDamageItem;
 import com.maelstrom.arcanemechina.common.items.RecipeBlueprintItem;
@@ -17,6 +18,7 @@ import com.maelstrom.arcanemechina.common.tileentity.RuneCraftingTileEntity;
 import com.maelstrom.arcanemechina.common.tileentity.RuneTileEntity;
 import com.maelstrom.arcanemechina.server.ServerProxy;
 import com.maelstrom.snowcone.IProxy;
+import com.maelstrom.snowcone.container.slot.FilteredSlot;
 import com.maelstrom.snowcone.itemgroups.CustomItemGroup;
 
 import net.minecraft.block.Block;
@@ -33,6 +35,7 @@ import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
@@ -89,7 +92,7 @@ public class Registry
 	}
 
 	@SubscribeEvent
-	public static void RegisterItems(RegistryEvent.Register<Item> event)
+	public static void onRegisterItems(RegistryEvent.Register<Item> event)
 	{
 		event.getRegistry().registerAll(
 				chalk, 
@@ -105,7 +108,7 @@ public class Registry
 	}
 
 	@SubscribeEvent
-	public static void RegisterBlocks(RegistryEvent.Register<Block> event)
+	public static void onRegisterBlocks(RegistryEvent.Register<Block> event)
 	{
 		inWorldRune = (RuneBlock) new RuneBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 5F).noDrops()).setRegistryName(ArcaneMechina.MODID, "rune");
 		runeCraftingTable = new RuneCraftingTableBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.5F).sound(SoundType.WOOD)).setRegistryName(ArcaneMechina.MODID, "rcc");
@@ -167,7 +170,7 @@ public class Registry
 	
 		//becuase for some reason it doesn't work when used in "bus.MOD" so here it is in this side handler
 		@SubscribeEvent
-		public static void RegisterItems(LivingDropsEvent event)
+		public static void onLivingDrops(LivingDropsEvent event)
 		{
 			if(event.getEntity() instanceof ZombieEntity)
 			{
@@ -178,6 +181,12 @@ public class Registry
 				}
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public static void textureStich(TextureStitchEvent.Pre event)
+	{
+	    event.addSprite(BlueprintSlot.BLUEPRINT_SLOT_SPRITE);
 	}
 
 }

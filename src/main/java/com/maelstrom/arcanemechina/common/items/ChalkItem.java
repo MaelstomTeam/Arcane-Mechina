@@ -55,8 +55,6 @@ public class ChalkItem extends Item
 		}
 		else
 		{
-
-			
 			BlockPos offset_position = pos.offset(face);
 			if(world.getBlockState(pos).getBlock() == Registry.inWorldRune)
 				offset_position = pos;

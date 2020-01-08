@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class RuneBlueprintItem extends NoDamageItem
+public class RuneBlueprintItem extends BlueprintItem
 {
 
 	public RuneBlueprintItem()
